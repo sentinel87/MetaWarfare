@@ -1,12 +1,12 @@
 #include <Gamebuino-Meta.h>
 
 int field[12][16] ={
-  {1,1,1,1,1,1,1,1,1,2,3,4,5,6,7,8},
-  {2,2,2,2,2,2,2,2,1,2,3,4,5,6,7,8},
-  {3,3,3,3,3,3,3,3,1,2,3,4,5,6,7,8},
-  {4,4,4,4,4,4,4,4,1,2,3,4,5,6,7,8},
-  {5,5,5,5,5,5,5,5,1,2,3,4,5,6,7,8},
-  {6,6,6,6,6,6,6,6,1,2,3,4,5,6,7,8},
+  {1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+  {1,1,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+  {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+  {3,3,3,3,1,1,1,3,3,3,3,3,3,3,3,3},
+  {3,3,3,3,1,1,1,3,3,3,3,3,3,3,3,3},
+  {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
   {7,7,7,7,7,7,7,7,1,2,3,4,5,6,7,8},
   {8,8,8,8,8,8,8,8,1,2,3,4,5,6,7,8},
   {9,9,9,9,9,9,9,9,1,2,3,4,5,6,7,8},
@@ -95,47 +95,4 @@ void loop() {
       column+=(posY/10);
     selected = field[row][column];
   }
-}
-
-void drawMap()
-{
-  for(int i=0;i<8;i++)
-  {
-    for(int j=0;j<6;j++)
-    {
-      switch(field[j+sRowIdx][i+sColIdx])
-      {
-        case 1:
-          gb.display.setColor(BLUE); break;
-        case 2:
-          gb.display.setColor(RED); break;
-        case 3:
-          gb.display.setColor(GREEN); break;
-        case 4:
-          gb.display.setColor(YELLOW); break;
-        case 5:
-          gb.display.setColor(ORANGE); break;
-        case 6:
-          gb.display.setColor(BLACK); break;
-        case 7:
-          gb.display.setColor(BROWN); break;
-        case 8:
-          gb.display.setColor(BEIGE); break;
-        case 9:
-          gb.display.setColor(PINK);break;
-        case 10:
-          gb.display.setColor(PURPLE);break;
-        case 11:
-          gb.display.setColor(DARKBLUE);break;
-        case 12:
-          gb.display.setColor(LIGHTGREEN);break;
-      }
-      gb.display.fillRect(i*10,j*10,10,10);
-    }
-  }
-  gb.display.setColor(WHITE);
-  gb.display.drawRect(posY,posX,10,10);
-  gb.display.setFontSize(1);
-  gb.display.setCursor(3,3);
-  gb.display.println(selected);
 }
