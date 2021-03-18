@@ -319,17 +319,37 @@ void drawMap()
     {
       int fieldV = field[j+sRowIdx][i+sColIdx];
       int terrainColorId = fieldV%10;
-      int terrainId = ((fieldV%1000)-terrainColorId)/10;
+      int terrainId=((fieldV%1000)-terrainColorId)/10;
+      int playerId=((fieldV%10000)-(terrainId*10)-terrainColorId)/1000;
+      int unitId = ((fieldV%1000000)-(playerId*1000)-(terrainId*10)-terrainColorId)/10000;
+      int unitHealth = ((fieldV%100000000)-(unitId*10000)-(playerId*1000)-(terrainId*10)-terrainColorId)/1000000;
+      int unitStatus = ((fieldV%1000000000)-(unitHealth*1000000)-(unitId*10000)-(playerId*1000)-(terrainId*10)-terrainColorId)/100000000;
+      
       drawTerrainColor(terrainColorId);
       gb.display.fillRect(i*10,j*10,10,10);
       drawTerrain(terrainId,i*10,j*10);
+      if(unitId!=0)
+      {
+        if(unitStatus==1)
+        {
+          switch(playerId)
+          {
+            case 1:
+              gb.display.setColor(RED); break;
+            case 2:
+              gb.display.setColor(DARKBLUE); break;
+          }
+        }
+        else
+        {
+          gb.display.setColor(DARKGRAY);
+        }
+        gb.display.fillRect(i*10,j*10,10,10);
+        drawUnit(unitId,i,j);
+      }
     }
   }
   
-  drawUnit(1);
-  drawUnit(2);
-  drawUnit(3);
-  drawUnit(4);
   gb.display.setColor(WHITE);
   gb.display.drawRect(posY,posX,10,10);
   gb.display.setFontSize(1);
@@ -375,18 +395,17 @@ void drawTerrain(int id,int posX,int posY)
   }
 }
 
-void drawUnit(int idx)
+void drawUnit(int idx, int posX, int posY)
 {
-  gb.display.setColor(RED);
   switch(idx)
   {
     case 1:
-      gb.display.fillRect(40,20,10,10); gb.display.drawImage(40,20,UHalfTruck,10,10); break;
+      gb.display.drawImage(posX*10,posY*10,UHalfTruck,10,10); break;
     case 2:
-      gb.display.fillRect(40,0,10,10); gb.display.drawImage(40,0,UMediumTank,10,10); break;
+      gb.display.drawImage(posX*10,posY*10,UMediumTank,10,10); break;
     case 3:
-      gb.display.fillRect(30,10,10,10); gb.display.drawImage(30,10,UHeavyTank,10,10); break;
+      gb.display.drawImage(posX*10,posY*10,UHeavyTank,10,10); break;
     case 4:
-      gb.display.fillRect(20,50,10,10); gb.display.drawImage(20,50,UTankDestroyer,10,10); break;
+      gb.display.drawImage(posX*10,posY*10,UTankDestroyer,10,10); break;
   }
 }
