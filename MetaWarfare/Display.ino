@@ -617,22 +617,16 @@ void drawMap()
   {
     for(int j=0;j<6;j++)
     {
-      int fieldV = field[j+sRowIdx][i+sColIdx];
-      int terrainColorId = fieldV%10;
-      int terrainId=((fieldV%1000)-terrainColorId)/10;
-      int playerId=((fieldV%10000)-(terrainId*10)-terrainColorId)/1000;
-      int unitId = ((fieldV%1000000)-(playerId*1000)-(terrainId*10)-terrainColorId)/10000;
-      int unitHealth = ((fieldV%100000000)-(unitId*10000)-(playerId*1000)-(terrainId*10)-terrainColorId)/1000000;
-      int unitStatus = ((fieldV%1000000000)-(unitHealth*1000000)-(unitId*10000)-(playerId*1000)-(terrainId*10)-terrainColorId)/100000000;
+      GameTileStruct tile=Board1[j+sRowIdx][i+sColIdx];
       
-      drawTerrainColor(terrainColorId);
+      drawTerrainColor(tile.terrainColor);
       gb.display.fillRect(i*10,j*10,10,10);
-      drawTerrain(terrainId,i*10,j*10);
-      if(unitId!=0)
+      drawTerrain(tile.terrainTexture,i*10,j*10);
+      if(tile.unitId!=0)
       {
-        if(unitStatus==1)
+        if(tile.active==1)
         {
-          switch(playerId)
+          switch(tile.player)
           {
             case 1:
               gb.display.setColor(RED); break;
@@ -645,16 +639,16 @@ void drawMap()
           gb.display.setColor(DARKGRAY);
         }
         gb.display.fillRect(i*10,j*10,10,10);
-        drawUnit(unitId,i,j);
+        drawUnit(tile.unitId,i,j);
       }
     }
   }
   
   gb.display.setColor(WHITE);
   gb.display.drawRect(posY,posX,10,10);
-  gb.display.setFontSize(1);
-  gb.display.setCursor(3,3);
-  gb.display.println(selected);
+  //gb.display.setFontSize(1);
+  //gb.display.setCursor(3,3);
+  //gb.display.println(selected);
 }
 
 void drawTerrainColor(int id)
