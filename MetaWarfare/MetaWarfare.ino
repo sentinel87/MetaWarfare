@@ -11,9 +11,22 @@ struct GameTileStruct
     unsigned int reserve: 8;
 };
 
+struct Unit
+{
+  String unitName;
+  unsigned int unitId;
+  unsigned int moveRange;
+};
+
+const Unit NONE = {"None",0,0};
+const Unit HALF_TRUCK = {"Half Truck",1,5};
+const Unit MEDIUM_TANK = {"Medium Tank",2,4};
+const Unit HEAVY_TANK = {"Heavy Tank",3,3};
+const Unit TANK_DESTROYER = {"Tank Destroyer",4,3};
+
 GameTileStruct Board1[6][8]{
     {{1,0,0,0,0,0},{1,13,0,0,0,0},{0,1,0,0,0,0},{0,4,0,0,0,0},{0,10,0,0,0,0},{0,10,0,0,0,0},{0,2,0,0,0,0},{0,2,0,0,0,0}},
-    {{1,16,0,0,0,0},{1,18,0,0,0,0},{0,1,2,3,10,0},{0,4,0,0,0,0},{0,1,0,0,0,0},{0,10,0,0,0,0},{0,1,0,0,0,0},{0,2,0,0,0,0}},
+    {{1,16,0,0,0,0},{1,18,0,0,0,0},{0,1,2,3,10,1},{0,4,0,0,0,0},{0,1,0,0,0,0},{0,10,0,0,0,0},{0,1,0,0,0,0},{0,2,0,0,0,0}},
     {{0,1,1,4,10,1},{0,1,0,0,0,0},{0,1,0,0,0,0},{0,4,0,0,0,0},{0,1,2,1,10,1},{0,7,0,0,0,0},{0,3,0,0,0,0},{0,3,0,0,0,0}},
     {{0,3,0,0,0,0},{0,3,0,0,0,0},{0,3,2,2,10,1},{0,5,0,0,0,0},{0,3,0,0,0,0},{0,8,0,0,0,0},{0,1,0,0,0,0},{0,2,0,0,0,0}},
     {{0,1,1,1,10,1},{0,1,0,0,0,0},{0,1,0,0,0,0},{0,4,0,0,0,0},{1,0,0,0,0,0},{1,0,0,0,0,0},{1,0,0,0,0,0},{0,1,0,0,0,0}},
@@ -28,6 +41,9 @@ int sColIdx=0;
 int expandedWidth=0;
 int expandedHeight=0;
 GameTileStruct selected=Board1[0][0];
+Unit selectedUnit=NONE;
+
+bool unitMode=false;
 
 void setup() {
   gb.begin();
@@ -102,5 +118,37 @@ void loop() {
     if(posY>0)
       column+=(posY/10);
     selected=Board1[row][column];
+    if(selected.unitId!=0 && selected.active==1)
+    {
+      selectedUnit=GetUnit(selected.unitId);
+      unitMode=true;
+    }
   }
+  else if(gb.buttons.pressed(BUTTON_B))
+  {
+    if(unitMode==true)
+    {
+      selectedUnit=NONE;
+      unitMode=false;
+    }
+  }
+}
+
+Unit GetUnit(unsigned int id)
+{
+  Unit selected=NONE;
+  switch(id)
+  {
+    case 0:
+      selected=NONE; break;
+    case 1:
+      selected=HALF_TRUCK; break;
+    case 2:
+      selected=MEDIUM_TANK; break;
+    case 3:
+      selected=HEAVY_TANK; break;
+    case 4:
+      selected=TANK_DESTROYER; break;
+  }
+  return selected;
 }

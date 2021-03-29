@@ -622,6 +622,14 @@ void drawMap()
       drawTerrainColor(tile.terrainColor);
       gb.display.fillRect(i*10,j*10,10,10);
       drawTerrain(tile.terrainTexture,i*10,j*10);
+      if(unitMode==true)
+      {
+        //if((j+sRowIdx>=posX && j+sRowIdx<posX-3) && (i+sColIdx>=posY && i+sColIdx<posY-3))
+        //{
+          gb.display.setColor(LIGHTGREEN);
+          gb.display.fillRect(i*10,j*10,10,10);
+        //}
+      }
       if(tile.unitId!=0)
       {
         if(tile.active==1)
@@ -643,12 +651,11 @@ void drawMap()
       }
     }
   }
-  
   gb.display.setColor(WHITE);
   gb.display.drawRect(posY,posX,10,10);
-  //gb.display.setFontSize(1);
-  //gb.display.setCursor(3,3);
-  //gb.display.println(selected);
+  gb.display.setFontSize(1);
+  gb.display.setCursor(3,3);
+  gb.display.println(selectedUnit.unitName);
 }
 
 void drawTerrainColor(int id)
