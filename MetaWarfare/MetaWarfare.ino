@@ -31,26 +31,32 @@ GameTileStruct Board1[6][8]{
     {{0,0,0,0,0},{13,0,0,0,0},{1,1,7,10,1},{4,2,8,10,1},{10,0,0,0,0},{10,0,0,0,0},{2,0,0,0,0},{2,0,0,0,0}},
     {{16,0,0,0,0},{18,0,0,0,0},{1,2,3,10,1},{4,0,0,0,0},{1,0,0,0,0},{10,0,0,0,0},{1,0,0,0,0},{2,0,0,0,0}},
     {{1,1,4,10,1},{1,0,0,0,0},{1,0,0,0,0},{4,0,0,0,0},{1,2,1,10,1},{7,0,0,0,0},{3,0,0,0,0},{3,0,0,0,0}},
-    {{3,0,0,0,0},{3,0,0,0,0},{3,2,2,10,0},{5,0,0,0,0},{3,0,0,0,0},{8,0,0,0,0},{1,1,6,10,1},{2,0,0,0,0}},
-    {{1,1,1,10,1},{1,2,5,10,0},{1,0,0,0,0},{4,0,0,0,0},{10,0,0,0,0},{10,0,0,0,0},{2,0,0,0,0},{1,0,0,0,0}},
+    {{3,0,0,0,0},{3,0,0,0,0},{3,2,2,10,1},{5,0,0,0,0},{3,0,0,0,0},{8,0,0,0,0},{1,1,6,10,1},{2,0,0,0,0}},
+    {{1,1,1,10,1},{1,2,5,10,1},{1,0,0,0,0},{4,0,0,0,0},{10,0,0,0,0},{10,0,0,0,0},{2,0,0,0,0},{1,0,0,0,0}},
     {{1,0,0,0,0},{12,0,0,0,0},{1,0,0,0,0},{4,0,0,0,0},{11,0,0,0,0},{1,0,0,0,0},{1,0,0,0,0},{1,0,0,0,0}},
 };
 
+int currentPlayer=1;
+
 int posX=0;
 int posY=0;
+
 int sRowIdx=0;
 int sColIdx=0;
 
 int expandedWidth=0;
 int expandedHeight=0;
-GameTileStruct selected=Board1[0][0];
+
+int baseTileRow=0;
+int baseTileColumn=0;
 Unit selectedUnit=NONE;
+int selectedPosX=0;
+int selectedPosY=0;
 
 bool unitMode=false;
 
 void setup() {
   gb.begin();
-  //gb.setFrameRate(20);
 }    
 
 
@@ -61,8 +67,8 @@ void loop() {
   drawMap();
   if(gb.buttons.pressed(BUTTON_UP))
   {
-    if(posX!=0)
-      posX-=10;
+    if(posY!=0)
+      posY-=10;
     else
     {
       if(sRowIdx>0)
@@ -73,9 +79,9 @@ void loop() {
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(posX!=50)
+    if(posY!=50)
     {
-      posX+=10;
+      posY+=10;
     }
     else
     {
@@ -87,9 +93,9 @@ void loop() {
   }
   else if(gb.buttons.pressed(BUTTON_LEFT))
   {
-    if(posY!=0)
+    if(posX!=0)
     {
-      posY-=10;
+      posX-=10;
     }
     else
     {
@@ -101,9 +107,9 @@ void loop() {
   }
   else if(gb.buttons.pressed(BUTTON_RIGHT))
   {
-    if(posY!=70)
+    if(posX!=70)
     {
-      posY+=10;
+      posX+=10;
     }
     else
     {
@@ -116,17 +122,45 @@ void loop() {
   else if(gb.buttons.pressed(BUTTON_A))
   {
     int row = sRowIdx;
-    if(posX>0)
-      row+=(posX/10);
-    int column = sColIdx;
     if(posY>0)
-      column+=(posY/10);
-    selected=Board1[row][column];
-    if(selected.unitId!=0 && selected.active==1)
+      row+=(posY/10);
+    int column = sColIdx;
+    if(posX>0)
+      column+=(posX/10);
+
+    if(unitMode!=true)
     {
-      selectedUnit=GetUnit(selected.unitId);
-      unitMode=true;
+      if(Board1[row][column].unitId!=0 && Board1[row][column].active==1 && Board1[row][column].player==currentPlayer)
+      {
+        baseTileRow=row;
+        baseTileColumn=column;
+        selectedUnit=getUnit(Board1[row][column].unitId);
+        selectedPosY=posY;
+        selectedPosX=posX;
+        unitMode=true;
+      }
     }
+    else
+    {
+      if(selectedPosX!=posX || selectedPosY!=posY)
+      {
+        if(Board1[row][column].terrainTexture!=0 && Board1[row][column].terrainTexture!=2 && Board1[row][column].unitId==0)
+        {
+          //Fill destination tile with unit info
+          Board1[row][column].player=Board1[baseTileRow][baseTileColumn].player;
+          Board1[row][column].unitId=Board1[baseTileRow][baseTileColumn].unitId;
+          Board1[row][column].unitHp=Board1[baseTileRow][baseTileColumn].unitHp;
+          Board1[row][column].active=0;
+          //Remove unit info from starting tile
+          Board1[baseTileRow][baseTileColumn].player=0;
+          Board1[baseTileRow][baseTileColumn].unitId=0;
+          Board1[baseTileRow][baseTileColumn].unitHp=0;
+          Board1[baseTileRow][baseTileColumn].active=0;
+          unitMode=false;
+        }
+      }
+    }
+    
   }
   else if(gb.buttons.pressed(BUTTON_B))
   {
@@ -134,11 +168,17 @@ void loop() {
     {
       selectedUnit=NONE;
       unitMode=false;
+      selectedPosX=0;
+      selectedPosY=0;
     }
+  }
+  else if(gb.buttons.pressed(BUTTON_MENU))
+  {
+    endTurn();
   }
 }
 
-Unit GetUnit(unsigned int id)
+Unit getUnit(unsigned int id)
 {
   Unit selected=NONE;
   switch(id)
@@ -164,3 +204,26 @@ Unit GetUnit(unsigned int id)
   }
   return selected;
 }
+
+void endTurn()
+{
+  for(int i=0;i<8;i++)
+  {
+    for(int j=0;j<6;j++)
+    {
+      if(Board1[j][i].unitId!=0 && Board1[j][i].player==currentPlayer)
+      {
+        Board1[j][i].active=1;
+      }
+    }
+  }
+  if(currentPlayer==1)
+  {
+    currentPlayer=2;
+  }
+  else
+  {
+    currentPlayer=1;
+  }
+}
+
