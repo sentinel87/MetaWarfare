@@ -27,6 +27,7 @@ const Unit MOBILE_SSM = {"Mobile SSM",6,3};
 const Unit INFANTRY = {"Infantry",7,2};
 const Unit MECH_INFANTRY = {"Anti Tank Infantry",8,2};
 
+
 GameTileStruct Board1[6][8]{
     {{0,0,0,0,0},{13,0,0,0,0},{1,1,7,10,1},{4,2,8,10,1},{10,0,0,0,0},{10,0,0,0,0},{2,0,0,0,0},{2,0,0,0,0}},
     {{16,0,0,0,0},{18,0,0,0,0},{1,2,3,10,1},{4,0,0,0,0},{1,0,0,0,0},{10,0,0,0,0},{1,0,0,0,0},{2,0,0,0,0}},
@@ -44,6 +45,9 @@ int posY=0;
 int sRowIdx=0;
 int sColIdx=0;
 
+int row=0;
+int column=0;
+
 int expandedWidth=0;
 int expandedHeight=0;
 
@@ -54,6 +58,7 @@ int selectedPosX=0;
 int selectedPosY=0;
 
 bool unitMode=false;
+bool targetMode=false;
 
 void setup() {
   gb.begin();
@@ -67,80 +72,96 @@ void loop() {
   drawMap();
   if(gb.buttons.pressed(BUTTON_UP))
   {
-    if(posY!=0)
-      posY-=10;
+    if(targetMode==true)
+    {
+      checkTargetSelection(1);
+    }
     else
     {
-      if(sRowIdx>0)
+      if(posY!=0)
+        posY-=10;
+      else
       {
-        sRowIdx--;
+        if(sRowIdx>0)
+        {
+          sRowIdx--;
+        }
       }
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(posY!=50)
+    if(targetMode==true)
     {
-      posY+=10;
+      checkTargetSelection(2);
     }
     else
     {
-      if(sRowIdx<expandedHeight)
+      if(posY!=50)
       {
-        sRowIdx++;
+        posY+=10;
+      }
+      else
+      {
+        if(sRowIdx<expandedHeight)
+        {
+          sRowIdx++;
+        }
       }
     }
   }
   else if(gb.buttons.pressed(BUTTON_LEFT))
   {
-    if(posX!=0)
+    if(targetMode==true)
     {
-      posX-=10;
+      checkTargetSelection(3);
     }
     else
     {
-      if(sColIdx>0)
+      if(posX!=0)
       {
-        sColIdx--;
+        posX-=10;
+      }
+      else
+      {
+        if(sColIdx>0)
+        {
+          sColIdx--;
+        }
       }
     }
   }
   else if(gb.buttons.pressed(BUTTON_RIGHT))
   {
-    if(posX!=70)
+    if(targetMode==true)
     {
-      posX+=10;
+      checkTargetSelection(4);
     }
     else
     {
-      if(sColIdx<expandedWidth)
+      if(posX!=70)
       {
-        sColIdx++;
+        posX+=10;
+      }
+      else
+      {
+        if(sColIdx<expandedWidth)
+        {
+          sColIdx++;
+        }
       }
     }
   }
   else if(gb.buttons.pressed(BUTTON_A))
   {
-    int row = sRowIdx;
+    row = sRowIdx;
     if(posY>0)
       row+=(posY/10);
-    int column = sColIdx;
+    column = sColIdx;
     if(posX>0)
       column+=(posX/10);
-
-    if(unitMode!=true)
-    {
-      if(Board1[row][column].unitId!=0 && Board1[row][column].active==1 && Board1[row][column].player==currentPlayer)
-      {
-        baseTileRow=row;
-        baseTileColumn=column;
-        selectedUnit=getUnit(Board1[row][column].unitId);
-        selectedPosY=posY;
-        selectedPosX=posX;
-        unitMode=true;
-      }
-    }
-    else
+      
+    if(unitMode==true)
     {
       if(selectedPosX!=posX || selectedPosY!=posY)
       {
@@ -150,14 +171,34 @@ void loop() {
           Board1[row][column].player=Board1[baseTileRow][baseTileColumn].player;
           Board1[row][column].unitId=Board1[baseTileRow][baseTileColumn].unitId;
           Board1[row][column].unitHp=Board1[baseTileRow][baseTileColumn].unitHp;
-          Board1[row][column].active=0;
+          Board1[row][column].active=1;
           //Remove unit info from starting tile
           Board1[baseTileRow][baseTileColumn].player=0;
           Board1[baseTileRow][baseTileColumn].unitId=0;
           Board1[baseTileRow][baseTileColumn].unitHp=0;
           Board1[baseTileRow][baseTileColumn].active=0;
+          baseTileRow=row;
+          baseTileColumn=column;
           unitMode=false;
+          targetMode=true;
         }
+      }
+    }
+    else if(targetMode==true)
+    {
+      targetMode=false;
+      Board1[baseTileRow][baseTileColumn].active=0;
+    }
+    else
+    {
+      if(Board1[row][column].unitId!=0 && Board1[row][column].active==1 && Board1[row][column].player==currentPlayer)
+      {
+        baseTileRow=row;
+        baseTileColumn=column;
+        selectedUnit=getUnit(Board1[row][column].unitId);
+        selectedPosY=posY;
+        selectedPosX=posX;
+        unitMode=true;
       }
     }
     
@@ -227,3 +268,53 @@ void endTurn()
   }
 }
 
+void checkTargetSelection(int arrowDirection)
+{
+  int tRow = sRowIdx;
+  if(posY>0)
+    tRow+=(posY/10);
+  int tColumn = sColIdx;
+  if(posX>0)
+    tColumn+=(posX/10);
+    
+  if(arrowDirection==1)
+  {
+    if(tRow==0)
+      return;
+    if(Board1[tRow-1][tColumn].unitId!=0 && Board1[tRow-1][tColumn].player!=currentPlayer)
+    {
+      targetMode=false;
+      Board1[baseTileRow][baseTileColumn].active=0;
+    }
+  }
+  else if(arrowDirection==2)
+  {
+    if(tRow==5)
+      return;
+    if(Board1[tRow+1][tColumn].unitId!=0 && Board1[tRow+1][tColumn].player!=currentPlayer)
+    {
+      targetMode=false;
+      Board1[baseTileRow][baseTileColumn].active=0;
+    }
+  }
+  else if(arrowDirection==3)
+  {
+    if(tColumn==0)
+      return;
+    if(Board1[tRow][tColumn-1].unitId!=0 && Board1[tRow][tColumn-1].player!=currentPlayer)
+    {
+      targetMode=false;
+      Board1[baseTileRow][baseTileColumn].active=0;
+    }
+  }
+  else if(arrowDirection==4)
+  {
+    if(tColumn==7)
+      return;
+    if(Board1[tRow][tColumn+1].unitId!=0 && Board1[tRow][tColumn+1].player!=currentPlayer)
+    {
+      targetMode=false;
+      Board1[baseTileRow][baseTileColumn].active=0;
+    }
+  }
+}
