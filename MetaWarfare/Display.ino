@@ -932,7 +932,7 @@ void drawMap()
   {
     for(int j=0;j<6;j++)
     {
-      GameTileStruct tile=Board1[j+sRowIdx][i+sColIdx];
+      GameTileStruct tile=CurrentBoard[j+sRowIdx][i+sColIdx];
       
       if(tile.player!=0)
       {
