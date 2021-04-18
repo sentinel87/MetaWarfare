@@ -137,6 +137,13 @@ void Battle()
           targetMode=true;
         }
       }
+      else
+      {
+        baseTileRow=row;
+        baseTileColumn=column;
+        unitMode=false;
+        targetMode=true;
+      }
     }
     else if(targetMode==true)
     {

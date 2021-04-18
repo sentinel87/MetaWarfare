@@ -13,20 +13,22 @@ struct GameTileStruct
 
 struct Unit
 {
-  String unitName;
-  unsigned int unitId;
-  unsigned int moveRange;
+  unsigned int unitId: 5;
+  unsigned int movement: 3;
+  unsigned int crossMove: 1;
+  unsigned int canCrossMountains: 1;
+  unsigned int reserve: 24;
 };
 
-const Unit NONE = {"None",0,0};
-const Unit HALF_TRUCK = {"Half Truck",1,5};
-const Unit MEDIUM_TANK = {"Medium Tank",2,4};
-const Unit HEAVY_TANK = {"Heavy Tank",3,3};
-const Unit TANK_DESTROYER = {"Tank Destroyer",4,3};
-const Unit MOBILE_ARTILLERY = {"Mobile Artillery",5,4};
-const Unit MOBILE_SSM = {"Mobile SSM",6,3};
-const Unit INFANTRY = {"Infantry",7,2};
-const Unit MECH_INFANTRY = {"Anti Tank Infantry",8,2};
+const Unit NONE = {0,0,0,0};
+const Unit HALF_TRUCK = {1,4,0,0};
+const Unit MEDIUM_TANK = {2,3,0,0};
+const Unit HEAVY_TANK = {3,3,0,0};
+const Unit TANK_DESTROYER = {4,3,0,0};
+const Unit MOBILE_ARTILLERY = {5,4,1,0};
+const Unit MOBILE_SSM = {6,3,1,0};
+const Unit INFANTRY = {7,2,0,1};
+const Unit MECH_INFANTRY = {8,1,0,1};
 
 
 GameTileStruct Board1[6][8]{
