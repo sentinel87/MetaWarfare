@@ -1016,10 +1016,13 @@ void drawMap()
       }
     }
   }
-  gb.display.drawImage(posX,posY,IMAGE_CURSOR);
-  if(unitMode==true)
+  if(targetMode==true)
   {
-    gb.display.drawImage(selectedPosX,selectedPosY,CursorSelected);
+    gb.display.drawImage(posX,posY,CursorSelected);
+  }
+  else
+  {
+    gb.display.drawImage(posX,posY,IMAGE_CURSOR);
   }
   //gb.display.setFontSize(1);
   //gb.display.setCursor(3,3);

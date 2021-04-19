@@ -119,7 +119,7 @@ void Battle()
     {
       if(selectedPosX!=posX || selectedPosY!=posY)
       {
-        if(CurrentBoard[row][column].terrainTexture!=0 && CurrentBoard[row][column].terrainTexture!=2 && CurrentBoard[row][column].unitId==0)
+        if(CurrentBoard[row][column].terrainTexture!=0 && CurrentBoard[row][column].terrainTexture!=2 && CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].moveGrid==1)
         {
           //Fill destination tile with unit info
           CurrentBoard[row][column].player=CurrentBoard[baseTileRow][baseTileColumn].player;
@@ -135,6 +135,7 @@ void Battle()
           baseTileColumn=column;
           unitMode=false;
           targetMode=true;
+          clearMovementGrid();
         }
       }
       else
@@ -143,6 +144,7 @@ void Battle()
         baseTileColumn=column;
         unitMode=false;
         targetMode=true;
+        clearMovementGrid();
       }
     }
     else if(targetMode==true)
@@ -160,6 +162,7 @@ void Battle()
         selectedPosY=posY;
         selectedPosX=posX;
         unitMode=true;
+        drawUnitMovementGrid();
       }
     }
     
@@ -278,4 +281,137 @@ void checkTargetSelection(int arrowDirection)
       CurrentBoard[baseTileRow][baseTileColumn].active=0;
     }
   }
+}
+
+void drawUnitMovementGrid()
+{
+  int tRow = sRowIdx;
+  if(posY>0)
+    tRow+=(posY/10);
+  int tColumn = sColIdx;
+  if(posX>0)
+    tColumn+=(posX/10);
+
+  if(selectedUnit.unitId!=0)
+  {
+    unsigned int movement=selectedUnit.movement;
+    unsigned int canCrossMountains=selectedUnit.canCrossMountains;
+    unsigned int crossMove=selectedUnit.crossMove;
+
+    //Replace max vals for array
+    int minX=tRow-movement;
+    if(minX<0)
+        minX=0;
+    int minY = tColumn-movement;
+    if(minY<0)
+        minY=0;
+    int maxX=tRow+movement;
+    if(maxX>5)
+        maxX=5;
+    int maxY = tColumn+movement;
+    if(maxY>7)
+        maxY=7;
+
+    CurrentBoard[tRow][tColumn].moveGrid=1;
+    for(int m=1;m<=movement;m++)
+    {
+        if(tRow+m<=maxX)
+        {
+            if(restrictedMove(CurrentBoard[tRow+m][tColumn],canCrossMountains) || CurrentBoard[tRow+(m-1)][tColumn].moveGrid!=1)
+            {
+                CurrentBoard[tRow+m][tColumn].moveGrid=0;
+            }
+            else
+                CurrentBoard[tRow+m][tColumn].moveGrid=1;
+        }
+        if(tRow-m>=minX)
+        {
+            if(restrictedMove(CurrentBoard[tRow-m][tColumn],canCrossMountains) || CurrentBoard[tRow-(m-1)][tColumn].moveGrid!=1)
+            {
+                CurrentBoard[tRow-m][tColumn].moveGrid=0;
+            }
+            else
+                CurrentBoard[tRow-m][tColumn].moveGrid=1;
+        }
+        if(tColumn+m<=maxY)
+        {
+            if(restrictedMove(CurrentBoard[tRow][tColumn+m],canCrossMountains) || CurrentBoard[tRow][tColumn+(m-1)].moveGrid!=1)
+            {
+                CurrentBoard[tRow][tColumn+m].moveGrid=0;
+            }
+            else
+                CurrentBoard[tRow][tColumn+m].moveGrid=1;
+        }
+        if(tColumn-m>=minY)
+        {
+            if(restrictedMove(CurrentBoard[tRow][tColumn-m],canCrossMountains) || CurrentBoard[tRow][tColumn-(m-1)].moveGrid!=1)
+            {
+                CurrentBoard[tRow][tColumn-m].moveGrid=0;
+            }
+            else
+                CurrentBoard[tRow][tColumn-m].moveGrid=1;
+        }
+        if(crossMove==0)
+        {
+            if(tColumn-m>=minY && tRow-m>=minX)
+            {
+                if(restrictedMove(CurrentBoard[tRow-m][tColumn-m],canCrossMountains) || CurrentBoard[tRow-(m-1)][tColumn-(m-1)].moveGrid!=1)
+                {
+                    CurrentBoard[tRow-m][tColumn-m].moveGrid=0;
+                }
+                else
+                    CurrentBoard[tRow-m][tColumn-m].moveGrid=1;
+            }
+            if(tColumn+m<=maxY && tRow+m<=maxX)
+            {
+                if(restrictedMove(CurrentBoard[tRow+m][tColumn+m],canCrossMountains) || CurrentBoard[tRow+(m-1)][tColumn+(m-1)].moveGrid!=1)
+                {
+                    CurrentBoard[tRow+m][tColumn+m].moveGrid=0;
+                }
+                else
+                    CurrentBoard[tRow+m][tColumn+m].moveGrid=1;
+            }
+            if(tColumn-m>=minY && tRow+m<=maxX)
+            {
+                if(restrictedMove(CurrentBoard[tRow+m][tColumn-m],canCrossMountains) || CurrentBoard[tRow+(m-1)][tColumn-(m-1)].moveGrid!=1)
+                {
+                    CurrentBoard[tRow+m][tColumn-m].moveGrid=0;
+                }
+                else
+                    CurrentBoard[tRow+m][tColumn-m].moveGrid=1;
+            }
+            if(tColumn+m<=maxY && tRow-m>=minY)
+            {
+                if(restrictedMove(CurrentBoard[tRow-m][tColumn+m],canCrossMountains) || CurrentBoard[tRow-(m-1)][tColumn+(m-1)].moveGrid!=1)
+                {
+                    CurrentBoard[tRow-m][tColumn+m].moveGrid=0;
+                }
+                else
+                    CurrentBoard[tRow-m][tColumn+m].moveGrid=1;
+            }
+        }
+    }
+  }
+}
+
+void clearMovementGrid()
+{
+  for(int i=0;i<8;i++)
+  {
+    for(int j=0;j<6;j++)
+    {
+      CurrentBoard[j][i].moveGrid=0;
+    }
+  }
+}
+
+bool restrictedMove(GameTileStruct tile,unsigned int canCrossMountains)
+{
+    if(tile.terrainTexture==0)
+        return true;
+    if(canCrossMountains==0 && tile.terrainTexture==2)
+        return true;
+    if(tile.unitId!=0)
+        return true;
+    return false;
 }
