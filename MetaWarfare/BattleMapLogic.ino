@@ -9,8 +9,8 @@ int sColIdx=0;
 int row=0;
 int column=0;
 
-int expandedWidth=0;
-int expandedHeight=0;
+int expandedWidth=8;
+int expandedHeight=6;
 
 int baseTileRow=0;
 int baseTileColumn=0;
@@ -212,9 +212,9 @@ Unit getUnit(unsigned int id)
 
 void endTurn()
 {
-  for(int i=0;i<8;i++)
+  for(int i=0;i<16;i++)
   {
-    for(int j=0;j<6;j++)
+    for(int j=0;j<12;j++)
     {
       if(CurrentBoard[j][i].unitId!=0 && CurrentBoard[j][i].player==currentPlayer)
       {
@@ -253,7 +253,7 @@ void checkTargetSelection(int arrowDirection)
   }
   else if(arrowDirection==2)
   {
-    if(tRow==5)
+    if(tRow==11)
       return;
     if(CurrentBoard[tRow+1][tColumn].unitId!=0 && CurrentBoard[tRow+1][tColumn].player!=currentPlayer)
     {
@@ -273,7 +273,7 @@ void checkTargetSelection(int arrowDirection)
   }
   else if(arrowDirection==4)
   {
-    if(tColumn==7)
+    if(tColumn==15)
       return;
     if(CurrentBoard[tRow][tColumn+1].unitId!=0 && CurrentBoard[tRow][tColumn+1].player!=currentPlayer)
     {
@@ -306,11 +306,11 @@ void drawUnitMovementGrid()
     if(minY<0)
         minY=0;
     int maxX=tRow+movement;
-    if(maxX>5)
-        maxX=5;
+    if(maxX>11)
+        maxX=11;
     int maxY = tColumn+movement;
-    if(maxY>7)
-        maxY=7;
+    if(maxY>15)
+        maxY=15;
 
     CurrentBoard[tRow][tColumn].moveGrid=1;
     for(int m=1;m<=movement;m++)
@@ -380,7 +380,7 @@ void drawUnitMovementGrid()
                 else
                     CurrentBoard[tRow+m][tColumn-m].moveGrid=1;
             }
-            if(tColumn+m<=maxY && tRow-m>=minY)
+            if(tColumn+m<=maxY && tRow-m>=minX)
             {
                 if(restrictedMove(CurrentBoard[tRow-m][tColumn+m],canCrossMountains) || CurrentBoard[tRow-(m-1)][tColumn+(m-1)].moveGrid!=1)
                 {
@@ -396,9 +396,9 @@ void drawUnitMovementGrid()
 
 void clearMovementGrid()
 {
-  for(int i=0;i<8;i++)
+  for(int i=0;i<16;i++)
   {
-    for(int j=0;j<6;j++)
+    for(int j=0;j<12;j++)
     {
       CurrentBoard[j][i].moveGrid=0;
     }

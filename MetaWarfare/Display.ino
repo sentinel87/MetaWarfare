@@ -259,7 +259,7 @@ const uint16_t IMAGE_TERRAIN_BUILDING[] = {
      0xffff, 0xffff, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xffff, 0xffff,   
 };
 
-const uint16_t IMAGE_TERRAIN_BEACH_VL[] = {
+const uint16_t IMAGE_TERRAIN_BEACH_VR[] = {
      10,     // frame width
      10,     // frame height
      1,      // number of frames
@@ -279,7 +279,7 @@ const uint16_t IMAGE_TERRAIN_BEACH_VL[] = {
      0x023f, 0x023f, 0x023f, 0x023f, 0x86ba, 0xb4e7, 0xb4e7, 0xb4e7, 0xb4e7, 0xb4e7, 
 };
 
-const uint16_t IMAGE_TERRAIN_BEACH_VR[] = {
+const uint16_t IMAGE_TERRAIN_BEACH_VL[] = {
      10,     // frame width
      10,     // frame height
      1,      // number of frames
