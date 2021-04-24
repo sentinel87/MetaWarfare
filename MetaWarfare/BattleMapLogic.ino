@@ -21,7 +21,7 @@ int selectedPosY=0;
 bool unitMode=false;
 bool targetMode=false;
 
-void Battle()
+void BattleMap()
 {
   drawMap();
   if(gb.buttons.pressed(BUTTON_UP))

@@ -49,6 +49,7 @@ GameTileStruct Board[12][16]
 GameTileStruct CurrentBoard[12][16];
 
 bool menuMode=true;
+bool battleMode=true;
 
 void setup() {
   gb.begin();
@@ -59,10 +60,18 @@ void loop() {
   while(!gb.update());
   gb.display.clear();
 
-  if(menuMode==true)
+  if(battleMode==false)
   {
-    memcpy(CurrentBoard, Board, sizeof(CurrentBoard));
-    menuMode=false;
+    if(menuMode==true)
+    {
+      memcpy(CurrentBoard, Board, sizeof(CurrentBoard));
+      menuMode=false;
+    }
+    
+    BattleMap();
   }
-  Battle();
+  else
+  {
+    BattleScene();
+  }
 }
