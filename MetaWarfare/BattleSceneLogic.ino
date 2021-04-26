@@ -1,6 +1,6 @@
 
 void BattleScene()
 {
-  drawBattleScene(1,5,2,5);
+  drawBattleScene(1,6,2,6);
 }
 
