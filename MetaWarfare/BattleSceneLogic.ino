@@ -12,8 +12,8 @@
 int LeftSceneTheme=FOREST;
 int RightSceneTheme=FOREST;
 
-int AttackerAttackType=ARTILLERY_EFFECT;
-int DefenderAttackType=ARTILLERY_EFFECT;
+int AttackerAttackType=TANK_GUN_EFFECT;
+int DefenderAttackType=TANK_GUN_EFFECT;
 
 int SceneState=SCENE_STATE_IDLE;
 
@@ -21,15 +21,15 @@ int frames=0;
 
 void BattleScene()
 {
-  //animationFrames();
-  drawBattleScene(1,2,2,2);
+  animationFrames();
+  drawBattleScene(1,5,2,5);
 }
 
 void animationFrames()
 {
   if(SceneState==SCENE_STATE_IDLE)
   {
-    if(frames==78)
+    if(frames==80)
     {
       frames=1;
       SceneState=SCENE_STATE_ATTACK;
@@ -41,7 +41,7 @@ void animationFrames()
   }
   else
   {
-    if(frames==16)
+    if(frames==20)
     {
       frames=1;
       SceneState=SCENE_STATE_IDLE;
