@@ -1,6 +1,9 @@
 #define GRASSLAND 1
 #define ROAD 2
 #define FOREST 3
+#define COASTLINE 4
+#define BUILDING 5
+#define BASE 6
 
 #define ARTILLERY_EFFECT 1
 #define TANK_GUN_EFFECT 2
@@ -14,9 +17,9 @@
 int LeftSceneTheme=FOREST;
 int RightSceneTheme=FOREST;
 
-GameTileStruct Attacker={1,1,2,10,0,0};
+GameTileStruct Attacker={12,1,6,10,0,0};
 int AttackerAttackType=TANK_GUN_EFFECT;
-GameTileStruct Defender={1,2,2,10,0,0};
+GameTileStruct Defender={12,2,6,10,0,0};
 int DefenderAttackType=TANK_GUN_EFFECT;
 
 int SceneState=SCENE_STATE_IDLE;
@@ -81,6 +84,23 @@ void SetTerrainType(bool attacker,int terrain)
       result=ROAD; break;
     case 10:
       result=FOREST; break;
+    case 11:
+      result=BASE; break;
+    case 12:
+      result=BUILDING; break;
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 20:
+    case 21:
+    case 22:
+    case 23:
+    case 24:
+      result=COASTLINE; break;
     default:
       result=GRASSLAND; break;
   }
