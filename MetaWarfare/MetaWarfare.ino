@@ -49,7 +49,10 @@ GameTileStruct Board[12][16]
 GameTileStruct CurrentBoard[12][16];
 
 bool menuMode=true;
-bool battleMode=true;
+bool battleMode=false;
+
+GameTileStruct Attacker={12,1,6,10,0,0};
+GameTileStruct Defender={12,2,6,10,0,0};
 
 void setup() {
   gb.begin();

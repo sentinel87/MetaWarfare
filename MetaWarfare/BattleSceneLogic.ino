@@ -8,6 +8,7 @@
 #define ARTILLERY_EFFECT 1
 #define TANK_GUN_EFFECT 2
 #define AUTOMATIC_GUN_EFFECT 3
+#define NONE_EFFECT 4
 
 #define SCENE_STATE_IDLE 1
 #define SCENE_STATE_ATTACK 2
@@ -17,9 +18,9 @@
 int LeftSceneTheme=FOREST;
 int RightSceneTheme=FOREST;
 
-GameTileStruct Attacker={12,1,6,10,0,0};
+//GameTileStruct Attacker={12,1,6,10,0,0};
 int AttackerAttackType=TANK_GUN_EFFECT;
-GameTileStruct Defender={12,2,6,10,0,0};
+//GameTileStruct Defender={12,2,6,10,0,0};
 int DefenderAttackType=TANK_GUN_EFFECT;
 
 int SceneState=SCENE_STATE_IDLE;
@@ -30,10 +31,11 @@ int DefenderUnitHealth=0;
 int ReducedAttackerHealth=0;
 int ReducedDefenderHealth=0;
 
-bool debugRefresh=true;
+bool debugRefresh=false;
 
 void PrepareBattleScene()
 {
+  SceneState=SCENE_STATE_IDLE;
   AttackerUnitHealth=Attacker.unitHp;
   DefenderUnitHealth=Defender.unitHp;
   SetAttackType(true,Attacker.unitId);
@@ -50,13 +52,23 @@ void SetAttackType(bool attacker,int unitId)
   switch(unitId)
   {
     case 1:
-    case 7:
       result=AUTOMATIC_GUN_EFFECT; break;
+    case 2:
+      result=TANK_GUN_EFFECT; break;
+    case 3:
+      result=TANK_GUN_EFFECT; break;
+    case 4:
+      result=TANK_GUN_EFFECT; break;
     case 5:
+      result=ARTILLERY_EFFECT; break;
     case 6:
       result=ARTILLERY_EFFECT; break;
-    default:
+    case 7:
+      result=AUTOMATIC_GUN_EFFECT; break;
+    case 8:
       result=TANK_GUN_EFFECT; break;
+    default:
+      result=NONE_EFFECT; break;
   }
 
   if(attacker==true)
@@ -137,7 +149,7 @@ void animationFrames()
 {
   if(SceneState==SCENE_STATE_IDLE)
   {
-    if(frames==80)
+    if(frames==70)
     {
       frames=1;
       SceneState=SCENE_STATE_ATTACK;
@@ -173,11 +185,12 @@ void animationFrames()
   }
   else
   {
-    if(frames==100)
+    if(frames==70)
     {
       frames=1;
       SceneState=SCENE_STATE_IDLE;
-      PrepareBattleScene();
+      //PrepareBattleScene();
+      battleMode=false;
     }
     else
     {

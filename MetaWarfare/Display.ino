@@ -2985,6 +2985,8 @@ Image EffectExplosion(IMAGE_EFFECT_EXPLOSION);
 Image EffectGunExplosion(IMAGE_EFFECT_GUN_EXPLOSION);
 Image EffectAutomaticGun(IMAGE_EFFECT_AUTOMATIC_GUN);
 
+int selectionFrame=0;
+
 void drawMap()
 {
   for(int i=0;i<8;i++)
@@ -3044,6 +3046,61 @@ void drawMap()
   //gb.display.setCursor(3,3);
   //gb.display.println(selectedUnit.unitName);
   debug();
+}
+
+void drawDropdownMenu(int posX,int posY,int selection)
+{
+  if(selectionFrame==0)
+  {
+    selectionFrame=1;
+  }
+  else
+  {
+    selectionFrame=0;
+  }
+  
+  int fixedX=posX;
+  int fixedY=posY;
+  
+  if(posX + 10 + 30 > 80)
+  {
+    fixedX-=30;
+  }
+  else
+  {
+    fixedX=posX+10;
+  }
+  if(posY + 30 > 64)
+  {
+    fixedY=posY-15;
+  }
+  
+  gb.display.setColor(BEIGE);
+  gb.display.fillRect(fixedX,fixedY,30,25);
+  if(selectionFrame==1 && selection==1)
+    gb.display.setColor(RED);  
+  else
+    gb.display.setColor(BLACK); 
+  gb.display.setCursor(fixedX+1,fixedY+1);
+  gb.display.println("ATTACK");
+  if(selectionFrame==1 && selection==2)
+    gb.display.setColor(RED);  
+  else
+    gb.display.setColor(BLACK);  
+  gb.display.setCursor(fixedX+1,fixedY+7);
+  gb.display.println("MOVE");
+  if(selectionFrame==1 && selection==3)
+    gb.display.setColor(RED);  
+  else
+    gb.display.setColor(BLACK); 
+  gb.display.setCursor(fixedX+1,fixedY+13);
+  gb.display.println("CAPTURE");
+  if(selectionFrame==1 && selection==4)
+    gb.display.setColor(RED);  
+  else
+    gb.display.setColor(BLACK); 
+  gb.display.setCursor(fixedX+1,fixedY+19);
+  gb.display.println("LOAD");
 }
 
 void debug()
@@ -3702,7 +3759,7 @@ void drawDemolitionAnimation(bool attacker, bool infantry)
       gb.display.drawImage(55,20,EffectExplosion,20,20);
       gb.display.drawImage(50,40,EffectExplosion,20,20);
     }
-    else if(DefenderAttackType==TANK_GUN_EFFECT)
+    else if(AttackerAttackType==TANK_GUN_EFFECT)
     {
       gb.display.drawImage(60,25,EffectGunExplosion,9,9);
       gb.display.drawImage(55,45,EffectGunExplosion,9,9);

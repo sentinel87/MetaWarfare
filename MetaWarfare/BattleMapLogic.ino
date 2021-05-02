@@ -18,17 +18,28 @@ Unit selectedUnit=NONE;
 int selectedPosX=0;
 int selectedPosY=0;
 
-bool unitMode=false;
+bool unitMovementMode=false;
 bool targetMode=false;
+
+int menuSelection=1;
+
+bool unitMenuMode=false;
 
 void BattleMap()
 {
   drawMap();
+  if(unitMenuMode==true)
+  {
+    drawDropdownMenu(posX,posY,menuSelection);
+  }
   if(gb.buttons.pressed(BUTTON_UP))
   {
-    if(targetMode==true)
+    if(unitMenuMode==true)
     {
-      checkTargetSelection(1);
+      if(menuSelection==1)
+        menuSelection=2;
+      else
+        menuSelection=1;
     }
     else
     {
@@ -45,9 +56,12 @@ void BattleMap()
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(targetMode==true)
+    if(unitMenuMode==true)
     {
-      checkTargetSelection(2);
+      if(menuSelection==1)
+        menuSelection=2;
+      else
+        menuSelection=1;
     }
     else
     {
@@ -66,9 +80,9 @@ void BattleMap()
   }
   else if(gb.buttons.pressed(BUTTON_LEFT))
   {
-    if(targetMode==true)
+    if(unitMenuMode==true)
     {
-      checkTargetSelection(3);
+      
     }
     else
     {
@@ -87,9 +101,9 @@ void BattleMap()
   }
   else if(gb.buttons.pressed(BUTTON_RIGHT))
   {
-    if(targetMode==true)
+    if(unitMenuMode==true)
     {
-      checkTargetSelection(4);
+      
     }
     else
     {
@@ -115,7 +129,7 @@ void BattleMap()
     if(posX>0)
       column+=(posX/10);
       
-    if(unitMode==true)
+    if(unitMovementMode==true)
     {
       if(selectedPosX!=posX || selectedPosY!=posY)
       {
@@ -125,7 +139,7 @@ void BattleMap()
           CurrentBoard[row][column].player=CurrentBoard[baseTileRow][baseTileColumn].player;
           CurrentBoard[row][column].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
           CurrentBoard[row][column].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
-          CurrentBoard[row][column].active=1;
+          CurrentBoard[row][column].active=0;
           //Remove unit info from starting tile
           CurrentBoard[baseTileRow][baseTileColumn].player=0;
           CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
@@ -133,24 +147,40 @@ void BattleMap()
           CurrentBoard[baseTileRow][baseTileColumn].active=0;
           baseTileRow=row;
           baseTileColumn=column;
-          unitMode=false;
-          targetMode=true;
+          unitMovementMode=false;
           clearMovementGrid();
         }
-      }
-      else
-      {
-        baseTileRow=row;
-        baseTileColumn=column;
-        unitMode=false;
-        targetMode=true;
-        clearMovementGrid();
       }
     }
     else if(targetMode==true)
     {
-      targetMode=false;
-      CurrentBoard[baseTileRow][baseTileColumn].active=0;
+      if(checkTargetSelection(0) == true)
+      {
+        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=currentPlayer)
+        {
+          targetMode=false;
+          CurrentBoard[baseTileRow][baseTileColumn].active=0;
+          //Prepare tiles for battle scene
+          Attacker = CurrentBoard[baseTileRow][baseTileColumn];
+          Defender = CurrentBoard[row][column];
+          PrepareBattleScene();
+          battleMode=true;
+        }
+      }
+    }
+    else if(unitMenuMode==true)
+    {
+      if(menuSelection==2) //MOVE UNIT
+      {
+        drawUnitMovementGrid();
+        unitMovementMode=true;
+        unitMenuMode=false;
+      }
+      else //ATTACK UNIT
+      {
+        unitMenuMode=false;
+        targetMode=true;
+      }
     }
     else
     {
@@ -161,20 +191,30 @@ void BattleMap()
         selectedUnit=getUnit(CurrentBoard[row][column].unitId);
         selectedPosY=posY;
         selectedPosX=posX;
-        unitMode=true;
-        drawUnitMovementGrid();
+        unitMenuMode=true;
+        //unitMode=true;
+        //drawUnitMovementGrid();
       }
     }
     
   }
   else if(gb.buttons.pressed(BUTTON_B))
   {
-    if(unitMode==true)
+    if(unitMovementMode==true)
     {
       selectedUnit=NONE;
-      unitMode=false;
+      unitMovementMode=false;
+      clearMovementGrid();
       selectedPosX=0;
       selectedPosY=0;
+    }
+    else if(unitMenuMode==true)
+    {
+      unitMenuMode=false;
+    }
+    else if(targetMode==true)
+    {
+      targetMode=false;
     }
   }
   else if(gb.buttons.pressed(BUTTON_MENU))
@@ -232,7 +272,7 @@ void endTurn()
   }
 }
 
-void checkTargetSelection(int arrowDirection)
+bool checkTargetSelection(int arrowDirection)
 {
   int tRow = sRowIdx;
   if(posY>0)
@@ -240,46 +280,32 @@ void checkTargetSelection(int arrowDirection)
   int tColumn = sColIdx;
   if(posX>0)
     tColumn+=(posX/10);
-    
-  if(arrowDirection==1)
+
+  if(baseTileRow==tRow)
   {
-    if(tRow==0)
-      return;
-    if(CurrentBoard[tRow-1][tColumn].unitId!=0 && CurrentBoard[tRow-1][tColumn].player!=currentPlayer)
+    if(baseTileColumn+1==tColumn || baseTileColumn-1==tColumn)
     {
-      targetMode=false;
-      CurrentBoard[baseTileRow][baseTileColumn].active=0;
+      return true;
+    }
+    else
+    {
+      return false;
     }
   }
-  else if(arrowDirection==2)
+  else if(baseTileColumn==tColumn)
   {
-    if(tRow==11)
-      return;
-    if(CurrentBoard[tRow+1][tColumn].unitId!=0 && CurrentBoard[tRow+1][tColumn].player!=currentPlayer)
+    if(baseTileRow+1==tRow || baseTileRow-1==tRow)
     {
-      targetMode=false;
-      CurrentBoard[baseTileRow][baseTileColumn].active=0;
+      return true;
+    }
+    else
+    {
+      return false;
     }
   }
-  else if(arrowDirection==3)
+  else
   {
-    if(tColumn==0)
-      return;
-    if(CurrentBoard[tRow][tColumn-1].unitId!=0 && CurrentBoard[tRow][tColumn-1].player!=currentPlayer)
-    {
-      targetMode=false;
-      CurrentBoard[baseTileRow][baseTileColumn].active=0;
-    }
-  }
-  else if(arrowDirection==4)
-  {
-    if(tColumn==15)
-      return;
-    if(CurrentBoard[tRow][tColumn+1].unitId!=0 && CurrentBoard[tRow][tColumn+1].player!=currentPlayer)
-    {
-      targetMode=false;
-      CurrentBoard[baseTileRow][baseTileColumn].active=0;
-    }
+    return false;
   }
 }
 
