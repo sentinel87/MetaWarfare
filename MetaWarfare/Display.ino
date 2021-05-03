@@ -3077,18 +3077,18 @@ void drawDropdownMenu(int posX,int posY,int selection)
   
   gb.display.setColor(BEIGE);
   gb.display.fillRect(fixedX,fixedY,30,25);
-  if(selectionFrame==1 && selection==1)
+  if(selectionFrame==1 && selection==ATTACK_ACTION)
     gb.display.setColor(RED);  
   else
     gb.display.setColor(BLACK); 
   gb.display.setCursor(fixedX+1,fixedY+1);
   gb.display.println("ATTACK");
-  if(selectionFrame==1 && selection==2)
+  if(selectionFrame==1 && selection==STOP_ACTION)
     gb.display.setColor(RED);  
   else
     gb.display.setColor(BLACK);  
   gb.display.setCursor(fixedX+1,fixedY+7);
-  gb.display.println("MOVE");
+  gb.display.println("STOP");
   if(selectionFrame==1 && selection==3)
     gb.display.setColor(RED);  
   else

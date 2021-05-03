@@ -1,4 +1,9 @@
-int currentPlayer=1;
+#define ATTACK_ACTION 1
+#define STOP_ACTION 2
+#define PLAYER_1 1
+#define PLAYER_2 2
+
+int currentPlayer=PLAYER_1;
 
 int posX=0;
 int posY=0;
@@ -36,10 +41,10 @@ void BattleMap()
   {
     if(unitMenuMode==true)
     {
-      if(menuSelection==1)
-        menuSelection=2;
+      if(menuSelection==ATTACK_ACTION)
+        menuSelection=STOP_ACTION;
       else
-        menuSelection=1;
+        menuSelection=ATTACK_ACTION;
     }
     else
     {
@@ -58,10 +63,10 @@ void BattleMap()
   {
     if(unitMenuMode==true)
     {
-      if(menuSelection==1)
-        menuSelection=2;
+      if(menuSelection==ATTACK_ACTION)
+        menuSelection=STOP_ACTION;
       else
-        menuSelection=1;
+        menuSelection=ATTACK_ACTION;
     }
     else
     {
@@ -129,9 +134,17 @@ void BattleMap()
     if(posX>0)
       column+=(posX/10);
       
-    if(unitMovementMode==true)
+    if(unitMovementMode==true) // Move action
     {
-      if(selectedPosX!=posX || selectedPosY!=posY)
+      if(selectedPosX==posX && selectedPosY==posY) // If unit does not want to move
+      {
+        baseTileRow=row;
+        baseTileColumn=column;
+        unitMovementMode=false;
+        clearMovementGrid();
+        unitMenuMode=true;
+      }
+      else // unit moves
       {
         if(CurrentBoard[row][column].terrainTexture!=0 && CurrentBoard[row][column].terrainTexture!=2 && CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].moveGrid==1)
         {
@@ -139,7 +152,7 @@ void BattleMap()
           CurrentBoard[row][column].player=CurrentBoard[baseTileRow][baseTileColumn].player;
           CurrentBoard[row][column].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
           CurrentBoard[row][column].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
-          CurrentBoard[row][column].active=0;
+          CurrentBoard[row][column].active=1;
           //Remove unit info from starting tile
           CurrentBoard[baseTileRow][baseTileColumn].player=0;
           CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
@@ -149,12 +162,13 @@ void BattleMap()
           baseTileColumn=column;
           unitMovementMode=false;
           clearMovementGrid();
+          unitMenuMode=true;
         }
       }
     }
-    else if(targetMode==true)
+    else if(targetMode==true) // Attack action
     {
-      if(checkTargetSelection(0) == true)
+      if(checkTargetSelection() == true)
       {
         if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=currentPlayer)
         {
@@ -168,21 +182,20 @@ void BattleMap()
         }
       }
     }
-    else if(unitMenuMode==true)
+    else if(unitMenuMode==true) // Dropdown menu
     {
-      if(menuSelection==2) //MOVE UNIT
+      if(menuSelection==ATTACK_ACTION)
       {
-        drawUnitMovementGrid();
-        unitMovementMode=true;
+        targetMode=true;
         unitMenuMode=false;
       }
-      else //ATTACK UNIT
+      else //CANCEL
       {
+        CurrentBoard[baseTileRow][baseTileColumn].active=0;
         unitMenuMode=false;
-        targetMode=true;
       }
     }
-    else
+    else // Selection state
     {
       if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].active==1 && CurrentBoard[row][column].player==currentPlayer)
       {
@@ -191,12 +204,10 @@ void BattleMap()
         selectedUnit=getUnit(CurrentBoard[row][column].unitId);
         selectedPosY=posY;
         selectedPosX=posX;
-        unitMenuMode=true;
-        //unitMode=true;
-        //drawUnitMovementGrid();
+        unitMovementMode=true;
+        drawUnitMovementGrid();
       }
-    }
-    
+    }   
   }
   else if(gb.buttons.pressed(BUTTON_B))
   {
@@ -208,13 +219,12 @@ void BattleMap()
       selectedPosX=0;
       selectedPosY=0;
     }
-    else if(unitMenuMode==true)
-    {
-      unitMenuMode=false;
-    }
     else if(targetMode==true)
     {
       targetMode=false;
+      unitMenuMode=true;
+      row=baseTileRow;
+      column=baseTileColumn;
     }
   }
   else if(gb.buttons.pressed(BUTTON_MENU))
@@ -262,17 +272,17 @@ void endTurn()
       }
     }
   }
-  if(currentPlayer==1)
+  if(currentPlayer==PLAYER_1)
   {
-    currentPlayer=2;
+    currentPlayer=PLAYER_2;
   }
   else
   {
-    currentPlayer=1;
+    currentPlayer=PLAYER_1;
   }
 }
 
-bool checkTargetSelection(int arrowDirection)
+bool checkTargetSelection()
 {
   int tRow = sRowIdx;
   if(posY>0)

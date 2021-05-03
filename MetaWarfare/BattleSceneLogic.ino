@@ -149,7 +149,7 @@ void animationFrames()
 {
   if(SceneState==SCENE_STATE_IDLE)
   {
-    if(frames==70)
+    if(frames==50)
     {
       frames=1;
       SceneState=SCENE_STATE_ATTACK;
