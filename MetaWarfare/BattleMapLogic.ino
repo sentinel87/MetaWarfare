@@ -1,5 +1,10 @@
 #define ATTACK_ACTION 1
 #define STOP_ACTION 2
+
+#define RESUME_INFO_ACTION 1
+#define END_TURN_INFO_ACTION 2
+#define SAVE_INFO_ACTION 3
+
 #define PLAYER_1 1
 #define PLAYER_2 2
 
@@ -24,11 +29,12 @@ int selectedPosX=0;
 int selectedPosY=0;
 
 bool unitMovementMode=false;
+bool unitMenuMode=false;
 bool targetMode=false;
+bool infoMode=false;
 
 int menuSelection=1;
-
-bool unitMenuMode=false;
+int infoSelection=1;
 
 void BattleMap()
 {
@@ -36,6 +42,10 @@ void BattleMap()
   if(unitMenuMode==true)
   {
     drawDropdownMenu(posX,posY,menuSelection);
+  }
+  else if(infoMode==true)
+  {
+    drawInfoMenu(infoSelection);
   }
   if(gb.buttons.pressed(BUTTON_UP))
   {
@@ -45,6 +55,13 @@ void BattleMap()
         menuSelection=STOP_ACTION;
       else
         menuSelection=ATTACK_ACTION;
+    }
+    else if(infoMode==true)
+    {
+      if(infoSelection==RESUME_INFO_ACTION)
+        infoSelection=END_TURN_INFO_ACTION;
+      else
+        infoSelection=RESUME_INFO_ACTION;
     }
     else
     {
@@ -68,6 +85,13 @@ void BattleMap()
       else
         menuSelection=ATTACK_ACTION;
     }
+    else if(infoMode==true)
+    {
+      if(infoSelection==RESUME_INFO_ACTION)
+        infoSelection=END_TURN_INFO_ACTION;
+      else
+        infoSelection=RESUME_INFO_ACTION;
+    }
     else
     {
       if(posY!=50)
@@ -87,7 +111,17 @@ void BattleMap()
   {
     if(unitMenuMode==true)
     {
-      
+      if(menuSelection==ATTACK_ACTION)
+        menuSelection=STOP_ACTION;
+      else
+        menuSelection=ATTACK_ACTION;
+    }
+    else if(infoMode==true)
+    {
+      if(infoSelection==RESUME_INFO_ACTION)
+        infoSelection=END_TURN_INFO_ACTION;
+      else
+        infoSelection=RESUME_INFO_ACTION;
     }
     else
     {
@@ -108,7 +142,17 @@ void BattleMap()
   {
     if(unitMenuMode==true)
     {
-      
+      if(menuSelection==ATTACK_ACTION)
+        menuSelection=STOP_ACTION;
+      else
+        menuSelection=ATTACK_ACTION;
+    }
+    else if(infoMode==true)
+    {
+      if(infoSelection==RESUME_INFO_ACTION)
+        infoSelection=END_TURN_INFO_ACTION;
+      else
+        infoSelection=RESUME_INFO_ACTION;
     }
     else
     {
@@ -162,6 +206,7 @@ void BattleMap()
           baseTileColumn=column;
           unitMovementMode=false;
           clearMovementGrid();
+          menuSelection=ATTACK_ACTION;
           unitMenuMode=true;
         }
       }
@@ -194,6 +239,14 @@ void BattleMap()
         CurrentBoard[baseTileRow][baseTileColumn].active=0;
         unitMenuMode=false;
       }
+    }
+    else if(infoMode==true) // Info menu
+    {
+      if(infoSelection==END_TURN_INFO_ACTION)
+      {
+        endTurn(); 
+      }
+      infoMode=false;
     }
     else // Selection state
     {
@@ -229,7 +282,16 @@ void BattleMap()
   }
   else if(gb.buttons.pressed(BUTTON_MENU))
   {
-    endTurn();
+    if(unitMovementMode==false && unitMenuMode==false && targetMode==false)
+    {
+      if(infoMode!=true)
+      {
+        infoSelection=RESUME_INFO_ACTION;
+        infoMode=true;
+      }
+      else
+        infoMode=false; 
+    }
   }
 }
 
