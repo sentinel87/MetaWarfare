@@ -28,13 +28,15 @@ int frames=0;
 
 int AttackerUnitHealth=0;
 int DefenderUnitHealth=0;
-int ReducedAttackerHealth=0;
-int ReducedDefenderHealth=0;
+int ReducedAttackerHealth=10;
+int ReducedDefenderHealth=10;
 
 bool debugRefresh=false;
 
 void PrepareBattleScene()
 {
+  ReducedAttackerHealth=10;
+  ReducedDefenderHealth=10;
   SceneState=SCENE_STATE_IDLE;
   AttackerUnitHealth=Attacker.unitHp;
   DefenderUnitHealth=Defender.unitHp;
@@ -42,6 +44,14 @@ void PrepareBattleScene()
   SetTerrainType(true,Attacker.terrainTexture);
   SetAttackType(false,Defender.unitId);
   SetTerrainType(false,Defender.terrainTexture);
+  if(Attacker.unitId==5 || Attacker.unitId==6)
+  {
+    DefenderAttackType=NONE_EFFECT;
+  }
+  if(Defender.unitId==5 || Defender.unitId==6)
+  {
+    DefenderAttackType=NONE_EFFECT;
+  }
   CalculateBattleResult();
 }
 
@@ -130,8 +140,22 @@ void SetTerrainType(bool attacker,int terrain)
 void CalculateBattleResult()
 {
   //TODO: Calculate damage
-  ReducedAttackerHealth=8;
-  ReducedDefenderHealth=4;
+  if(Attacker.unitId==5 || Attacker.unitId==6) // Artillery attack
+  {
+    ReducedDefenderHealth=4;
+  }
+  else
+  {
+    if(Defender.unitId==5 || Defender.unitId==6) // Artillery defend
+    {
+      ReducedDefenderHealth=7;
+    }
+    else
+    {
+      ReducedAttackerHealth=8;
+      ReducedDefenderHealth=4; 
+    }
+  }
 }
 
 void BattleScene()
@@ -214,4 +238,3 @@ void UpdateHpCounters()
     DefenderUnitHealth--;
   }
 }
-
