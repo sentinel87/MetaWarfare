@@ -3143,7 +3143,7 @@ void drawMap()
       }
     }
   }
-  if(targetMode==true)
+  if(mapMode == TARGET_MODE)
   {
     gb.display.drawImage(posX,posY,CursorSelected);
   }
