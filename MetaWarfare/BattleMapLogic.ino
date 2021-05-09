@@ -33,8 +33,6 @@ int baseTileColumn = 0;
 int returnTileRow = 0;
 int returnTileColumn = 0;
 Unit selectedUnit = NONE;
-int selectedPosX = 0;
-int selectedPosY = 0;
 
 int mapMode = IDLE_MODE;
 bool cancelMode=false;
@@ -169,16 +167,14 @@ void BattleMap()
       
     if(mapMode == MOVEMENT_MODE) // Move action
     {
-      if(selectedPosX==posX && selectedPosY==posY) // If unit does not want to move
+      if(row==baseTileRow && column==baseTileColumn) // If unit does not want to move
       {
-        baseTileRow=row;
-        baseTileColumn=column;
-        clearMovementGrid();
+        clearGrid();
         mapMode = UNIT_MENU_MODE;
       }
       else // unit moves
       {
-        if(CurrentBoard[row][column].terrainTexture!=0 && CurrentBoard[row][column].terrainTexture!=2 && CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].moveGrid==1)
+        if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].moveGrid==1)
         {
           //Fill destination tile with unit info
           CurrentBoard[row][column].player=CurrentBoard[baseTileRow][baseTileColumn].player;
@@ -192,7 +188,7 @@ void BattleMap()
           CurrentBoard[baseTileRow][baseTileColumn].active=0;
           baseTileRow=row;
           baseTileColumn=column;
-          clearMovementGrid();
+          clearGrid();
           menuSelection = ATTACK_ACTION;
           mapMode = UNIT_MENU_MODE; 
         }
@@ -200,9 +196,7 @@ void BattleMap()
     }
     else if(mapMode == TARGET_MODE) // Attack action
     {
-      if(checkTargetSelection() == true)
-      {
-        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=currentPlayer)
+        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=currentPlayer && CurrentBoard[row][column].moveGrid==2)
         {
           mapMode = IDLE_MODE;
           CurrentBoard[baseTileRow][baseTileColumn].active=0;
@@ -212,13 +206,14 @@ void BattleMap()
           PrepareBattleScene();
           battleMode=true;
           cancelMode=false;
+          clearGrid();
         }
-      }
     }
     else if(mapMode == UNIT_MENU_MODE) // Dropdown menu
     {
       if(menuSelection==ATTACK_ACTION)
       {
+        drawUnitAttackGrid();
         mapMode = TARGET_MODE;
       }
       else //CANCEL
@@ -246,8 +241,6 @@ void BattleMap()
         returnTileRow = row;
         returnTileColumn = column;
         selectedUnit=getUnit(CurrentBoard[row][column].unitId);
-        selectedPosY=posY;
-        selectedPosX=posX;
         mapMode = MOVEMENT_MODE;
         cancelMode=true;
         drawUnitMovementGrid();
@@ -262,18 +255,11 @@ void BattleMap()
       {
         selectedUnit=NONE;
         mapMode = IDLE_MODE;
-        clearMovementGrid();
-        selectedPosX=0;
-        selectedPosY=0;
+        clearGrid();
       }
-      else if(mapMode == TARGET_MODE)
+      else if(mapMode == UNIT_MENU_MODE || mapMode== TARGET_MODE)
       {
-        mapMode = UNIT_MENU_MODE;
-        row=baseTileRow;
-        column=baseTileColumn;
-      }
-      else if(mapMode == UNIT_MENU_MODE)
-      {
+        clearGrid();
         CurrentBoard[returnTileRow][returnTileColumn].player=CurrentBoard[baseTileRow][baseTileColumn].player;
         CurrentBoard[returnTileRow][returnTileColumn].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
         CurrentBoard[returnTileRow][returnTileColumn].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
@@ -282,8 +268,6 @@ void BattleMap()
         CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
         CurrentBoard[baseTileRow][baseTileColumn].unitHp=0;
         CurrentBoard[baseTileRow][baseTileColumn].active=0;
-        row = returnTileRow;
-        column = returnTileColumn;
         cancelMode = false;
         mapMode = IDLE_MODE;
       }
@@ -343,10 +327,12 @@ void endTurn()
   if(currentPlayer==PLAYER_1)
   {
     currentPlayer=PLAYER_2;
+    gb.gui.popup("PLAYER 2 TURN",50);
   }
   else
   {
     currentPlayer=PLAYER_1;
+    gb.gui.popup("PLAYER 1 TURN",50);
   }
 }
 
@@ -507,10 +493,98 @@ void drawUnitAttackGrid()
   if(posX>0)
     tColumn+=(posX/10);
   
-  //TODO: Attack grid algorithm
+  if(selectedUnit.unitId!=0)
+  {
+    unsigned int range=selectedUnit.attackRange;
+
+    int minX=tRow-range;
+    if(minX<0)
+        minX=0;
+    int minY = tColumn-range;
+    if(minY<0)
+        minY=0;
+    int maxX=tRow+range;
+    if(maxX>11)
+        maxX=11;
+    int maxY = tColumn+range;
+    if(maxY>15)
+        maxY=15;
+
+    for(int r=1;r<=range;r++)
+    {
+        if(r==range)
+        {
+            if(tRow-r>=minX)
+                CurrentBoard[tRow-r][tColumn].moveGrid=2;
+            if(tRow+r<=maxX)
+                CurrentBoard[tRow+r][tColumn].moveGrid=2;
+            if(tColumn-r>=minY)
+                CurrentBoard[tRow][tColumn-r].moveGrid=2;
+            if(tColumn+r<=maxY)
+                CurrentBoard[tRow][tColumn+r].moveGrid=2;
+        }
+        else if(r==1)
+        {
+            if(selectedUnit.unitId!=6) //SSM
+            {
+                if(tRow-r>=minX)
+                    CurrentBoard[tRow-r][tColumn].moveGrid=2;
+                if(tRow+r<=maxX)
+                    CurrentBoard[tRow+r][tColumn].moveGrid=2;
+                if(tColumn-r>=minY)
+                    CurrentBoard[tRow][tColumn-r].moveGrid=2;
+                if(tColumn+r<=maxY)
+                    CurrentBoard[tRow][tColumn+r].moveGrid=2;
+            }
+            if(tRow-r>=minX && tColumn-r>=minY)
+                CurrentBoard[tRow-r][tColumn-r].moveGrid=2;
+            if(tRow+r<=maxX && tColumn+r<=maxY)
+                CurrentBoard[tRow+r][tColumn+r].moveGrid=2;
+            if(tRow+r<=maxX && tColumn-r>=minY)
+                CurrentBoard[tRow+r][tColumn-r].moveGrid=2;
+            if(tRow-r>=minX && tColumn+r<=maxY)
+                CurrentBoard[tRow-r][tColumn+r].moveGrid=2;
+        }
+        else
+        {
+            if(tRow-r>=minX)
+            {
+                CurrentBoard[tRow-r][tColumn].moveGrid=2;
+                if(tColumn-1>=minY)
+                    CurrentBoard[tRow-r][tColumn-1].moveGrid=2;
+                if(tColumn+1<=maxY)
+                    CurrentBoard[tRow-r][tColumn+1].moveGrid=2;
+            }
+            if(tRow+r<=maxX)
+            {
+                CurrentBoard[tRow+r][tColumn].moveGrid=2;
+                if(tColumn-1>=minY)
+                    CurrentBoard[tRow+r][tColumn-1].moveGrid=2;
+                if(tColumn+1<=maxY)
+                    CurrentBoard[tRow+r][tColumn+1].moveGrid=2;
+            }
+            if(tColumn-r>=minY)
+            {
+                CurrentBoard[tRow][tColumn-r].moveGrid=2;
+                if(tRow-1>=minX)
+                    CurrentBoard[tRow-1][tColumn-r].moveGrid=2;
+                if(tRow+1<=maxX)
+                    CurrentBoard[tRow+1][tColumn-r].moveGrid=2;
+            }
+            if(tColumn+r<=maxY)
+            {
+                CurrentBoard[tRow][tColumn+r].moveGrid=2;
+                if(tRow-1>=minX)
+                    CurrentBoard[tRow-1][tColumn+r].moveGrid=2;
+                if(tRow+1<=maxX)
+                    CurrentBoard[tRow+1][tColumn+r].moveGrid=2;
+            }
+        }
+    }
+  }
 }
 
-void clearMovementGrid()
+void clearGrid()
 {
   for(int i=0;i<16;i++)
   {

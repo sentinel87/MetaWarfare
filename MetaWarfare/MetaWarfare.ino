@@ -7,8 +7,8 @@ struct GameTileStruct
     unsigned int unitId: 5;
     unsigned int unitHp: 4;
     unsigned int active: 1;
-    unsigned int moveGrid: 1;
-    unsigned int reserve: 11;
+    unsigned int moveGrid: 3;
+    unsigned int reserve: 9;
 };
 
 struct Unit

@@ -957,6 +957,26 @@ const uint16_t IMAGE_MOVEMENT_GRID[] = {
      0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 0xffff, 
 };
 
+const uint16_t IMAGE_ATTACK_GRID[] = {
+     10,     // frame width
+     10,     // frame height
+     1,      // number of frames
+     1,      // animation speed
+     0, // transparent color
+     0,      // RGB565 color mode
+     // frame 1/1
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+     0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 0xfbcf, 
+};
+
 const uint16_t IMAGE_MENU_THEME[] = {
      30,     // frame width
      25,     // frame height
@@ -3122,6 +3142,10 @@ void drawMap()
           {
             gb.display.drawImage(i*10,j*10,IMAGE_DEACTIVATE_BOARD);
           }
+          if(tile.moveGrid==2) // draw attack grid
+          {
+            gb.display.drawImage(i*10,j*10,IMAGE_ATTACK_GRID);
+          }
           drawUnit(tile.unitId,tile.unitHp,i*10,j*10);
         }
       }
@@ -3135,6 +3159,10 @@ void drawMap()
         else
         {
           drawTerrain(tile.terrainTexture,i*10,j*10);
+        }
+        if(tile.moveGrid==2) // draw attack grid
+        {
+          gb.display.drawImage(i*10,j*10,IMAGE_ATTACK_GRID);
         }
       }
       if(tile.moveGrid==1)
@@ -3151,6 +3179,7 @@ void drawMap()
   {
     gb.display.drawImage(posX,posY,IMAGE_CURSOR);
   }
+  
   debug();
 }
 
@@ -3257,10 +3286,10 @@ void debug()
 {
   gb.display.setColor(RED);
   gb.display.setCursor(3,3);
-  gb.display.println(gb.getCpuLoad());
+  gb.display.println(row);
   gb.display.setCursor(3,9);
   //gb.display.println(frames);
-  gb.display.println(gb.getFreeRam());
+  gb.display.println(column);
 }
 
 void drawTerrain(int id,int posX,int posY)
