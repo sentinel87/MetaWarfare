@@ -1,5 +1,6 @@
 #define ATTACK_ACTION 1
 #define STOP_ACTION 2
+#define CAPTURE_ACTION 3
 
 #define RESUME_INFO_ACTION 1
 #define END_TURN_INFO_ACTION 2
@@ -53,6 +54,8 @@ void BattleMap()
     if(mapMode == UNIT_MENU_MODE)
     {
       if(menuSelection==ATTACK_ACTION)
+        menuSelection=CAPTURE_ACTION;
+      else if(menuSelection==CAPTURE_ACTION)
         menuSelection=STOP_ACTION;
       else
         menuSelection=ATTACK_ACTION;
@@ -81,6 +84,8 @@ void BattleMap()
     {
       if(menuSelection==ATTACK_ACTION)
         menuSelection=STOP_ACTION;
+      else if(menuSelection==STOP_ACTION)
+        menuSelection=CAPTURE_ACTION;
       else
         menuSelection=ATTACK_ACTION;
     }
@@ -107,6 +112,8 @@ void BattleMap()
     if(mapMode == UNIT_MENU_MODE)
     {
       if(menuSelection==ATTACK_ACTION)
+        menuSelection=CAPTURE_ACTION;
+      else if(menuSelection==CAPTURE_ACTION)
         menuSelection=STOP_ACTION;
       else
         menuSelection=ATTACK_ACTION;
@@ -135,6 +142,8 @@ void BattleMap()
     {
       if(menuSelection==ATTACK_ACTION)
         menuSelection=STOP_ACTION;
+      else if(menuSelection==STOP_ACTION)
+        menuSelection=CAPTURE_ACTION;
       else
         menuSelection=ATTACK_ACTION;
     }
@@ -215,6 +224,19 @@ void BattleMap()
       {
         drawUnitAttackGrid();
         mapMode = TARGET_MODE;
+      }
+      else if(menuSelection==CAPTURE_ACTION)
+      {
+        if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12) 
+          && (CurrentBoard[baseTileRow][baseTileColumn].unitId==7 || CurrentBoard[baseTileRow][baseTileColumn].unitId==8)
+          && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=currentPlayer)
+          {
+            CurrentBoard[baseTileRow][baseTileColumn].playerBuilding=currentPlayer;
+            CurrentBoard[baseTileRow][baseTileColumn].active=0;
+            cancelMode=false;
+            mapMode = IDLE_MODE;
+            gb.gui.popup("BUILDING ACQUIRED!",50);
+          }
       }
       else //CANCEL
       {
@@ -333,43 +355,6 @@ void endTurn()
   {
     currentPlayer=PLAYER_1;
     gb.gui.popup("PLAYER 1 TURN",50);
-  }
-}
-
-bool checkTargetSelection()
-{
-  int tRow = sRowIdx;
-  if(posY>0)
-    tRow+=(posY/10);
-  int tColumn = sColIdx;
-  if(posX>0)
-    tColumn+=(posX/10);
-
-  if(baseTileRow==tRow)
-  {
-    if(baseTileColumn+1==tColumn || baseTileColumn-1==tColumn)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-  else if(baseTileColumn==tColumn)
-  {
-    if(baseTileRow+1==tRow || baseTileRow-1==tRow)
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-  else
-  {
-    return false;
   }
 }
 

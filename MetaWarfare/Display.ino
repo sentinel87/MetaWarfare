@@ -3153,7 +3153,12 @@ void drawMap()
       {
         if(tile.terrainTexture==11 || tile.terrainTexture==12) //Base/Building belonging
         {
-          gb.display.drawImage(i*10,j*10,IMAGE_DEACTIVATE_BOARD);
+          if(tile.playerBuilding==PLAYER_1)
+            gb.display.drawImage(i*10,j*10,IMAGE_PLAYER1_BOARD);
+          else if(tile.playerBuilding==PLAYER_2)
+            gb.display.drawImage(i*10,j*10,IMAGE_PLAYER2_BOARD);
+          else
+            gb.display.drawImage(i*10,j*10,IMAGE_DEACTIVATE_BOARD);
           drawTerrain(tile.terrainTexture,i*10,j*10);
         }
         else
@@ -3225,7 +3230,7 @@ void drawDropdownMenu(int posX,int posY,int selection)
     gb.display.setColor(BLACK);  
   gb.display.setCursor(fixedX+1,fixedY+7);
   gb.display.println("STOP");
-  if(selectionFrame==1 && selection==3)
+  if(selectionFrame==1 && selection==CAPTURE_ACTION)
     gb.display.setColor(RED);  
   else
     gb.display.setColor(BLACK); 
