@@ -214,7 +214,7 @@ void animationFrames()
       frames=1;
       SceneState=SCENE_STATE_IDLE;
       //PrepareBattleScene();
-      battleMode=false;
+      SceneMode=MAP_MODE;
     }
     else
     {

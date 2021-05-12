@@ -3952,3 +3952,58 @@ void drawDemolitionAnimation(bool attacker, bool infantry)
     }
   }
 }
+
+//Base scene
+
+void drawBaseScreen()
+{
+  gb.display.drawImage(0,0,IMAGE_INFO_THEME);
+  gb.display.drawImage(40,0,IMAGE_INFO_THEME);
+  gb.display.setColor(ORANGE);
+  gb.display.setFontSize(1);
+  
+  gb.display.setCursor(14,4);
+  gb.display.println("100");
+  gb.display.setCursor(14,14);
+  gb.display.println("200");
+  gb.display.setCursor(14,24);
+  gb.display.println("300");
+  gb.display.setCursor(14,34);
+  gb.display.println("500");
+
+  gb.display.setCursor(54,4);
+  gb.display.println("450");
+  gb.display.setCursor(54,14);
+  gb.display.println("800");
+  gb.display.setCursor(54,24);
+  gb.display.println("750");
+  gb.display.setCursor(54,34);
+  gb.display.println("900");
+  
+  drawUnit(7, 10, 2, 2);
+  drawUnit(8, 10, 2, 12);
+  drawUnit(1, 10, 2, 22);
+  drawUnit(2, 10, 2, 32);
+  
+  drawUnit(5, 10, 42, 2);
+  drawUnit(3, 10, 42, 12);
+  drawUnit(6, 10, 42, 22);
+  drawUnit(4, 10, 42, 32);
+
+  gb.display.setCursor(3,46);
+  gb.display.setColor(BLACK);
+  gb.display.println("UPGRADE");
+  gb.display.setCursor(3,53);
+  gb.display.println("EXIT"); 
+  gb.display.setColor(ORANGE);
+  gb.display.setCursor(42,44);
+  gb.display.println("Gd 10000");
+  gb.display.setColor(BLACK);
+  gb.display.setCursor(42,50);
+  gb.display.println("Lvl 1");
+  gb.display.setCursor(42,56);
+  gb.display.println("Next");
+  gb.display.setColor(ORANGE);
+  gb.display.setCursor(62,56);
+  gb.display.println("1300");
+}

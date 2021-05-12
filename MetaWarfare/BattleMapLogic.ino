@@ -213,7 +213,7 @@ void BattleMap()
           Attacker = CurrentBoard[baseTileRow][baseTileColumn];
           Defender = CurrentBoard[row][column];
           PrepareBattleScene();
-          battleMode=true;
+          SceneMode=BATTLE_MODE;
           cancelMode=false;
           clearGrid();
         }

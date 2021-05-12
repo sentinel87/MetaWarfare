@@ -1,5 +1,10 @@
 #include <Gamebuino-Meta.h>
 
+#define MENU_MODE 1
+#define MAP_MODE 2
+#define BATTLE_MODE 3
+#define BASE_MODE 4
+
 struct GameTileStruct
 {
     unsigned int terrainTexture: 7;
@@ -51,7 +56,8 @@ GameTileStruct Board[12][16]
 GameTileStruct CurrentBoard[12][16];
 
 bool menuMode=true;
-bool battleMode=false;
+
+int SceneMode=BASE_MODE;
 
 GameTileStruct Attacker={12,1,6,10,0,0};
 GameTileStruct Defender={12,2,6,10,0,0};
@@ -65,7 +71,7 @@ void loop() {
   while(!gb.update());
   gb.display.clear();
 
-  if(battleMode==false)
+  if(SceneMode==MAP_MODE)
   {
     if(menuMode==true)
     {
@@ -75,8 +81,12 @@ void loop() {
     
     BattleMap();
   }
-  else
+  else if(SceneMode==BATTLE_MODE)
   {
     BattleScene();
+  }
+  else //Base mode
+  {
+    BaseScene();
   }
 }
