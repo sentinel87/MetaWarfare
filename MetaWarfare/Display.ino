@@ -3970,6 +3970,8 @@ void drawBaseScreen()
   gb.display.println("300");
   gb.display.setCursor(14,34);
   gb.display.println("500");
+  gb.display.setCursor(14,44);
+  gb.display.println("1300");
 
   gb.display.setCursor(54,4);
   gb.display.println("450");
@@ -3990,20 +3992,12 @@ void drawBaseScreen()
   drawUnit(6, 10, 42, 22);
   drawUnit(4, 10, 42, 32);
 
-  gb.display.setCursor(3,46);
   gb.display.setColor(BLACK);
-  gb.display.println("UPGRADE");
-  gb.display.setCursor(3,53);
-  gb.display.println("EXIT"); 
+  gb.display.drawLine(41,43,78,43);
   gb.display.setColor(ORANGE);
-  gb.display.setCursor(42,44);
+  gb.display.setCursor(43,47);
   gb.display.println("Gd 10000");
   gb.display.setColor(BLACK);
-  gb.display.setCursor(42,50);
+  gb.display.setCursor(43,54);
   gb.display.println("Lvl 1");
-  gb.display.setCursor(42,56);
-  gb.display.println("Next");
-  gb.display.setColor(ORANGE);
-  gb.display.setCursor(62,56);
-  gb.display.println("1300");
 }
