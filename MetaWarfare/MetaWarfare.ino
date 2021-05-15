@@ -14,7 +14,10 @@ struct GameTileStruct
     unsigned int active: 1;
     unsigned int moveGrid: 3;
     unsigned int playerBuilding: 3;
-    unsigned int reserve: 6;
+    unsigned int capitalTile: 1;
+    unsigned int keyUnit: 1;
+    unsigned int keyTile: 1;
+    unsigned int reserve: 3;
 };
 
 struct Unit
@@ -25,6 +28,13 @@ struct Unit
   unsigned int canCrossMountains: 1;
   unsigned int attackRange: 3;
   unsigned int reserve: 19;
+};
+
+struct Player
+{
+  unsigned int playerId;
+  unsigned int baseLevel;
+  int funds; 
 };
 
 const Unit NONE = {0,0,0,0,0};
@@ -59,8 +69,13 @@ bool menuMode=true;
 
 int SceneMode=BASE_MODE;
 
+Player Player_1={1,1,10000};
+Player Player_2={2,1,100};
+
 GameTileStruct Attacker={12,1,6,10,0,0};
 GameTileStruct Defender={12,2,6,10,0,0};
+
+Player CurrentPlayer = Player_1;
 
 void setup() {
   gb.begin();
