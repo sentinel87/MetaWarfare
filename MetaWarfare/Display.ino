@@ -1086,6 +1086,35 @@ const uint16_t IMAGE_INFO_THEME[] = {
      0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 0xdeb7, 
 };
 
+const uint16_t IMAGE_POINTER[] = {
+     12,     // frame width
+     9,     // frame height
+     2,      // number of frames
+     3,      // animation speed
+     0xe81f, // transparent color
+     0,      // RGB565 color mode
+     // frame 1/2
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xf800, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 
+     0xe81f, 0xe81f, 0xfac0, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xfac0, 
+     0xe81f, 0xfac0, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xfac0, 
+     0xe81f, 0xe81f, 0xfac0, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xfac0, 
+     0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xf800, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     // frame 2/2
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xfac0, 0xf800, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xe81f, 
+     0xe81f, 0xfac0, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xfac0, 0xe81f, 
+     0xfac0, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xfac0, 0xe81f, 
+     0xe81f, 0xfac0, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xf800, 0xfac0, 0xe81f, 
+     0xe81f, 0xe81f, 0xfac0, 0xf800, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xfac0, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+};
+
 Image UInfantry(IMAGE_UNIT_INFANTRY);
 Image UMechInfantry(IMAGE_UNIT_MECH_INFANTRY);
 Image UHalfTruck(IMAGE_UNIT_HALF_TRACK);
@@ -1097,6 +1126,7 @@ Image UMobileSSM(IMAGE_UNIT_MOBILE_SSM);
 
 Image CursorSelected(IMAGE_CURSOR_SELECTED);
 Image MovementGrid(IMAGE_MOVEMENT_GRID);
+Image Pointer(IMAGE_POINTER);
 
 //Battle Scene
 
@@ -3955,77 +3985,25 @@ void drawDemolitionAnimation(bool attacker, bool infantry)
 
 //Base scene
 
-void drawBaseScreen()
+void drawBaseScreen(int posX, int posY)
 {
-  if(selectionFrame==0)
-  {
-    selectionFrame=1;
-  }
-  else
-  {
-    selectionFrame=0;
-  }
   gb.display.drawImage(0,0,IMAGE_INFO_THEME);
   gb.display.drawImage(40,0,IMAGE_INFO_THEME);
-  if(selectedAction==INFANTRY_SELECTION)
-  {
-    drawUnitField(2,2,7,100,true);
-  }
-  else
-    drawUnitField(2,2,7,100,false);
-  if(selectedAction==MECH_INFANTRY_SELECTION)
-  {
-    drawUnitField(2,12,8,200,true);
-  }
-  else
-    drawUnitField(2,12,8,200,false);
-  if(selectedAction==HALF_TRUCK_SELECTION)
-  {
-    drawUnitField(2,22,1,300,true);
-  }
-  else
-    drawUnitField(2,22,1,300,false);
-  if(selectedAction==MEDIUM_TANK_SELECTION)
-  {
-    drawUnitField(2,32,2,500,true);
-  }
-  else
-    drawUnitField(2,32,2,500,false);
-  if(selectedAction==MOBILE_ARTILLERY_SELECTION)
-  {
-    drawUnitField(42,2,5,450,true);
-  }
-  else
-  {
-    drawUnitField(42,2,5,450,false);
-  }
-  if(selectedAction==HEAVY_TANK_SELECTION)
-  {
-    drawUnitField(42,12,3,800,true);
-  }
-  else
-    drawUnitField(42,12,3,800,false);
-  if(selectedAction==MOBILE_SSM_SELECTION)
-  {
-    drawUnitField(42,22,6,750,true);
-  }
-  else
-    drawUnitField(42,22,6,750,false);
-  if(selectedAction==TANK_DESTROYER_SELECTION)
-  {
-    drawUnitField(42,32,4,900,true);
-  }
-  else
-    drawUnitField(42,32,4,900,false);
-  
+  drawUnitField(2,2,7,100);
+  drawUnitField(2,12,8,200);
+  drawUnitField(2,22,1,300);
+  drawUnitField(2,32,2,500);
+  drawUnitField(42,2,5,450);
+  drawUnitField(42,12,3,800);
+  drawUnitField(42,22,6,750);
+  drawUnitField(42,32,4,900);
+  int baseCost = 50 + (CurrentPlayer.baseLevel * 100);
   gb.display.setColor(ORANGE); 
   gb.display.setCursor(14,44);
-  gb.display.println("950");
-  gb.display.setColor(BLACK);
-  gb.display.drawLine(41,43,78,43);
-  gb.display.setCursor(27,44);
-  gb.display.println("UPG");
+  gb.display.println(baseCost);
   
+  gb.display.setColor(BLACK);
+  gb.display.drawLine(41,43,78,43);  
   gb.display.setColor(ORANGE);
   gb.display.setCursor(43,47);
   gb.display.println("Gd");
@@ -4036,19 +4014,14 @@ void drawBaseScreen()
   gb.display.println("Lvl");
   gb.display.setCursor(57,54);
   gb.display.println(CurrentPlayer.baseLevel);
+
+  gb.display.drawImage(posY,posX,Pointer);
 }
 
-void drawUnitField(int posX,int posY,int unitId,int price,bool selected)
+void drawUnitField(int posX,int posY,int unitId,int price)
 {
   drawUnit(unitId, 10, posX, posY);
   gb.display.setColor(ORANGE);
   gb.display.setCursor(posX+12,posY+2);
   gb.display.println(price);
-  if(selectionFrame==1 && selected==true)
-    gb.display.setColor(RED);  
-  else
-    gb.display.setColor(BLACK);
-  gb.display.setCursor(posX+25,posY+2);
-  gb.display.println("BUY");
 }
-

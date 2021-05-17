@@ -14,7 +14,7 @@ int selectedAction = INFANTRY_SELECTION;
 
 void BaseScene()
 {
-  drawBaseScreen();
+  drawBaseScreen(2+rowIdx*10,27+colIdx*40);
   if(gb.buttons.pressed(BUTTON_UP))
   {
     if(rowIdx>0)
@@ -61,6 +61,58 @@ void BaseScene()
       setSelectedAction();
     }
   }
+  else if(gb.buttons.pressed(BUTTON_A))
+  {
+    int price = getUnitPrice();
+    if(CurrentPlayer.funds>=price)
+    {
+      if(selectedAction==BASE_UPGRADE_SELECTION)
+      {
+        if(CurrentPlayer.baseLevel<8)
+        {
+          CurrentPlayer.funds-=price;
+          CurrentPlayer.baseLevel++;
+          gb.gui.popup("Base upgraded!",50);
+        }
+      }
+      else
+      {
+        CurrentPlayer.funds-=price;
+      }
+    }
+  }
+  else if(gb.buttons.pressed(BUTTON_B))
+  {
+    
+  }
+}
+
+int getUnitPrice()
+{
+  int result=0;
+  switch(selectedAction)
+  {
+    case INFANTRY_SELECTION:
+      result = 100; break;
+    case MECH_INFANTRY_SELECTION:
+      result = 200; break;
+    case HALF_TRUCK_SELECTION:
+      result = 300; break;
+    case MEDIUM_TANK_SELECTION:
+      result = 500; break;
+    case MOBILE_ARTILLERY_SELECTION:
+      result = 450; break;
+    case HEAVY_TANK_SELECTION:
+      result = 800; break;
+    case MOBILE_SSM_SELECTION:
+      result = 750; break;
+    case TANK_DESTROYER_SELECTION:
+      result = 900; break;
+    case BASE_UPGRADE_SELECTION:
+      result = 50 + (CurrentPlayer.baseLevel * 100); break;
+  }
+
+  return result;
 }
 
 void setSelectedAction()
@@ -104,4 +156,3 @@ void setSelectedAction()
       selectedAction = TANK_DESTROYER_SELECTION;
   }
 }
-
