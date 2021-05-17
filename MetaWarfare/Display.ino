@@ -3957,47 +3957,98 @@ void drawDemolitionAnimation(bool attacker, bool infantry)
 
 void drawBaseScreen()
 {
+  if(selectionFrame==0)
+  {
+    selectionFrame=1;
+  }
+  else
+  {
+    selectionFrame=0;
+  }
   gb.display.drawImage(0,0,IMAGE_INFO_THEME);
   gb.display.drawImage(40,0,IMAGE_INFO_THEME);
-  gb.display.setColor(ORANGE);
-  gb.display.setFontSize(1);
+  if(selectedAction==INFANTRY_SELECTION)
+  {
+    drawUnitField(2,2,7,100,true);
+  }
+  else
+    drawUnitField(2,2,7,100,false);
+  if(selectedAction==MECH_INFANTRY_SELECTION)
+  {
+    drawUnitField(2,12,8,200,true);
+  }
+  else
+    drawUnitField(2,12,8,200,false);
+  if(selectedAction==HALF_TRUCK_SELECTION)
+  {
+    drawUnitField(2,22,1,300,true);
+  }
+  else
+    drawUnitField(2,22,1,300,false);
+  if(selectedAction==MEDIUM_TANK_SELECTION)
+  {
+    drawUnitField(2,32,2,500,true);
+  }
+  else
+    drawUnitField(2,32,2,500,false);
+  if(selectedAction==MOBILE_ARTILLERY_SELECTION)
+  {
+    drawUnitField(42,2,5,450,true);
+  }
+  else
+  {
+    drawUnitField(42,2,5,450,false);
+  }
+  if(selectedAction==HEAVY_TANK_SELECTION)
+  {
+    drawUnitField(42,12,3,800,true);
+  }
+  else
+    drawUnitField(42,12,3,800,false);
+  if(selectedAction==MOBILE_SSM_SELECTION)
+  {
+    drawUnitField(42,22,6,750,true);
+  }
+  else
+    drawUnitField(42,22,6,750,false);
+  if(selectedAction==TANK_DESTROYER_SELECTION)
+  {
+    drawUnitField(42,32,4,900,true);
+  }
+  else
+    drawUnitField(42,32,4,900,false);
   
-  gb.display.setCursor(14,4);
-  gb.display.println("100");
-  gb.display.setCursor(14,14);
-  gb.display.println("200");
-  gb.display.setCursor(14,24);
-  gb.display.println("300");
-  gb.display.setCursor(14,34);
-  gb.display.println("500");
+  gb.display.setColor(ORANGE); 
   gb.display.setCursor(14,44);
-  gb.display.println("1300");
-
-  gb.display.setCursor(54,4);
-  gb.display.println("450");
-  gb.display.setCursor(54,14);
-  gb.display.println("800");
-  gb.display.setCursor(54,24);
-  gb.display.println("750");
-  gb.display.setCursor(54,34);
-  gb.display.println("900");
-  
-  drawUnit(7, 10, 2, 2);
-  drawUnit(8, 10, 2, 12);
-  drawUnit(1, 10, 2, 22);
-  drawUnit(2, 10, 2, 32);
-  
-  drawUnit(5, 10, 42, 2);
-  drawUnit(3, 10, 42, 12);
-  drawUnit(6, 10, 42, 22);
-  drawUnit(4, 10, 42, 32);
-
+  gb.display.println("950");
   gb.display.setColor(BLACK);
   gb.display.drawLine(41,43,78,43);
+  gb.display.setCursor(27,44);
+  gb.display.println("UPG");
+  
   gb.display.setColor(ORANGE);
   gb.display.setCursor(43,47);
-  gb.display.println("Gd 10000");
+  gb.display.println("Gd");
+  gb.display.setCursor(57,47);
+  gb.display.println(CurrentPlayer.funds);
   gb.display.setColor(BLACK);
   gb.display.setCursor(43,54);
-  gb.display.println("Lvl 1");
+  gb.display.println("Lvl");
+  gb.display.setCursor(57,54);
+  gb.display.println(CurrentPlayer.baseLevel);
 }
+
+void drawUnitField(int posX,int posY,int unitId,int price,bool selected)
+{
+  drawUnit(unitId, 10, posX, posY);
+  gb.display.setColor(ORANGE);
+  gb.display.setCursor(posX+12,posY+2);
+  gb.display.println(price);
+  if(selectionFrame==1 && selected==true)
+    gb.display.setColor(RED);  
+  else
+    gb.display.setColor(BLACK);
+  gb.display.setCursor(posX+25,posY+2);
+  gb.display.println("BUY");
+}
+
