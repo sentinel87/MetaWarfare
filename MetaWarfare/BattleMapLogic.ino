@@ -15,7 +15,7 @@
 #define PLAYER_1 1
 #define PLAYER_2 2
 
-int currentPlayer = PLAYER_1;
+//int currentPlayer = PLAYER_1;
 
 int posX = 0;
 int posY = 0;
@@ -205,7 +205,7 @@ void BattleMap()
     }
     else if(mapMode == TARGET_MODE) // Attack action
     {
-        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=currentPlayer && CurrentBoard[row][column].moveGrid==2)
+        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=CurrentPlayer.id && CurrentBoard[row][column].moveGrid==2)
         {
           mapMode = IDLE_MODE;
           CurrentBoard[baseTileRow][baseTileColumn].active=0;
@@ -229,9 +229,9 @@ void BattleMap()
       {
         if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12) 
           && (CurrentBoard[baseTileRow][baseTileColumn].unitId==7 || CurrentBoard[baseTileRow][baseTileColumn].unitId==8)
-          && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=currentPlayer)
+          && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=CurrentPlayer.id)
           {
-            CurrentBoard[baseTileRow][baseTileColumn].playerBuilding=currentPlayer;
+            CurrentBoard[baseTileRow][baseTileColumn].playerBuilding=CurrentPlayer.id;
             CurrentBoard[baseTileRow][baseTileColumn].active=0;
             cancelMode=false;
             mapMode = IDLE_MODE;
@@ -255,7 +255,7 @@ void BattleMap()
     }
     else // Selection state
     {
-      if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].active==1 && CurrentBoard[row][column].player==currentPlayer)
+      if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].active==1 && CurrentBoard[row][column].player==CurrentPlayer.id) // Select unit
       {
         baseTileRow=row;
         baseTileColumn=column;
@@ -266,6 +266,14 @@ void BattleMap()
         mapMode = MOVEMENT_MODE;
         cancelMode=true;
         drawUnitMovementGrid();
+      }
+      else if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].playerBuilding==CurrentPlayer.id && CurrentBoard[row][column].terrainTexture==11) // Select base
+      {
+        baseTileRow = row;
+        baseTileColumn = column;
+        BaseLocation.row = row;
+        BaseLocation.column = column;
+        SceneMode = BASE_MODE;
       }
     }   
   }
@@ -340,20 +348,20 @@ void endTurn()
   {
     for(int j=0;j<12;j++)
     {
-      if(CurrentBoard[j][i].unitId!=0 && CurrentBoard[j][i].player==currentPlayer)
+      if(CurrentBoard[j][i].unitId!=0 && CurrentBoard[j][i].player==CurrentPlayer.id)
       {
         CurrentBoard[j][i].active=1;
       }
     }
   }
-  if(currentPlayer==PLAYER_1)
+  if(CurrentPlayer.id==PLAYER_1)
   {
-    currentPlayer=PLAYER_2;
+    CurrentPlayer=Player_2;
     gb.gui.popup("PLAYER 2 TURN",50);
   }
   else
   {
-    currentPlayer=PLAYER_1;
+    CurrentPlayer=Player_1;
     gb.gui.popup("PLAYER 1 TURN",50);
   }
 }

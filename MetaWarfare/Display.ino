@@ -1115,6 +1115,26 @@ const uint16_t IMAGE_POINTER[] = {
      0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xfac0, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
 };
 
+const uint16_t IMAGE_QUESTION_MARK[] = {
+     10,     // frame width
+     10,     // frame height
+     1,      // number of frames
+     1,      // animation speed
+     0xe81f, // transparent color
+     0,      // RGB565 color mode
+     // frame 1/1
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xf800, 0xf800, 0xf800, 0xf800, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xf800, 0xe81f, 0xe81f, 0xe81f, 0xf800, 0xf800, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xf800, 0xf800, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xf800, 0xf800, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xf800, 0xf800, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xf800, 0xf800, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xf800, 0xf800, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+     0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 0xe81f, 
+};
+
 Image UInfantry(IMAGE_UNIT_INFANTRY);
 Image UMechInfantry(IMAGE_UNIT_MECH_INFANTRY);
 Image UHalfTruck(IMAGE_UNIT_HALF_TRACK);
@@ -3285,7 +3305,7 @@ void drawInfoMenu(int selection)
     selectionFrame=0;
   }
   gb.display.drawImage(0,0,IMAGE_INFO_THEME);
-  if(currentPlayer==PLAYER_1)
+  if(CurrentPlayer.id==1)
   {
     gb.display.setColor(RED);
     gb.display.setCursor(2,2);
@@ -3299,7 +3319,9 @@ void drawInfoMenu(int selection)
   }
   gb.display.setColor(ORANGE);
   gb.display.setCursor(2,9);
-  gb.display.println("Gd: 10000");
+  gb.display.println("Gd:");
+  gb.display.setCursor(15,9);
+  gb.display.println(CurrentPlayer.funds);
   drawTerrain(3,2,16);
   drawUnit(1, 10, 2, 27);
 
@@ -3990,13 +4012,34 @@ void drawBaseScreen(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_INFO_THEME);
   gb.display.drawImage(40,0,IMAGE_INFO_THEME);
   drawUnitField(2,2,7,100);
-  drawUnitField(2,12,8,200);
-  drawUnitField(2,22,1,300);
-  drawUnitField(2,32,2,500);
-  drawUnitField(42,2,5,450);
-  drawUnitField(42,12,3,800);
-  drawUnitField(42,22,6,750);
-  drawUnitField(42,32,4,900);
+  if(CurrentPlayer.baseLevel>=2)
+    drawUnitField(2,12,8,200);
+  else
+    gb.display.drawImage(2,12,IMAGE_QUESTION_MARK);
+  if(CurrentPlayer.baseLevel>=3)
+    drawUnitField(2,22,1,300);
+  else
+    gb.display.drawImage(2,22,IMAGE_QUESTION_MARK);
+  if(CurrentPlayer.baseLevel>=4)
+    drawUnitField(2,32,2,500);
+  else
+    gb.display.drawImage(2,32,IMAGE_QUESTION_MARK);
+  if(CurrentPlayer.baseLevel>=5)
+    drawUnitField(42,2,5,450);
+  else
+    gb.display.drawImage(42,2,IMAGE_QUESTION_MARK);
+  if(CurrentPlayer.baseLevel>=6)
+    drawUnitField(42,12,3,800);
+  else
+    gb.display.drawImage(42,12,IMAGE_QUESTION_MARK);
+  if(CurrentPlayer.baseLevel>=7)
+    drawUnitField(42,22,6,750);
+  else
+    gb.display.drawImage(42,22,IMAGE_QUESTION_MARK);
+  if(CurrentPlayer.baseLevel>=8)
+    drawUnitField(42,32,4,900);
+  else
+    gb.display.drawImage(42,32,IMAGE_QUESTION_MARK);
   int baseCost = 50 + (CurrentPlayer.baseLevel * 100);
   gb.display.setColor(ORANGE); 
   gb.display.setCursor(14,44);

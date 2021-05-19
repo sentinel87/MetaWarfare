@@ -77,14 +77,51 @@ void BaseScene()
       }
       else
       {
-        CurrentPlayer.funds-=price;
+        if(selectedAction<=CurrentPlayer.baseLevel) // Unlocked or not
+        {
+          CurrentPlayer.funds-=price;
+          CurrentBoard[BaseLocation.row][BaseLocation.column].unitId=getUnitId();
+          CurrentBoard[BaseLocation.row][BaseLocation.column].player=CurrentPlayer.id;
+          CurrentBoard[BaseLocation.row][BaseLocation.column].unitHp=10;
+          BaseLocation.row = 0;
+          BaseLocation.column = 0;
+          SceneMode=MAP_MODE;
+        }
       }
     }
   }
   else if(gb.buttons.pressed(BUTTON_B))
   {
-    
+    SceneMode=MAP_MODE;
+    BaseLocation.row = 0;
+    BaseLocation.column = 0;
   }
+}
+
+int getUnitId()
+{
+  int result=0;
+  switch(selectedAction)
+  {
+    case INFANTRY_SELECTION:
+      result = 7; break;
+    case MECH_INFANTRY_SELECTION:
+      result = 8; break;
+    case HALF_TRUCK_SELECTION:
+      result = 1; break;
+    case MEDIUM_TANK_SELECTION:
+      result = 2; break;
+    case MOBILE_ARTILLERY_SELECTION:
+      result = 5; break;
+    case HEAVY_TANK_SELECTION:
+      result = 3; break;
+    case MOBILE_SSM_SELECTION:
+      result = 6; break;
+    case TANK_DESTROYER_SELECTION:
+      result = 4; break;
+  }
+
+  return result;
 }
 
 int getUnitPrice()
