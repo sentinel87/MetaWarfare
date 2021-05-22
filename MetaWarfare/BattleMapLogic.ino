@@ -227,7 +227,7 @@ void BattleMap()
       }
       else if(menuSelection==CAPTURE_ACTION)
       {
-        if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12) 
+        if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) 
           && (CurrentBoard[baseTileRow][baseTileColumn].unitId==7 || CurrentBoard[baseTileRow][baseTileColumn].unitId==8)
           && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=CurrentPlayer.id)
           {
