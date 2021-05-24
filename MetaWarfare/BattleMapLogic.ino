@@ -15,8 +15,6 @@
 #define PLAYER_1 1
 #define PLAYER_2 2
 
-//int currentPlayer = PLAYER_1;
-
 int posX = 0;
 int posY = 0;
 
@@ -27,7 +25,7 @@ int row = 0;
 int column = 0;
 
 int expandedWidth = 8;
-int expandedHeight = 6;
+int expandedHeight = 10;
 
 int baseTileRow = 0;
 int baseTileColumn = 0;
@@ -294,10 +292,13 @@ void BattleMap()
         CurrentBoard[returnTileRow][returnTileColumn].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
         CurrentBoard[returnTileRow][returnTileColumn].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
         CurrentBoard[returnTileRow][returnTileColumn].active=1;
-        CurrentBoard[baseTileRow][baseTileColumn].player=0;
-        CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
-        CurrentBoard[baseTileRow][baseTileColumn].unitHp=0;
-        CurrentBoard[baseTileRow][baseTileColumn].active=0;
+        if(returnTileRow!=baseTileRow && returnTileColumn!=baseTileColumn)
+        {
+          CurrentBoard[baseTileRow][baseTileColumn].player=0;
+          CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
+          CurrentBoard[baseTileRow][baseTileColumn].unitHp=0;
+          CurrentBoard[baseTileRow][baseTileColumn].active=0;
+        }
         cancelMode = false;
         mapMode = IDLE_MODE;
       }
@@ -346,7 +347,7 @@ void endTurn()
 {
   for(int i=0;i<16;i++)
   {
-    for(int j=0;j<12;j++)
+    for(int j=0;j<16;j++)
     {
       if(CurrentBoard[j][i].unitId!=0 && CurrentBoard[j][i].player==CurrentPlayer.id)
       {
@@ -357,12 +358,38 @@ void endTurn()
   if(CurrentPlayer.id==PLAYER_1)
   {
     CurrentPlayer=Player_2;
+    countFunds();
     gb.gui.popup("PLAYER 2 TURN",50);
   }
   else
   {
     CurrentPlayer=Player_1;
+    countFunds();
     gb.gui.popup("PLAYER 1 TURN",50);
+  }
+}
+
+void countFunds()
+{
+  for(int i=0;i<16;i++)
+  {
+    for(int j=0;j<16;j++)
+    {
+      if((CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12 || CurrentBoard[i][j].terrainTexture==25) && CurrentBoard[i][j].playerBuilding==CurrentPlayer.id)
+      {
+        if(CurrentPlayer.funds<10000)
+        {
+          if(CurrentPlayer.id==1)
+          {
+            Player_1.funds += 100;
+          }
+          else
+          {
+            Player_2.funds += 100;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -581,7 +608,7 @@ void clearGrid()
 {
   for(int i=0;i<16;i++)
   {
-    for(int j=0;j<12;j++)
+    for(int j=0;j<16;j++)
     {
       CurrentBoard[j][i].moveGrid=0;
     }

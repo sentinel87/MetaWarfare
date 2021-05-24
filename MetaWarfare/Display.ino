@@ -3287,7 +3287,6 @@ void drawDropdownMenu(int posX,int posY,int selection)
   
   gb.display.setColor(BEIGE);
   gb.display.drawImage(fixedX,fixedY,IMAGE_MENU_THEME);
-  //gb.display.fillRect(fixedX,fixedY,30,25);
   if(selectionFrame==1 && selection==ATTACK_ACTION)
     gb.display.setColor(RED);  
   else
