@@ -3186,6 +3186,38 @@ Image EffectAutomaticGun(IMAGE_EFFECT_AUTOMATIC_GUN);
 
 int selectionFrame=0;
 
+void drawMainMenu(int posX, int posY)
+{
+  gb.display.setColor(WHITE);
+  gb.display.setCursor(10,32);
+  gb.display.println("CAMPAIGN");
+  gb.display.setCursor(10,42);
+  gb.display.println("2 PLAYERS");
+  gb.display.setCursor(10,52);
+  gb.display.println("HIGH SCORES");
+  
+  gb.display.drawImage(posX,posY,Pointer);
+}
+
+void drawScenarioMenu(int posX, int posY)
+{
+  gb.display.setColor(WHITE);
+  gb.display.setCursor(2,3);
+  gb.display.println("1. Lake valley");
+  gb.display.setCursor(2,13);
+  gb.display.println("2. Scenario");
+  gb.display.setCursor(2,23);
+  gb.display.println("3. Scenario");
+  gb.display.setCursor(2,33);
+  gb.display.println("4. Scenario");
+  gb.display.setCursor(2,43);
+  gb.display.println("5. Scenario");
+  gb.display.setCursor(2,53);
+  gb.display.println("BACK");
+  
+  gb.display.drawImage(posX,posY,Pointer);
+}
+
 void drawMap()
 {
   for(int i=0;i<8;i++)
