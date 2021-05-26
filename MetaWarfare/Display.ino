@@ -3375,19 +3375,30 @@ void drawInfoMenu(int selection)
   gb.display.println(CurrentPlayer.funds);
   drawTerrain(3,2,16);
   drawUnit(1, 10, 2, 27);
-
   if(selectionFrame==1 && infoSelection==RESUME_INFO_ACTION)
     gb.display.setColor(RED);  
   else
     gb.display.setColor(BLACK); 
-  gb.display.setCursor(2,50);
+  gb.display.setCursor(2,36);
   gb.display.println("RESUME");
   if(selectionFrame==1 && infoSelection==END_TURN_INFO_ACTION)
     gb.display.setColor(RED);  
   else
+    gb.display.setColor(BLACK); 
+  gb.display.setCursor(2,43);
+  gb.display.println("END TURN");
+  if(selectionFrame==1 && infoSelection==SAVE_INFO_ACTION)
+    gb.display.setColor(RED);  
+  else
+    gb.display.setColor(BLACK); 
+  gb.display.setCursor(2,50);
+  gb.display.println("SAVE");
+  if(selectionFrame==1 && infoSelection==QUIT_INFO_ACTION)
+    gb.display.setColor(RED);  
+  else
     gb.display.setColor(BLACK);  
   gb.display.setCursor(2,57);
-  gb.display.println("END TURN");
+  gb.display.println("QUIT");
 }
 
 void debug()

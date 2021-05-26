@@ -86,7 +86,12 @@ void MultiplayerScenarioScene()
   }
   else if(gb.buttons.pressed(BUTTON_A))
   {
-    if(smSelectedScene==6)
+    if(smSelectedScene==1)
+    {
+      memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
+      SceneMode=MAP_MODE;
+    }
+    else if(smSelectedScene==6)
     {
       SceneMode=MENU_MODE;
       smSelectedScene=1;

@@ -5,6 +5,7 @@
 #define RESUME_INFO_ACTION 1
 #define END_TURN_INFO_ACTION 2
 #define SAVE_INFO_ACTION 3
+#define QUIT_INFO_ACTION 4
 
 #define IDLE_MODE 0
 #define MOVEMENT_MODE 1
@@ -35,6 +36,7 @@ Unit selectedUnit = NONE;
 
 int mapMode = IDLE_MODE;
 bool cancelMode=false;
+bool noMove=false;
 
 int menuSelection=1;
 int infoSelection=1;
@@ -61,6 +63,10 @@ void BattleMap()
     else if(mapMode == INFO_MODE)
     {
       if(infoSelection==RESUME_INFO_ACTION)
+        infoSelection=QUIT_INFO_ACTION;
+      else if(infoSelection==QUIT_INFO_ACTION)
+        infoSelection=SAVE_INFO_ACTION; 
+      else if(infoSelection==SAVE_INFO_ACTION)
         infoSelection=END_TURN_INFO_ACTION;
       else
         infoSelection=RESUME_INFO_ACTION;
@@ -91,6 +97,10 @@ void BattleMap()
     {
       if(infoSelection==RESUME_INFO_ACTION)
         infoSelection=END_TURN_INFO_ACTION;
+      else if(infoSelection==END_TURN_INFO_ACTION)
+        infoSelection=SAVE_INFO_ACTION;
+      else if(infoSelection==SAVE_INFO_ACTION)
+        infoSelection=QUIT_INFO_ACTION;
       else
         infoSelection=RESUME_INFO_ACTION;
     }
@@ -119,6 +129,10 @@ void BattleMap()
     else if(mapMode == INFO_MODE)
     {
       if(infoSelection==RESUME_INFO_ACTION)
+        infoSelection=QUIT_INFO_ACTION;
+      else if(infoSelection==QUIT_INFO_ACTION)
+        infoSelection=SAVE_INFO_ACTION; 
+      else if(infoSelection==SAVE_INFO_ACTION)
         infoSelection=END_TURN_INFO_ACTION;
       else
         infoSelection=RESUME_INFO_ACTION;
@@ -149,6 +163,10 @@ void BattleMap()
     {
       if(infoSelection==RESUME_INFO_ACTION)
         infoSelection=END_TURN_INFO_ACTION;
+      else if(infoSelection==END_TURN_INFO_ACTION)
+        infoSelection=SAVE_INFO_ACTION;
+      else if(infoSelection==SAVE_INFO_ACTION)
+        infoSelection=QUIT_INFO_ACTION;
       else
         infoSelection=RESUME_INFO_ACTION;
     }
@@ -176,6 +194,7 @@ void BattleMap()
     {
       if(row==baseTileRow && column==baseTileColumn) // If unit does not want to move
       {
+        noMove=true;
         clearGrid();
         mapMode = UNIT_MENU_MODE;
       }
@@ -196,8 +215,17 @@ void BattleMap()
           baseTileRow=row;
           baseTileColumn=column;
           clearGrid();
-          menuSelection = ATTACK_ACTION;
-          mapMode = UNIT_MENU_MODE; 
+          if(CurrentBoard[row][column].unitId==5 || CurrentBoard[row][column].unitId==6) // Artillery can only move without attack
+          {
+            CurrentBoard[row][column].active=0;
+            mapMode = IDLE_MODE;
+            cancelMode=false;
+          }
+          else
+          {
+            menuSelection = ATTACK_ACTION;
+            mapMode = UNIT_MENU_MODE; 
+          } 
         }
       }
     }
@@ -249,10 +277,20 @@ void BattleMap()
       {
         endTurn(); 
       }
+      else if(infoSelection==SAVE_INFO_ACTION)
+      {
+        //TODO: SAVE
+        gb.gui.popup("SAVE LOGIC",50);
+      }
+      else if(infoSelection==QUIT_INFO_ACTION) //quit to main menu
+      {
+        SceneMode=MENU_MODE;
+      }
       mapMode = IDLE_MODE;
     }
     else // Selection state
     {
+      noMove=false;
       if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].active==1 && CurrentBoard[row][column].player==CurrentPlayer.id) // Select unit
       {
         baseTileRow=row;
@@ -292,7 +330,7 @@ void BattleMap()
         CurrentBoard[returnTileRow][returnTileColumn].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
         CurrentBoard[returnTileRow][returnTileColumn].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
         CurrentBoard[returnTileRow][returnTileColumn].active=1;
-        if(returnTileRow!=baseTileRow && returnTileColumn!=baseTileColumn)
+        if(noMove==false)
         {
           CurrentBoard[baseTileRow][baseTileColumn].player=0;
           CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
@@ -302,6 +340,7 @@ void BattleMap()
         cancelMode = false;
         mapMode = IDLE_MODE;
       }
+      noMove=false;
     }
   }
   else if(gb.buttons.pressed(BUTTON_MENU))
