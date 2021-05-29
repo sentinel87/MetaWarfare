@@ -455,8 +455,8 @@ void drawUnitMovementGrid()
     if(minY<0)
         minY=0;
     int maxX=tRow+movement;
-    if(maxX>11)
-        maxX=11;
+    if(maxX>15)
+        maxX=15;
     int maxY = tColumn+movement;
     if(maxY>15)
         maxY=15;
@@ -563,8 +563,8 @@ void drawUnitAttackGrid()
     if(minY<0)
         minY=0;
     int maxX=tRow+range;
-    if(maxX>11)
-        maxX=11;
+    if(maxX>15)
+        maxX=15;
     int maxY = tColumn+range;
     if(maxY>15)
         maxY=15;
