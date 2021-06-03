@@ -33,6 +33,19 @@ int ReducedDefenderHealth=10;
 
 bool debugRefresh=false;
 
+double attackArray[9][9]
+{
+  {0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00},
+  {0.00,0.50,0.21,0.11,0.11,0.30,0.30,0.75,0.65},
+  {0.00,0.70,0.50,0.35,0.35,0.60,0.60,0.70,0.60},
+  {0.00,0.80,0.70,0.50,0.50,0.70,0.70,1.00,0.70},
+  {0.00,0.80,0.70,0.50,0.50,0.70,0.70,1.00,0.70},
+  {0.00,0.50,0.40,0.40,0.40,0.50,0.50,0.60,0.60},
+  {0.00,0.60,0.60,0.60,0.60,0.60,0.60,0.70,0.70},
+  {0.00,0.10,0.05,0.02,0.02,0.20,0.20,0.50,0.40},
+  {0.00,0.70,0.50,0.40,0.40,0.60,0.60,0.65,0.50}
+};
+
 void PrepareBattleScene()
 {
   ReducedAttackerHealth=10;
@@ -139,22 +152,44 @@ void SetTerrainType(bool attacker,int terrain)
 
 void CalculateBattleResult()
 {
-  //TODO: Calculate damage
   if(Attacker.unitId==5 || Attacker.unitId==6) // Artillery attack
   {
-    ReducedDefenderHealth=4;
+    double baseAttacker = attackArray[Attacker.unitId][Defender.unitId];
+    double totalAttacker = baseAttacker * Attacker.unitHp;
+    ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker;
   }
   else
   {
     if(Defender.unitId==5 || Defender.unitId==6) // Artillery defend
     {
-      ReducedDefenderHealth=7;
+      double baseAttacker = attackArray[Attacker.unitId][Defender.unitId];
+      double totalAttacker = baseAttacker * Attacker.unitHp;
+      ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker;;
     }
     else
     {
-      ReducedAttackerHealth=8;
-      ReducedDefenderHealth=4; 
+      double baseAttacker = attackArray[Attacker.unitId][Defender.unitId];
+      baseAttacker+=0.10; //Bonus for initiative
+      double baseDefender = attackArray[Defender.unitId][Attacker.unitId];
+      baseDefender-=0.20; //Penalty for ambush
+      if(baseDefender<0)
+      {
+        baseDefender==0;
+      }
+
+      double totalAttacker = baseAttacker * Attacker.unitHp;
+      double totalDefender = baseDefender * Defender.unitHp;
+      ReducedAttackerHealth = Attacker.unitHp-(int)totalDefender;
+      ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker; 
     }
+  }
+  if(ReducedAttackerHealth<0)
+  {
+    ReducedAttackerHealth=0;
+  }
+  if(ReducedDefenderHealth<0)
+  {
+    ReducedDefenderHealth=0;
   }
 }
 
@@ -213,8 +248,8 @@ void animationFrames()
     {
       frames=1;
       SceneState=SCENE_STATE_IDLE;
-      //PrepareBattleScene();
-      SceneMode=MAP_MODE;
+      PrepareBattleScene();
+      //SceneMode=MAP_MODE;
     }
     else
     {
