@@ -77,15 +77,14 @@ GameTileStruct Board1[16][16]
 GameTileStruct CurrentBoard[16][16];
 
 bool menuMode=false;
-bool prepAtt = true;
 
 int SceneMode=BATTLE_MODE;
 
 Player Player_1={1,1,100};
 Player Player_2={2,1,100};
 
-GameTileStruct Attacker={12,1,6,10,0,0};
-GameTileStruct Defender={12,2,6,10,0,0};
+GameTileStruct Attacker={12,1,7,10,0,0};
+GameTileStruct Defender={12,2,7,10,0,0};
 
 TileCoords BaseLocation={0,0};
 
@@ -119,11 +118,6 @@ void loop() {
   }
   else if(SceneMode==BATTLE_MODE)
   {
-    if(prepAtt==true)
-    {
-      PrepareBattleScene();
-      prepAtt=false;
-    }
     BattleScene();
   }
   else //Base mode

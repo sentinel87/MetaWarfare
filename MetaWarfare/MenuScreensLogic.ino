@@ -1,9 +1,10 @@
 #define MENU_CAMPAIGN 1
 #define MENU_MULTIPLAYER 2
-#define MENU_HIGH_SCORE 3
+#define MENU_LOAD 3
+#define MENU_HIGH_SCORE 4
 
 int mmPosX=57;
-int mmPosY=30;
+int mmPosY=35;
 
 int mmSelectedScene=MENU_CAMPAIGN;
 int smSelectedScene=1;
@@ -15,17 +16,22 @@ void MainMenuScene()
   {
     if(mmSelectedScene==MENU_CAMPAIGN)
     {
-      mmPosY=50;
+      mmPosY=56;
       mmSelectedScene=MENU_HIGH_SCORE;
     }
     else if(mmSelectedScene==MENU_HIGH_SCORE)
     {
-      mmPosY=40;
+      mmPosY=49;
+      mmSelectedScene=MENU_LOAD;
+    }
+    else if(mmSelectedScene==MENU_LOAD)
+    {
+      mmPosY=42;
       mmSelectedScene=MENU_MULTIPLAYER;
     }
     else
     {
-      mmPosY=30;
+      mmPosY=35;
       mmSelectedScene=MENU_CAMPAIGN;
     }
   }
@@ -33,17 +39,22 @@ void MainMenuScene()
   {
     if(mmSelectedScene==MENU_CAMPAIGN)
     {
-      mmPosY=40;
+      mmPosY=42;
       mmSelectedScene=MENU_MULTIPLAYER;
     }
     else if(mmSelectedScene==MENU_MULTIPLAYER)
     {
-      mmPosY=50;
+      mmPosY=49;
+      mmSelectedScene=MENU_LOAD;
+    }
+    else if(mmSelectedScene==MENU_LOAD)
+    {
+      mmPosY=56;
       mmSelectedScene=MENU_HIGH_SCORE;
     }
     else
     {
-      mmPosY=30;
+      mmPosY=35;
       mmSelectedScene=MENU_CAMPAIGN;
     }
   }
@@ -54,7 +65,7 @@ void MainMenuScene()
       SceneMode=MULTIPLAYER_SCENARIO_MODE;
       mmSelectedScene=MENU_CAMPAIGN;
       mmPosX=57;
-      mmPosY=30;
+      mmPosY=35;
     }
   }
 }
