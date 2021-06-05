@@ -237,7 +237,11 @@ void BattleMap()
           CurrentBoard[baseTileRow][baseTileColumn].active=0;
           //Prepare tiles for battle scene
           Attacker = CurrentBoard[baseTileRow][baseTileColumn];
+          AttackerLocation.row = baseTileRow;
+          AttackerLocation.column = baseTileColumn;
           Defender = CurrentBoard[row][column];
+          DefenderLocation.row = row;
+          DefenderLocation.column = column;
           PrepareBattleScene();
           SceneMode=BATTLE_MODE;
           cancelMode=false;
@@ -260,6 +264,13 @@ void BattleMap()
             CurrentBoard[baseTileRow][baseTileColumn].playerBuilding=CurrentPlayer.id;
             CurrentBoard[baseTileRow][baseTileColumn].active=0;
             cancelMode=false;
+            if(CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) //if player capture capital
+            {
+              mapMode = IDLE_MODE;
+              SceneMode = MENU_MODE;
+              //TODO: Victory screen
+              return;
+            }
             mapMode = IDLE_MODE;
             gb.gui.popup("BUILDING ACQUIRED!",50);
           }
@@ -397,19 +408,28 @@ void endTurn()
   if(CurrentPlayer.id==PLAYER_1)
   {
     CurrentPlayer=Player_2;
-    countFunds();
+    countPlayerStats();
     gb.gui.popup("PLAYER 2 TURN",50);
   }
   else
   {
     CurrentPlayer=Player_1;
-    countFunds();
+    countPlayerStats();
     gb.gui.popup("PLAYER 1 TURN",50);
   }
 }
 
-void countFunds()
+void countPlayerStats()
 {
+  if(CurrentPlayer.id==1)
+  {
+    Player_1.totalUnits=0;
+  }
+  else
+  {
+    Player_2.totalUnits=0;
+  }
+  
   for(int i=0;i<16;i++)
   {
     for(int j=0;j<16;j++)
@@ -420,13 +440,23 @@ void countFunds()
         {
           if(CurrentPlayer.id==1)
           {
+            CurrentPlayer.funds += 100;
             Player_1.funds += 100;
           }
           else
           {
+            CurrentPlayer.funds += 100;
             Player_2.funds += 100;
           }
         }
+      }
+      if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player==1)
+      {
+          Player_1.totalUnits += 1;
+      }
+      else if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player==2)
+      {
+          Player_2.totalUnits += 1;
       }
     }
   }

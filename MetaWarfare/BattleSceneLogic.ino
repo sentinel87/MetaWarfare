@@ -33,7 +33,7 @@ int DefenderTerrainBonus=0;
 int ReducedAttackerHealth=10;
 int ReducedDefenderHealth=10;
 
-bool debugRefresh=true;
+bool debugRefresh=false;
 
 double attackArray[9][9]
 {
@@ -81,6 +81,7 @@ void PrepareBattleScene()
     DefenderAttackType=NONE_EFFECT;
   }
   CalculateBattleResult();
+  updateMapTiles();
 }
 
 void SetAttackType(bool attacker,int unitId)
@@ -221,6 +222,7 @@ void CalculateBattleResult()
     baseAttacker -= (DefenderTerrainBonus*0.02);
     double totalAttacker = baseAttacker * Attacker.unitHp;
     ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker;
+    ReducedAttackerHealth=Attacker.unitHp;
   }
   else
   {
@@ -229,7 +231,8 @@ void CalculateBattleResult()
       double baseAttacker = attackArray[Attacker.unitId][Defender.unitId];
       baseAttacker -= (DefenderTerrainBonus*0.02);
       double totalAttacker = baseAttacker * Attacker.unitHp;
-      ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker;;
+      ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker;
+      ReducedAttackerHealth = Attacker.unitHp;
     }
     else
     {
@@ -256,6 +259,28 @@ void CalculateBattleResult()
   {
     ReducedDefenderHealth=0;
   }
+}
+
+void updateMapTiles()
+{
+  CurrentBoard[AttackerLocation.row][AttackerLocation.column].unitHp = ReducedAttackerHealth;
+  if(ReducedAttackerHealth==0)
+  {
+    CurrentBoard[AttackerLocation.row][AttackerLocation.column].unitId = 0;
+    CurrentBoard[AttackerLocation.row][AttackerLocation.column].player = 0;
+    CurrentBoard[AttackerLocation.row][AttackerLocation.column].active = 0;
+  }
+  CurrentBoard[DefenderLocation.row][DefenderLocation.column].unitHp = ReducedDefenderHealth;
+  if(ReducedDefenderHealth==0)
+  {
+    CurrentBoard[DefenderLocation.row][DefenderLocation.column].unitId = 0;
+    CurrentBoard[DefenderLocation.row][DefenderLocation.column].player = 0;
+    CurrentBoard[DefenderLocation.row][DefenderLocation.column].active = 0;
+  }
+  AttackerLocation.column = 0;
+  AttackerLocation.row = 0;
+  DefenderLocation.column = 0;
+  DefenderLocation.row = 0;
 }
 
 void animationFrames()
@@ -302,8 +327,8 @@ void animationFrames()
     {
       frames=1;
       SceneState=SCENE_STATE_IDLE;
-      PrepareBattleScene();
-      //SceneMode=MAP_MODE;
+      //PrepareBattleScene();
+      SceneMode=MAP_MODE;
     }
     else
     {

@@ -100,7 +100,10 @@ void MultiplayerScenarioScene()
     if(smSelectedScene==1)
     {
       memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
-      SceneMode=MAP_MODE;
+      CurrentPlayer=Player_1;
+      countPlayerStats();
+      SceneMode = MAP_MODE;
+      mapMode = IDLE_MODE;
     }
     else if(smSelectedScene==6)
     {

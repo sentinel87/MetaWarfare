@@ -72,6 +72,16 @@ void BaseScene()
         {
           CurrentPlayer.funds-=price;
           CurrentPlayer.baseLevel++;
+          if(CurrentPlayer.id==1)
+          {
+            Player_1.funds-=price;
+            Player_1.baseLevel++;
+          }
+          else
+          {
+            Player_2.funds-=price;
+            Player_2.baseLevel++;
+          }
           gb.gui.popup("Base upgraded!",50);
         }
       }

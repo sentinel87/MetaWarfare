@@ -2751,7 +2751,7 @@ void drawUnit(int idx, int hp, int posX, int posY)
   if(hp<10)
   {
     gb.display.setColor(WHITE);
-    gb.display.setCursor(posX*10,posY*10);
+    gb.display.setCursor(posX,posY);
     gb.display.println(hp);  
   }
 }

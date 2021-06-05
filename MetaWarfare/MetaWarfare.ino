@@ -36,6 +36,7 @@ struct Player
   unsigned int id;
   unsigned int baseLevel;
   int funds; 
+  unsigned int totalUnits;
 };
 
 struct TileCoords
@@ -78,15 +79,17 @@ GameTileStruct CurrentBoard[16][16];
 
 bool menuMode=false;
 
-int SceneMode=BATTLE_MODE;
+int SceneMode=MENU_MODE;
 
-Player Player_1={1,1,100};
-Player Player_2={2,1,100};
+Player Player_1={1,1,0,0};
+Player Player_2={2,1,0,0};
 
 GameTileStruct Attacker={12,1,7,10,0,0};
 GameTileStruct Defender={12,2,7,10,0,0};
 
 TileCoords BaseLocation={0,0};
+TileCoords AttackerLocation={0,0};
+TileCoords DefenderLocation={0,0};
 
 Player CurrentPlayer = Player_1;
 
