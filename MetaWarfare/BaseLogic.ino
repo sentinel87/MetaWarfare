@@ -64,34 +64,34 @@ void BaseScene()
   else if(gb.buttons.pressed(BUTTON_A))
   {
     int price = getUnitPrice();
-    if(CurrentPlayer.funds>=price)
+    if(CurrentPlayer->funds>=price)
     {
       if(selectedAction==BASE_UPGRADE_SELECTION)
       {
-        if(CurrentPlayer.baseLevel<8)
+        if(CurrentPlayer->baseLevel<8)
         {
-          CurrentPlayer.funds-=price;
-          CurrentPlayer.baseLevel++;
-          if(CurrentPlayer.id==1)
-          {
-            Player_1.funds-=price;
-            Player_1.baseLevel++;
-          }
-          else
-          {
-            Player_2.funds-=price;
-            Player_2.baseLevel++;
-          }
+          CurrentPlayer->funds-=price;
+          CurrentPlayer->baseLevel++;
+          //if(CurrentPlayer.id==1)
+          //{
+          //  Player_1.funds-=price;
+          //  Player_1.baseLevel++;
+          //}
+          //else
+          //{
+          //  Player_2.funds-=price;
+          //  Player_2.baseLevel++;
+          //}
           gb.gui.popup("Base upgraded!",50);
         }
       }
       else
       {
-        if(selectedAction<=CurrentPlayer.baseLevel) // Unlocked or not
+        if(selectedAction<=CurrentPlayer->baseLevel) // Unlocked or not
         {
-          CurrentPlayer.funds-=price;
+          CurrentPlayer->funds-=price;
           CurrentBoard[BaseLocation.row][BaseLocation.column].unitId=getUnitId();
-          CurrentBoard[BaseLocation.row][BaseLocation.column].player=CurrentPlayer.id;
+          CurrentBoard[BaseLocation.row][BaseLocation.column].player=CurrentPlayer->id;
           CurrentBoard[BaseLocation.row][BaseLocation.column].unitHp=10;
           BaseLocation.row = 0;
           BaseLocation.column = 0;
@@ -156,7 +156,7 @@ int getUnitPrice()
     case TANK_DESTROYER_SELECTION:
       result = 900; break;
     case BASE_UPGRADE_SELECTION:
-      result = 50 + (CurrentPlayer.baseLevel * 100); break;
+      result = 50 + (CurrentPlayer->baseLevel * 100); break;
   }
 
   return result;

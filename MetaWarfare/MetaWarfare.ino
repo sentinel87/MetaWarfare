@@ -91,7 +91,7 @@ TileCoords BaseLocation={0,0};
 TileCoords AttackerLocation={0,0};
 TileCoords DefenderLocation={0,0};
 
-Player CurrentPlayer = Player_1;
+Player* CurrentPlayer = &Player_1;
 
 void setup() {
   gb.begin();

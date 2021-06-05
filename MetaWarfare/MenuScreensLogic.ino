@@ -100,7 +100,13 @@ void MultiplayerScenarioScene()
     if(smSelectedScene==1)
     {
       memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
-      CurrentPlayer=Player_1;
+      Player_1.baseLevel = 1;
+      Player_1.funds = 0;
+      Player_1.totalUnits = 0;
+      Player_2.baseLevel = 1;
+      Player_2.funds = 0;
+      Player_2.totalUnits = 0;
+      CurrentPlayer=&Player_1;
       countPlayerStats();
       SceneMode = MAP_MODE;
       mapMode = IDLE_MODE;

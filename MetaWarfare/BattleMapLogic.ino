@@ -231,7 +231,7 @@ void BattleMap()
     }
     else if(mapMode == TARGET_MODE) // Attack action
     {
-        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=CurrentPlayer.id && CurrentBoard[row][column].moveGrid==2)
+        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=CurrentPlayer->id && CurrentBoard[row][column].moveGrid==2)
         {
           mapMode = IDLE_MODE;
           CurrentBoard[baseTileRow][baseTileColumn].active=0;
@@ -259,9 +259,9 @@ void BattleMap()
       {
         if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) 
           && (CurrentBoard[baseTileRow][baseTileColumn].unitId==7 || CurrentBoard[baseTileRow][baseTileColumn].unitId==8)
-          && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=CurrentPlayer.id)
+          && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=CurrentPlayer->id)
           {
-            CurrentBoard[baseTileRow][baseTileColumn].playerBuilding=CurrentPlayer.id;
+            CurrentBoard[baseTileRow][baseTileColumn].playerBuilding=CurrentPlayer->id;
             CurrentBoard[baseTileRow][baseTileColumn].active=0;
             cancelMode=false;
             if(CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) //if player capture capital
@@ -302,7 +302,7 @@ void BattleMap()
     else // Selection state
     {
       noMove=false;
-      if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].active==1 && CurrentBoard[row][column].player==CurrentPlayer.id) // Select unit
+      if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].active==1 && CurrentBoard[row][column].player==CurrentPlayer->id) // Select unit
       {
         baseTileRow=row;
         baseTileColumn=column;
@@ -314,7 +314,7 @@ void BattleMap()
         cancelMode=true;
         drawUnitMovementGrid();
       }
-      else if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].playerBuilding==CurrentPlayer.id && CurrentBoard[row][column].terrainTexture==11) // Select base
+      else if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].playerBuilding==CurrentPlayer->id && CurrentBoard[row][column].terrainTexture==11) // Select base
       {
         baseTileRow = row;
         baseTileColumn = column;
@@ -399,21 +399,21 @@ void endTurn()
   {
     for(int j=0;j<16;j++)
     {
-      if(CurrentBoard[j][i].unitId!=0 && CurrentBoard[j][i].player==CurrentPlayer.id)
+      if(CurrentBoard[j][i].unitId!=0 && CurrentBoard[j][i].player==CurrentPlayer->id)
       {
         CurrentBoard[j][i].active=1;
       }
     }
   }
-  if(CurrentPlayer.id==PLAYER_1)
+  if(CurrentPlayer->id==PLAYER_1)
   {
-    CurrentPlayer=Player_2;
+    CurrentPlayer=&Player_2;
     countPlayerStats();
     gb.gui.popup("PLAYER 2 TURN",50);
   }
   else
   {
-    CurrentPlayer=Player_1;
+    CurrentPlayer=&Player_1;
     countPlayerStats();
     gb.gui.popup("PLAYER 1 TURN",50);
   }
@@ -421,42 +421,21 @@ void endTurn()
 
 void countPlayerStats()
 {
-  if(CurrentPlayer.id==1)
-  {
-    Player_1.totalUnits=0;
-  }
-  else
-  {
-    Player_2.totalUnits=0;
-  }
-  
+  CurrentPlayer->totalUnits=0;
   for(int i=0;i<16;i++)
   {
     for(int j=0;j<16;j++)
     {
-      if((CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12 || CurrentBoard[i][j].terrainTexture==25) && CurrentBoard[i][j].playerBuilding==CurrentPlayer.id)
+      if((CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12 || CurrentBoard[i][j].terrainTexture==25) && CurrentBoard[i][j].playerBuilding==CurrentPlayer->id)
       {
-        if(CurrentPlayer.funds<10000)
+        if(CurrentPlayer->funds<10000)
         {
-          if(CurrentPlayer.id==1)
-          {
-            CurrentPlayer.funds += 100;
-            Player_1.funds += 100;
-          }
-          else
-          {
-            CurrentPlayer.funds += 100;
-            Player_2.funds += 100;
-          }
+          CurrentPlayer->funds += 100;
         }
       }
-      if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player==1)
+      if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player==CurrentPlayer->id)
       {
-          Player_1.totalUnits += 1;
-      }
-      else if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player==2)
-      {
-          Player_2.totalUnits += 1;
+        CurrentPlayer->totalUnits += 1;
       }
     }
   }

@@ -222,7 +222,7 @@ void CalculateBattleResult()
     baseAttacker -= (DefenderTerrainBonus*0.02);
     double totalAttacker = baseAttacker * Attacker.unitHp;
     ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker;
-    ReducedAttackerHealth=Attacker.unitHp;
+    ReducedAttackerHealth = Attacker.unitHp;
   }
   else
   {
@@ -242,7 +242,7 @@ void CalculateBattleResult()
       baseDefender -= (0.20-(AttackerTerrainBonus*0.02)); //Penalty for ambush
       if(baseDefender<0)
       {
-        baseDefender==0;
+        baseDefender=0;
       }
 
       double totalAttacker = baseAttacker * Attacker.unitHp;
