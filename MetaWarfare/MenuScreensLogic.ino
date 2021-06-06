@@ -99,6 +99,9 @@ void MultiplayerScenarioScene()
   {
     if(smSelectedScene==1)
     {
+      BaseLocation = &None;
+      Attacker = &None;
+      Defender = &None;
       memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
       Player_1.baseLevel = 1;
       Player_1.funds = 0;

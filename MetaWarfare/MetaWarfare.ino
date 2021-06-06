@@ -6,6 +6,7 @@
 #define BASE_MODE 4
 #define MULTIPLAYER_SCENARIO_MODE 5
 #define CAMPAIGN_SCENARIO_MODE 6
+#define OUTCOME_MODE 7
 
 struct GameTileStruct
 {
@@ -37,12 +38,6 @@ struct Player
   unsigned int baseLevel;
   int funds; 
   unsigned int totalUnits;
-};
-
-struct TileCoords
-{
-  unsigned int row: 17;
-  unsigned int column: 17;
 };
 
 const Unit NONE = {0,0,0,0,0};
@@ -84,12 +79,12 @@ int SceneMode=MENU_MODE;
 Player Player_1={1,1,0,0};
 Player Player_2={2,1,0,0};
 
-GameTileStruct Attacker={12,1,7,10,0,0};
-GameTileStruct Defender={12,2,7,10,0,0};
-
-TileCoords BaseLocation={0,0};
-TileCoords AttackerLocation={0,0};
-TileCoords DefenderLocation={0,0};
+GameTileStruct None={0,0,0,0,0,0,0,0,0};
+GameTileStruct Att={12,1,7,10,0,0,0,0,0};
+GameTileStruct Def={12,2,7,10,0,0,0,0,0};
+GameTileStruct* Attacker = &Att;
+GameTileStruct* Defender = &Def;
+GameTileStruct* BaseLocation = &None;
 
 Player* CurrentPlayer = &Player_1;
 
@@ -122,6 +117,10 @@ void loop() {
   else if(SceneMode==BATTLE_MODE)
   {
     BattleScene();
+  }
+  else if(SceneMode==OUTCOME_MODE)
+  {
+    
   }
   else //Base mode
   {

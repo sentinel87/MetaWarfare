@@ -56,7 +56,7 @@ void BattleScene()
     debugRefresh=false;
   }
   animationFrames();
-  drawBattleScene(Attacker.player,Attacker.unitId,Defender.player,Defender.unitId);
+  drawBattleScene(Attacker->player,Attacker->unitId,Defender->player,Defender->unitId);
 }
 
 void PrepareBattleScene()
@@ -64,24 +64,23 @@ void PrepareBattleScene()
   ReducedAttackerHealth=10;
   ReducedDefenderHealth=10;
   SceneState=SCENE_STATE_IDLE;
-  AttackerUnitHealth=Attacker.unitHp;
-  AttackerTerrainBonus=GetTerrainDefBonus(Attacker.terrainTexture);
-  DefenderUnitHealth=Defender.unitHp;
-  DefenderTerrainBonus=GetTerrainDefBonus(Defender.terrainTexture);
-  SetAttackType(true,Attacker.unitId);
-  SetTerrainType(true,Attacker.terrainTexture);
-  SetAttackType(false,Defender.unitId);
-  SetTerrainType(false,Defender.terrainTexture);
-  if(Attacker.unitId==5 || Attacker.unitId==6)
+  AttackerUnitHealth=Attacker->unitHp;
+  AttackerTerrainBonus=GetTerrainDefBonus(Attacker->terrainTexture);
+  DefenderUnitHealth=Defender->unitHp;
+  DefenderTerrainBonus=GetTerrainDefBonus(Defender->terrainTexture);
+  SetAttackType(true,Attacker->unitId);
+  SetTerrainType(true,Attacker->terrainTexture);
+  SetAttackType(false,Defender->unitId);
+  SetTerrainType(false,Defender->terrainTexture);
+  if(Attacker->unitId==5 || Attacker->unitId==6)
   {
     DefenderAttackType=NONE_EFFECT;
   }
-  if(Defender.unitId==5 || Defender.unitId==6)
+  if(Defender->unitId==5 || Defender->unitId==6)
   {
     DefenderAttackType=NONE_EFFECT;
   }
   CalculateBattleResult();
-  updateMapTiles();
 }
 
 void SetAttackType(bool attacker,int unitId)
@@ -216,39 +215,39 @@ int GetTerrainDefBonus(int id)
 
 void CalculateBattleResult()
 {
-  if(Attacker.unitId==5 || Attacker.unitId==6) // Artillery attack
+  if(Attacker->unitId==5 || Attacker->unitId==6) // Artillery attack
   {
-    double baseAttacker = attackArray[Attacker.unitId][Defender.unitId];
+    double baseAttacker = attackArray[Attacker->unitId][Defender->unitId];
     baseAttacker -= (DefenderTerrainBonus*0.02);
-    double totalAttacker = baseAttacker * Attacker.unitHp;
-    ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker;
-    ReducedAttackerHealth = Attacker.unitHp;
+    double totalAttacker = baseAttacker * Attacker->unitHp;
+    ReducedDefenderHealth = Defender->unitHp-(int)totalAttacker;
+    ReducedAttackerHealth = Attacker->unitHp;
   }
   else
   {
-    if(Defender.unitId==5 || Defender.unitId==6) // Artillery defend
+    if(Defender->unitId==5 || Defender->unitId==6) // Artillery defend
     {
-      double baseAttacker = attackArray[Attacker.unitId][Defender.unitId];
+      double baseAttacker = attackArray[Attacker->unitId][Defender->unitId];
       baseAttacker -= (DefenderTerrainBonus*0.02);
-      double totalAttacker = baseAttacker * Attacker.unitHp;
-      ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker;
-      ReducedAttackerHealth = Attacker.unitHp;
+      double totalAttacker = baseAttacker * Attacker->unitHp;
+      ReducedDefenderHealth = Defender->unitHp-(int)totalAttacker;
+      ReducedAttackerHealth = Attacker->unitHp;
     }
     else
     {
-      double baseAttacker = attackArray[Attacker.unitId][Defender.unitId];
+      double baseAttacker = attackArray[Attacker->unitId][Defender->unitId];
       baseAttacker += (0.10-(DefenderTerrainBonus*0.02)); //Bonus for initiative
-      double baseDefender = attackArray[Defender.unitId][Attacker.unitId];
+      double baseDefender = attackArray[Defender->unitId][Attacker->unitId];
       baseDefender -= (0.20-(AttackerTerrainBonus*0.02)); //Penalty for ambush
       if(baseDefender<0)
       {
         baseDefender=0;
       }
 
-      double totalAttacker = baseAttacker * Attacker.unitHp;
-      double totalDefender = baseDefender * Defender.unitHp;
-      ReducedAttackerHealth = Attacker.unitHp-(int)totalDefender;
-      ReducedDefenderHealth = Defender.unitHp-(int)totalAttacker; 
+      double totalAttacker = baseAttacker * Attacker->unitHp;
+      double totalDefender = baseDefender * Defender->unitHp;
+      ReducedAttackerHealth = Attacker->unitHp-(int)totalDefender;
+      ReducedDefenderHealth = Defender->unitHp-(int)totalAttacker; 
     }
   }
   if(ReducedAttackerHealth<0)
@@ -263,24 +262,20 @@ void CalculateBattleResult()
 
 void updateMapTiles()
 {
-  CurrentBoard[AttackerLocation.row][AttackerLocation.column].unitHp = ReducedAttackerHealth;
+  Attacker->unitHp = ReducedAttackerHealth;
   if(ReducedAttackerHealth==0)
   {
-    CurrentBoard[AttackerLocation.row][AttackerLocation.column].unitId = 0;
-    CurrentBoard[AttackerLocation.row][AttackerLocation.column].player = 0;
-    CurrentBoard[AttackerLocation.row][AttackerLocation.column].active = 0;
+    Attacker->unitId = 0;
+    Attacker->player = 0;
+    Attacker->active = 0;
   }
-  CurrentBoard[DefenderLocation.row][DefenderLocation.column].unitHp = ReducedDefenderHealth;
+  Defender->unitHp = ReducedDefenderHealth;
   if(ReducedDefenderHealth==0)
   {
-    CurrentBoard[DefenderLocation.row][DefenderLocation.column].unitId = 0;
-    CurrentBoard[DefenderLocation.row][DefenderLocation.column].player = 0;
-    CurrentBoard[DefenderLocation.row][DefenderLocation.column].active = 0;
+    Defender->unitId = 0;
+    Defender->player = 0;
+    Defender->active = 0;
   }
-  AttackerLocation.column = 0;
-  AttackerLocation.row = 0;
-  DefenderLocation.column = 0;
-  DefenderLocation.row = 0;
 }
 
 void animationFrames()
@@ -329,6 +324,9 @@ void animationFrames()
       SceneState=SCENE_STATE_IDLE;
       //PrepareBattleScene();
       SceneMode=MAP_MODE;
+      updateMapTiles();
+      Attacker = &None;
+      Defender = &None;
     }
     else
     {

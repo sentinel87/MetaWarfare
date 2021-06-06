@@ -236,12 +236,8 @@ void BattleMap()
           mapMode = IDLE_MODE;
           CurrentBoard[baseTileRow][baseTileColumn].active=0;
           //Prepare tiles for battle scene
-          Attacker = CurrentBoard[baseTileRow][baseTileColumn];
-          AttackerLocation.row = baseTileRow;
-          AttackerLocation.column = baseTileColumn;
-          Defender = CurrentBoard[row][column];
-          DefenderLocation.row = row;
-          DefenderLocation.column = column;
+          Attacker = &CurrentBoard[baseTileRow][baseTileColumn];
+          Defender = &CurrentBoard[row][column];
           PrepareBattleScene();
           SceneMode=BATTLE_MODE;
           cancelMode=false;
@@ -318,8 +314,7 @@ void BattleMap()
       {
         baseTileRow = row;
         baseTileColumn = column;
-        BaseLocation.row = row;
-        BaseLocation.column = column;
+        BaseLocation = &CurrentBoard[row][column];
         SceneMode = BASE_MODE;
       }
     }   

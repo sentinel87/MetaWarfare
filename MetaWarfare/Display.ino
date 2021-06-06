@@ -2993,7 +2993,7 @@ void drawInfantry(bool attacker)
   }
   else
   {
-    if(SceneState==SCENE_STATE_ATTACK && Attacker.unitId!=5 && Attacker.unitId!=6)
+    if(SceneState==SCENE_STATE_ATTACK && Attacker->unitId!=5 && Attacker->unitId!=6)
     {
       if(DefenderUnitHealth>8)
         gb.display.drawImage(45,15,InfantryAttack,-10,15);
@@ -3055,7 +3055,7 @@ void drawMechInfantry(bool attacker)
   }
   else
   {
-    if(SceneState==SCENE_STATE_ATTACK && Attacker.unitId!=5 && Attacker.unitId!=6)
+    if(SceneState==SCENE_STATE_ATTACK && Attacker->unitId!=5 && Attacker->unitId!=6)
     {
       if(DefenderUnitHealth>8)
         gb.display.drawImage(45,20,MechInfantryAttack,-15,12);
@@ -3105,7 +3105,7 @@ void drawMediumTank(bool attacker)
   }
   else
   {
-    if(SceneState==SCENE_STATE_ATTACK && Attacker.unitId!=5 && Attacker.unitId!=6)
+    if(SceneState==SCENE_STATE_ATTACK && Attacker->unitId!=5 && Attacker->unitId!=6)
     {
       if(DefenderUnitHealth>5)
         gb.display.drawImage(54,24,MediumTankAttack,-25,15);
@@ -3143,7 +3143,7 @@ void drawHeavyTank(bool attacker)
   }
   else
   {
-    if(SceneState==SCENE_STATE_ATTACK && Attacker.unitId!=5 && Attacker.unitId!=6)
+    if(SceneState==SCENE_STATE_ATTACK && Attacker->unitId!=5 && Attacker->unitId!=6)
     {
       if(DefenderUnitHealth>5)
         gb.display.drawImage(54,24,HeavyTankAttack,-25,15);
@@ -3181,7 +3181,7 @@ void drawTankDestroyer(bool attacker)
   }
   else
   {
-    if(SceneState==SCENE_STATE_ATTACK && Attacker.unitId!=5 && Attacker.unitId!=6)
+    if(SceneState==SCENE_STATE_ATTACK && Attacker->unitId!=5 && Attacker->unitId!=6)
     {
       if(DefenderUnitHealth>5)
         gb.display.drawImage(54,24,TankDestroyerAttack,-25,15);
@@ -3219,7 +3219,7 @@ void drawHalfTruck(bool attacker)
   }
   else
   {
-    if(SceneState==SCENE_STATE_ATTACK && Attacker.unitId!=5 && Attacker.unitId!=6)
+    if(SceneState==SCENE_STATE_ATTACK && Attacker->unitId!=5 && Attacker->unitId!=6)
     {
       if(DefenderUnitHealth>5)
         gb.display.drawImage(49,24,HalfTruckAttack,-30,15);
@@ -3298,27 +3298,40 @@ void drawDemolitionAnimation(bool attacker, bool infantry)
   {
     if(DefenderAttackType==ARTILLERY_EFFECT)
     {
-      gb.display.drawImage(5,10,EffectExplosion,20,20);
+      if(DefenderUnitHealth > 5)
+      {
+        gb.display.drawImage(5,10,EffectExplosion,20,20);
+      }
       gb.display.drawImage(10,30,EffectExplosion,20,20);
     }
     else if(DefenderAttackType==TANK_GUN_EFFECT)
     {
-      gb.display.drawImage(10,15,EffectGunExplosion,9,9);
+      if(DefenderUnitHealth > 5)
+      {
+        gb.display.drawImage(10,15,EffectGunExplosion,9,9);
+      }
       gb.display.drawImage(15,35,EffectGunExplosion,9,9);
     }
     else if(DefenderAttackType==AUTOMATIC_GUN_EFFECT)
     {
       if(infantry==true)
       {
-        gb.display.drawImage(22,18,EffectAutomaticGun,8,2);
-        gb.display.drawImage(7,21,EffectAutomaticGun,8,2);
-        gb.display.drawImage(18,35,EffectAutomaticGun,8,2);
-        gb.display.drawImage(3,41,EffectAutomaticGun,8,2);
+        if(DefenderUnitHealth > 8)
+          gb.display.drawImage(22,18,EffectAutomaticGun,8,2);
+        if(DefenderUnitHealth > 6)
+          gb.display.drawImage(7,21,EffectAutomaticGun,8,2);
+        if(DefenderUnitHealth > 4)
+          gb.display.drawImage(18,35,EffectAutomaticGun,8,2);
+        if(DefenderUnitHealth > 2)
+          gb.display.drawImage(3,41,EffectAutomaticGun,8,2);
         gb.display.drawImage(22,51,EffectAutomaticGun,8,2);
       }
       else
       {
-        gb.display.drawImage(10,25,EffectAutomaticGun,8,2);
+        if(DefenderUnitHealth > 5)
+        {
+          gb.display.drawImage(10,25,EffectAutomaticGun,8,2);
+        }
         gb.display.drawImage(15,45,EffectAutomaticGun,8,2);
       }
     }
@@ -3327,27 +3340,40 @@ void drawDemolitionAnimation(bool attacker, bool infantry)
   {
     if(AttackerAttackType==ARTILLERY_EFFECT)
     {
-      gb.display.drawImage(55,20,EffectExplosion,20,20);
+      if(AttackerUnitHealth > 5)
+      {
+        gb.display.drawImage(55,20,EffectExplosion,20,20);
+      }
       gb.display.drawImage(50,40,EffectExplosion,20,20);
     }
     else if(AttackerAttackType==TANK_GUN_EFFECT)
     {
-      gb.display.drawImage(60,25,EffectGunExplosion,9,9);
+      if(AttackerUnitHealth > 5)
+      {
+        gb.display.drawImage(60,25,EffectGunExplosion,9,9);
+      }
       gb.display.drawImage(55,45,EffectGunExplosion,9,9);
     }
     else if(AttackerAttackType==AUTOMATIC_GUN_EFFECT)
     {
       if(infantry==true)
       {
-        gb.display.drawImage(47,28,EffectAutomaticGun,8,2);
-        gb.display.drawImage(62,31,EffectAutomaticGun,8,2);
-        gb.display.drawImage(50,45,EffectAutomaticGun,8,2);
-        gb.display.drawImage(66,51,EffectAutomaticGun,8,2);
+        if(AttackerUnitHealth > 8)
+          gb.display.drawImage(47,28,EffectAutomaticGun,8,2);
+        if(AttackerUnitHealth > 6)
+          gb.display.drawImage(62,31,EffectAutomaticGun,8,2);
+        if(AttackerUnitHealth > 4)
+          gb.display.drawImage(50,45,EffectAutomaticGun,8,2);
+        if(AttackerUnitHealth > 2)
+          gb.display.drawImage(66,51,EffectAutomaticGun,8,2);
         gb.display.drawImage(47,61,EffectAutomaticGun,8,2);
       }
       else
       {
-        gb.display.drawImage(60,35,EffectAutomaticGun,8,2);
+        if(AttackerUnitHealth > 5)
+        {
+          gb.display.drawImage(60,35,EffectAutomaticGun,8,2);
+        }
         gb.display.drawImage(55,55,EffectAutomaticGun,8,2);
       }
     }

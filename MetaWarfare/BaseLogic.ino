@@ -72,16 +72,6 @@ void BaseScene()
         {
           CurrentPlayer->funds-=price;
           CurrentPlayer->baseLevel++;
-          //if(CurrentPlayer.id==1)
-          //{
-          //  Player_1.funds-=price;
-          //  Player_1.baseLevel++;
-          //}
-          //else
-          //{
-          //  Player_2.funds-=price;
-          //  Player_2.baseLevel++;
-          //}
           gb.gui.popup("Base upgraded!",50);
         }
       }
@@ -90,11 +80,10 @@ void BaseScene()
         if(selectedAction<=CurrentPlayer->baseLevel) // Unlocked or not
         {
           CurrentPlayer->funds-=price;
-          CurrentBoard[BaseLocation.row][BaseLocation.column].unitId=getUnitId();
-          CurrentBoard[BaseLocation.row][BaseLocation.column].player=CurrentPlayer->id;
-          CurrentBoard[BaseLocation.row][BaseLocation.column].unitHp=10;
-          BaseLocation.row = 0;
-          BaseLocation.column = 0;
+          BaseLocation->unitId = getUnitId();
+          BaseLocation->player = CurrentPlayer->id;
+          BaseLocation->unitHp = 10;
+          BaseLocation=&None;
           SceneMode=MAP_MODE;
         }
       }
@@ -103,8 +92,7 @@ void BaseScene()
   else if(gb.buttons.pressed(BUTTON_B))
   {
     SceneMode=MAP_MODE;
-    BaseLocation.row = 0;
-    BaseLocation.column = 0;
+    BaseLocation=&None;
   }
 }
 
