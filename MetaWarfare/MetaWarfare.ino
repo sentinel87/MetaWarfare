@@ -8,6 +8,10 @@
 #define CAMPAIGN_SCENARIO_MODE 6
 #define OUTCOME_MODE 7
 
+const Gamebuino_Meta::Sound_FX cannonExplosionSound[] = {
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,60,30,40,10,15},
+};
+
 struct GameTileStruct
 {
     unsigned int terrainTexture: 7;

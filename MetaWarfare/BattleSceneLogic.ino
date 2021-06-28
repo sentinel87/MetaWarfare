@@ -1,3 +1,5 @@
+#include <math.h>
+
 #define GRASSLAND 1
 #define ROAD 2
 #define FOREST 3
@@ -42,8 +44,8 @@ double attackArray[9][9]
   {0.00,0.70,0.50,0.35,0.35,0.60,0.60,0.70,0.60},
   {0.00,0.80,0.70,0.50,0.50,0.70,0.70,1.00,0.70},
   {0.00,0.80,0.70,0.50,0.50,0.70,0.70,1.00,0.70},
-  {0.00,0.50,0.40,0.40,0.40,0.50,0.50,0.60,0.60},
-  {0.00,0.60,0.60,0.60,0.60,0.60,0.60,0.70,0.70},
+  {0.00,0.70,0.60,0.60,0.60,0.60,0.60,0.80,0.80},
+  {0.00,0.80,0.80,0.80,0.80,0.60,0.60,0.90,0.90},
   {0.00,0.10,0.05,0.02,0.02,0.20,0.20,0.50,0.40},
   {0.00,0.70,0.50,0.40,0.40,0.60,0.60,0.65,0.50}
 };
@@ -219,7 +221,7 @@ void CalculateBattleResult()
   {
     double baseAttacker = attackArray[Attacker->unitId][Defender->unitId];
     baseAttacker -= (DefenderTerrainBonus*0.02);
-    double totalAttacker = baseAttacker * Attacker->unitHp;
+    double totalAttacker = nearbyint(baseAttacker * Attacker->unitHp);
     ReducedDefenderHealth = Defender->unitHp-(int)totalAttacker;
     ReducedAttackerHealth = Attacker->unitHp;
   }
@@ -230,6 +232,9 @@ void CalculateBattleResult()
       double baseAttacker = attackArray[Attacker->unitId][Defender->unitId];
       baseAttacker -= (DefenderTerrainBonus*0.02);
       double totalAttacker = baseAttacker * Attacker->unitHp;
+      if(Attacker->unitId==4 && AttackerTerrainBonus>0) //TD bonus
+        totalAttacker+=(AttackerTerrainBonus*0.02);
+      totalAttacker=nearbyint(totalAttacker);
       ReducedDefenderHealth = Defender->unitHp-(int)totalAttacker;
       ReducedAttackerHealth = Attacker->unitHp;
     }
@@ -245,7 +250,10 @@ void CalculateBattleResult()
       }
 
       double totalAttacker = baseAttacker * Attacker->unitHp;
-      double totalDefender = baseDefender * Defender->unitHp;
+      if(Attacker->unitId==4 && AttackerTerrainBonus>0) //TD bonus
+        totalAttacker+=(AttackerTerrainBonus*0.02);
+      totalAttacker=nearbyint(totalAttacker);
+      double totalDefender = nearbyint(baseDefender * Defender->unitHp);
       ReducedAttackerHealth = Attacker->unitHp-(int)totalDefender;
       ReducedDefenderHealth = Defender->unitHp-(int)totalAttacker; 
     }
@@ -298,6 +306,10 @@ void animationFrames()
     {
       frames=1;
       SceneState=SCENE_STATE_DEMOLITION;
+      if(AttackerAttackType==TANK_GUN_EFFECT || DefenderAttackType==TANK_GUN_EFFECT)
+      {
+        gb.sound.fx(cannonExplosionSound);
+      }
     }
     else
     {
