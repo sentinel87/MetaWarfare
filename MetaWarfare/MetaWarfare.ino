@@ -12,6 +12,10 @@ const Gamebuino_Meta::Sound_FX cannonExplosionSound[] = {
     {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,60,30,40,10,15},
 };
 
+const Gamebuino_Meta::Sound_FX artilleryExplosionSound[] = {
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,40,20,20,70,20},
+};
+
 struct GameTileStruct
 {
     unsigned int terrainTexture: 7;
@@ -84,8 +88,8 @@ Player Player_1={1,1,0,0};
 Player Player_2={2,1,0,0};
 
 GameTileStruct None={0,0,0,0,0,0,0,0,0};
-GameTileStruct Att={12,1,7,10,0,0,0,0,0};
-GameTileStruct Def={12,2,7,10,0,0,0,0,0};
+GameTileStruct Att={28,1,1,10,0,0,0,0,0};
+GameTileStruct Def={29,2,2,10,0,0,0,0,0};
 GameTileStruct* Attacker = &Att;
 GameTileStruct* Defender = &Def;
 GameTileStruct* BaseLocation = &None;
@@ -124,7 +128,7 @@ void loop() {
   }
   else if(SceneMode==OUTCOME_MODE)
   {
-    
+    EndGameScene();
   }
   else //Base mode
   {

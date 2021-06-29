@@ -126,3 +126,12 @@ void CampaignScenarioScene()
 {
   
 }
+
+void EndGameScene()
+{
+  drawEndGameScreen();
+  if(gb.buttons.pressed(BUTTON_B))
+  {
+    SceneMode=MENU_MODE;
+  }
+}

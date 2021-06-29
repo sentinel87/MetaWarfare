@@ -6,6 +6,8 @@
 #define COASTLINE 4
 #define BUILDING 5
 #define BASE 6
+#define MOUNTAINS 7
+#define BRIDGE 8
 
 #define ARTILLERY_EFFECT 1
 #define TANK_GUN_EFFECT 2
@@ -126,6 +128,8 @@ void SetTerrainType(bool attacker,int terrain)
   int result=GRASSLAND;
   switch(terrain)
   {
+    case 2:
+      result=MOUNTAINS; break;
     case 3:
     case 4:
     case 5:
@@ -156,6 +160,9 @@ void SetTerrainType(bool attacker,int terrain)
     case 26:
     case 27:
       result=ROAD; break;
+    case 28:
+    case 29:
+      result=BRIDGE; break;
     default:
       result=GRASSLAND; break;
   }
@@ -243,7 +250,7 @@ void CalculateBattleResult()
       double baseAttacker = attackArray[Attacker->unitId][Defender->unitId];
       baseAttacker += (0.10-(DefenderTerrainBonus*0.02)); //Bonus for initiative
       double baseDefender = attackArray[Defender->unitId][Attacker->unitId];
-      baseDefender -= (0.20-(AttackerTerrainBonus*0.02)); //Penalty for ambush
+      baseDefender -= (0.20+(AttackerTerrainBonus*0.02)); //Penalty for ambush
       if(baseDefender<0)
       {
         baseDefender=0;
@@ -309,6 +316,10 @@ void animationFrames()
       if(AttackerAttackType==TANK_GUN_EFFECT || DefenderAttackType==TANK_GUN_EFFECT)
       {
         gb.sound.fx(cannonExplosionSound);
+      }
+      else if(AttackerAttackType==ARTILLERY_EFFECT || DefenderAttackType==ARTILLERY_EFFECT)
+      {
+        gb.sound.fx(artilleryExplosionSound);
       }
     }
     else
