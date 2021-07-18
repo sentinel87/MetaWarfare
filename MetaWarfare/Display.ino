@@ -2484,17 +2484,20 @@ int selectionFrame=0;
 void drawMainMenu(int posX, int posY)
 {
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
-  //gb.display.drawImage(10,35,IMAGE_INFO_THEME,1,1,30,29);
-  //gb.display.drawImage(40,35,IMAGE_INFO_THEME,1,1,30,29);
   gb.display.setColor(WHITE);
-  gb.display.setCursor(12,37);
-  gb.display.println("CAMPAIGN");
   gb.display.setCursor(12,44);
   gb.display.println("2 PLAYERS");
-  gb.display.setCursor(12,51);
-  gb.display.println("CONTINUE");
   gb.display.setCursor(12,58);
   gb.display.println("HIGH SCORES");
+  if(SaveExist==false)
+  {
+    gb.display.setColor(BEIGE);
+  }
+  gb.display.setCursor(12,51);
+  gb.display.println("CONTINUE");
+  gb.display.setColor(BEIGE);
+  gb.display.setCursor(12,37);
+  gb.display.println("CAMPAIGN");
   
   gb.display.drawImage(posX,posY,Pointer);
 }

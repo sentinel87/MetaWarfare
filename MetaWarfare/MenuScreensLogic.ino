@@ -4,9 +4,9 @@
 #define MENU_HIGH_SCORE 4
 
 int mmPosX=57;
-int mmPosY=35;
+int mmPosY=42;
 
-int mmSelectedScene=MENU_CAMPAIGN;
+int mmSelectedScene=MENU_MULTIPLAYER;
 int smSelectedScene=1;
 
 void MainMenuScene()
@@ -21,8 +21,16 @@ void MainMenuScene()
     }
     else if(mmSelectedScene==MENU_HIGH_SCORE)
     {
-      mmPosY=49;
-      mmSelectedScene=MENU_LOAD;
+      if(SaveExist==true)
+      {
+        mmPosY=49;
+        mmSelectedScene=MENU_LOAD;
+      }
+      else
+      {
+        mmPosY=42;
+        mmSelectedScene=MENU_MULTIPLAYER;
+      }
     }
     else if(mmSelectedScene==MENU_LOAD)
     {
@@ -31,8 +39,10 @@ void MainMenuScene()
     }
     else
     {
-      mmPosY=35;
-      mmSelectedScene=MENU_CAMPAIGN;
+      //mmPosY=35;
+      //mmSelectedScene=MENU_CAMPAIGN;
+      mmPosY=56;
+      mmSelectedScene=MENU_HIGH_SCORE;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
@@ -44,8 +54,16 @@ void MainMenuScene()
     }
     else if(mmSelectedScene==MENU_MULTIPLAYER)
     {
-      mmPosY=49;
-      mmSelectedScene=MENU_LOAD;
+      if(SaveExist==true)
+      {
+        mmPosY=49;
+        mmSelectedScene=MENU_LOAD;
+      }
+      else
+      {
+        mmPosY=56;
+        mmSelectedScene=MENU_HIGH_SCORE;
+      }
     }
     else if(mmSelectedScene==MENU_LOAD)
     {
@@ -54,8 +72,10 @@ void MainMenuScene()
     }
     else
     {
-      mmPosY=35;
-      mmSelectedScene=MENU_CAMPAIGN;
+      //mmPosY=35;
+      //mmSelectedScene=MENU_CAMPAIGN;
+      mmPosY=42;
+      mmSelectedScene=MENU_MULTIPLAYER;
     }
   }
   else if(gb.buttons.pressed(BUTTON_A))
@@ -63,9 +83,18 @@ void MainMenuScene()
     if(mmSelectedScene==MENU_MULTIPLAYER)
     {
       SceneMode=MULTIPLAYER_SCENARIO_MODE;
-      mmSelectedScene=MENU_CAMPAIGN;
+      mmSelectedScene=MENU_MULTIPLAYER;
+      mmPosY=42;
       mmPosX=57;
-      mmPosY=35;
+    }
+    else if(mmSelectedScene==MENU_LOAD)
+    {
+      if(LoadGame()==true)
+      {
+        SceneMode = MAP_MODE;
+        mapMode = IDLE_MODE;
+        gb.gui.popup("GAME LOADED!",50);
+      }
     }
   }
 }
@@ -99,6 +128,7 @@ void MultiplayerScenarioScene()
   {
     if(smSelectedScene==1)
     {
+      MapId=1;
       BaseLocation = &None;
       Attacker = &None;
       Defender = &None;

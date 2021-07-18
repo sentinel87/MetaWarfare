@@ -286,8 +286,7 @@ void BattleMap()
       }
       else if(infoSelection==SAVE_INFO_ACTION)
       {
-        //TODO: SAVE
-        gb.gui.popup("SAVE LOGIC",50);
+        SaveGame();
       }
       else if(infoSelection==QUIT_INFO_ACTION) //quit to main menu
       {
