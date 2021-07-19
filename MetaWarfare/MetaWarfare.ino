@@ -124,6 +124,7 @@ void setup() {
 void loop() {
   while(!gb.update());
   gb.display.clear();
+  gb.lights.clear();
   if(SceneMode==MENU_MODE)
   {
     MainMenuScene();

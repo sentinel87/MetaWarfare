@@ -313,6 +313,7 @@ void animationFrames()
     {
       frames=1;
       SceneState=SCENE_STATE_DEMOLITION;
+      gb.lights.fill(RED);
       if(AttackerAttackType==TANK_GUN_EFFECT || DefenderAttackType==TANK_GUN_EFFECT)
       {
         gb.sound.fx(cannonExplosionSound);
@@ -325,6 +326,8 @@ void animationFrames()
     else
     {
       frames++;
+      if(frames%5==0)
+        gb.lights.fill(WHITE);
     }
   }
   else if(SceneState==SCENE_STATE_DEMOLITION)
@@ -337,6 +340,8 @@ void animationFrames()
     else
     {
       frames++;
+      if(frames%5==0)
+        gb.lights.fill(RED);
     }
   }
   else

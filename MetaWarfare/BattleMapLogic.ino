@@ -196,6 +196,7 @@ void BattleMap()
       {
         noMove=true;
         clearGrid();
+        menuSelection = ATTACK_ACTION;
         mapMode = UNIT_MENU_MODE;
       }
       else // unit moves
@@ -268,6 +269,14 @@ void BattleMap()
               return;
             }
             mapMode = IDLE_MODE;
+            if(CurrentPlayer->id==1)
+            {
+              gb.lights.fill(RED);
+            }
+            else if(CurrentPlayer->id==2)
+            {
+              gb.lights.fill(BLUE);
+            }
             gb.gui.popup("BUILDING ACQUIRED!",50);
           }
       }
@@ -403,12 +412,14 @@ void endTurn()
   {
     CurrentPlayer=&Player_2;
     countPlayerStats();
+    gb.lights.fill(BLUE);
     gb.gui.popup("PLAYER 2 TURN",50);
   }
   else
   {
     CurrentPlayer=&Player_1;
     countPlayerStats();
+    gb.lights.fill(RED);
     gb.gui.popup("PLAYER 1 TURN",50);
   }
 }

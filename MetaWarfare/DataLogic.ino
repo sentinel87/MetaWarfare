@@ -10,14 +10,8 @@ bool LoadGame()
     BaseLocation = &None;
     Attacker = &None;
     Defender = &None;
-    Player_1.baseLevel = 1;
-    Player_1.funds = 0;
-    Player_1.totalUnits = 0;
-    Player_2.baseLevel = 1;
-    Player_2.funds = 0;
-    Player_2.totalUnits = 0;
-    CurrentPlayer=&Player_1;
-    countPlayerStats();
+    loadPlayersConfig();
+    loadMapSettings();
     return true;
   }
 
@@ -30,6 +24,15 @@ void loadMapConfig()
   gb.save.get(0, RawMapData);
   String MapConfig(RawMapData);
   MapId = MapConfig.substring(0,5).toInt();
+  int actualPlayer = MapConfig.substring(6,7).toInt();
+  if(actualPlayer==1)
+  {
+    CurrentPlayer = &Player_1;
+  }
+  else if(actualPlayer==2)
+  {
+    CurrentPlayer = &Player_2;
+  }
 }
 
 bool loadMap()
@@ -48,6 +51,64 @@ bool loadMap()
       result=false;
     }
     break;
+  }
+}
+
+void loadPlayersConfig()
+{
+  char RawPlayerData[27];
+  gb.save.get(1, RawPlayerData);
+  String PlayerData(RawPlayerData);
+  
+  Player_1.funds = PlayerData.substring(0,5).toInt();
+  Player_1.baseLevel = PlayerData.substring(5,6).toInt();
+  Player_1.totalUnits = PlayerData.substring(6,8).toInt();
+  Player_1.points = PlayerData.substring(8,13).toInt();
+  Player_2.funds = PlayerData.substring(13,18).toInt();
+  Player_2.baseLevel = PlayerData.substring(18,19).toInt();
+  Player_2.totalUnits = PlayerData.substring(19,21).toInt();
+  Player_2.points = PlayerData.substring(21,26).toInt();
+}
+
+void loadMapSettings()
+{
+  char RawUnitIdData[513];
+  gb.save.get(2, RawUnitIdData);
+  String UnitIdData(RawUnitIdData);
+
+  char RawUnitHpData[513];
+  gb.save.get(3, RawUnitHpData);
+  String UnitHpData(RawUnitHpData);
+
+  char RawUnitOwnerData[257];
+  gb.save.get(4, RawUnitOwnerData);
+  String UnitOwnerData(RawUnitOwnerData);
+
+  char RawUnitStatusData[257];
+  gb.save.get(5, RawUnitStatusData);
+  String UnitStatusData(RawUnitStatusData);
+
+  char RawBuildingOwnerData[257];
+  gb.save.get(6, RawBuildingOwnerData);
+  String BuildingOwnerData(RawBuildingOwnerData);
+  
+  int idx=0;
+  int idx2=0;
+  for(int i=0;i<16;i++)
+  {
+    for(int j=0;j<16;j++)
+    {
+      CurrentBoard[i][j].unitId = UnitIdData.substring(idx,idx+2).toInt();
+      CurrentBoard[i][j].unitHp = UnitHpData.substring(idx,idx+2).toInt();
+      CurrentBoard[i][j].player = UnitOwnerData.substring(idx2,idx2+1).toInt();
+      CurrentBoard[i][j].active = UnitStatusData.substring(idx2,idx2+1).toInt();
+      if(CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12)
+      {
+        CurrentBoard[i][j].playerBuilding=BuildingOwnerData.substring(idx2,idx2+1).toInt();
+      }
+      idx+=2;
+      idx2++;
+    }
   }
 }
 

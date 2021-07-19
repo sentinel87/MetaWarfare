@@ -72,6 +72,7 @@ void BaseScene()
         {
           CurrentPlayer->funds-=price;
           CurrentPlayer->baseLevel++;
+          gb.lights.fill(GREEN);
           gb.gui.popup("Base upgraded!",50);
         }
       }
@@ -85,6 +86,7 @@ void BaseScene()
           BaseLocation->unitHp = 10;
           BaseLocation=&None;
           SceneMode=MAP_MODE;
+          gb.lights.fill(GREEN);
         }
       }
     }
