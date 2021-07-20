@@ -2643,12 +2643,12 @@ void drawDropdownMenu(int posX,int posY,int selection)
     gb.display.setColor(BLACK); 
   gb.display.setCursor(fixedX+1,fixedY+13);
   gb.display.println("CAPTURE");
-  if(selectionFrame==1 && selection==4)
-    gb.display.setColor(RED);  
-  else
-    gb.display.setColor(BLACK); 
-  gb.display.setCursor(fixedX+1,fixedY+19);
-  gb.display.println("LOAD");
+  //if(selectionFrame==1 && selection==4)
+  //  gb.display.setColor(RED);  
+  //else
+  //  gb.display.setColor(BLACK); 
+  //gb.display.setCursor(fixedX+1,fixedY+19);
+  //gb.display.println("LOAD");
 }
 
 void drawInfoMenu(int selection)
@@ -3534,6 +3534,32 @@ void drawUnitField(int posX,int posY,int unitId,int price)
 void drawEndGameScreen()
 {
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
+  gb.display.drawImage(0,0,IMAGE_MENU_THEME,0,0,29,25);
+  gb.display.drawImage(29,0,IMAGE_MENU_THEME,1,0,22,25);
+  gb.display.drawImage(51,0,IMAGE_MENU_THEME,1,0,29,25);
+  gb.display.setCursor(11,4);
+  if(CurrentPlayer->id==1)
+  {
+    gb.display.setColor(RED);
+    gb.display.println("PLAYER 1 WINS!");
+  }
+  else
+  {
+    gb.display.setColor(BLUE);
+    gb.display.println("PLAYER 2 WINS!");
+  }
+  String strScore="Score: " + (String)CurrentPlayer->points;
+  gb.display.setColor(ORANGE);
+  gb.display.setCursor(11,14);
+  gb.display.println(strScore);
+}
+
+void drawHighScoreScreen()
+{
+  gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
+  gb.display.drawImage(0,0,IMAGE_MENU_THEME,0,0,29,25);
+  gb.display.drawImage(29,0,IMAGE_MENU_THEME,1,0,22,25);
+  gb.display.drawImage(51,0,IMAGE_MENU_THEME,1,0,29,25);
   gb.display.drawImage(0,0,IMAGE_MENU_THEME,0,0,29,25);
   gb.display.drawImage(29,0,IMAGE_MENU_THEME,1,0,22,25);
   gb.display.drawImage(51,0,IMAGE_MENU_THEME,1,0,29,25);

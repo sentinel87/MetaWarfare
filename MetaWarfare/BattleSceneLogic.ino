@@ -273,6 +273,71 @@ void CalculateBattleResult()
   {
     ReducedDefenderHealth=0;
   }
+
+  if(ReducedAttackerHealth==0)
+  {
+    if(Defender->player==1)
+    {
+      Player_1.points+=getScore(Attacker->unitId);
+      if(Player_1.points>99999)
+      {
+        Player_1.points=99999;
+      }
+    }
+    else if(Defender->player==2)
+    {
+      Player_2.points+=getScore(Attacker->unitId);
+      if(Player_2.points>99999)
+      {
+        Player_2.points=99999;
+      }
+    }
+  }
+
+  if(ReducedDefenderHealth==0)
+  {
+    if(Attacker->player==1)
+    {
+      Player_1.points+=getScore(Defender->unitId);
+      if(Player_1.points>99999)
+      {
+        Player_1.points=99999;
+      }
+    }
+    else if(Attacker->player==2)
+    {
+      Player_2.points+=getScore(Defender->unitId);
+      if(Player_2.points>99999)
+      {
+        Player_2.points=99999;
+      }
+    }
+  }
+}
+
+int getScore(int id)
+{
+  int result=0;
+  switch(id)
+  {
+    case 1:
+      result = 3; break;
+    case 2:
+      result = 5; break;
+    case 3:
+      result = 7; break;
+    case 4:
+      result = 8; break;
+    case 5:
+      result = 4; break;
+    case 6:
+      result = 4; break;
+    case 7:
+      result = 1; break;
+    case 8:
+      result = 2; break;
+  }
+  return result;
 }
 
 void updateMapTiles()

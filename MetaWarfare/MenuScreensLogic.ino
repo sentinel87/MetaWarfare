@@ -96,6 +96,10 @@ void MainMenuScene()
         gb.gui.popup("GAME LOADED!",50);
       }
     }
+    else if(mmSelectedScene==MENU_HIGH_SCORE)
+    {
+      SceneMode = SCORES_MODE;
+    }
   }
 }
 
@@ -160,6 +164,24 @@ void CampaignScenarioScene()
 void EndGameScene()
 {
   drawEndGameScreen();
+  if(gb.buttons.pressed(BUTTON_B))
+  {
+    bool HighScore=compareAndUpdateScore(CurrentPlayer->points);
+    if(HighScore)
+    {
+      gb.save.set(9,ScoreBoard[0]);
+      gb.save.set(10,ScoreBoard[1]);
+      gb.save.set(11,ScoreBoard[2]);
+      gb.save.set(12,ScoreBoard[3]);
+      gb.save.set(13,ScoreBoard[4]);
+    }
+    SceneMode=MENU_MODE;
+  }
+}
+
+void HighScoreScene()
+{
+  drawHighScoreScreen();
   if(gb.buttons.pressed(BUTTON_B))
   {
     SceneMode=MENU_MODE;

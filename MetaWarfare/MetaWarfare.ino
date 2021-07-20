@@ -7,6 +7,7 @@
 #define MULTIPLAYER_SCENARIO_MODE 5
 #define CAMPAIGN_SCENARIO_MODE 6
 #define OUTCOME_MODE 7
+#define SCORES_MODE 8
 
 const Gamebuino_Meta::Sound_FX cannonExplosionSound[] = {
     {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,60,30,40,10,15},
@@ -87,6 +88,7 @@ bool SaveExist=false;
 int SceneMode=MENU_MODE;
 int MapId=0;
 
+int ScoreBoard[]={0,0,0,0,0};
 Player Player_1={1,1,0,0,0};
 Player Player_2={2,1,0,0,0};
 
@@ -107,12 +109,22 @@ const SaveDefault savefileDefaults[] = {
   {4, SAVETYPE_BLOB,{.ptr="0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 "},257}, //Map parms (Unit ownership)
   {5, SAVETYPE_BLOB,{.ptr="0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 "},257}, //Map parms (Unit status)
   {6, SAVETYPE_BLOB,{.ptr="0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 "},257}, //Map parms (Building ownership)
-  {7, SAVETYPE_INT,0,0 } //Check if save exist
+  {7, SAVETYPE_INT,0,0 }, //Check if save exist
+  {9, SAVETYPE_INT,0,0 },
+  {10, SAVETYPE_INT,0,0 },
+  {11, SAVETYPE_INT,0,0 },
+  {12, SAVETYPE_INT,0,0 },
+  {13, SAVETYPE_INT,0,0 }
 };
 
 void setup() {
   gb.begin();
   gb.save.config(savefileDefaults);
+  ScoreBoard[0]=gb.save.get(9);
+  ScoreBoard[1]=gb.save.get(10);
+  ScoreBoard[2]=gb.save.get(11);
+  ScoreBoard[3]=gb.save.get(12);
+  ScoreBoard[4]=gb.save.get(13);
   int check=gb.save.get(7);
   if(check==1)
   {
@@ -151,8 +163,45 @@ void loop() {
   {
     EndGameScene();
   }
+  else if(SceneMode==SCORES_MODE)
+  {
+    HighScoreScene();
+  }
   else //Base mode
   {
     BaseScene();
   }
+}
+
+bool compareAndUpdateScore(int score)
+{
+  bool isScoreQualified=false;
+  int temp=0;
+  int temp2=0;
+  int index=0;
+
+  for(int i=0;i<5;i++)
+  {
+    if(score>ScoreBoard[i])
+    {
+       temp=ScoreBoard[i];
+       ScoreBoard[i]=score;
+       index=i;
+       isScoreQualified=true;
+       break;
+    } 
+  }
+
+  if(!isScoreQualified)
+  {
+    return false;
+  }
+
+  for(int i=index+1;i<5;i++)
+  {
+    temp2=ScoreBoard[i];
+    ScoreBoard[i]=temp;
+    temp=temp2;
+  }
+  return isScoreQualified;
 }

@@ -263,9 +263,9 @@ void BattleMap()
             cancelMode=false;
             if(CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) //if player capture capital
             {
+              CurrentPlayer->points+=200;
               mapMode = IDLE_MODE;
-              SceneMode = MENU_MODE;
-              //TODO: Victory screen
+              SceneMode = OUTCOME_MODE;
               return;
             }
             mapMode = IDLE_MODE;
