@@ -17,6 +17,10 @@ const Gamebuino_Meta::Sound_FX artilleryExplosionSound[] = {
     {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,40,20,20,70,20},
 };
 
+const Gamebuino_Meta::Sound_FX cannonFireSound[] = {
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,40,55,25,100,15},
+};
+
 struct GameTileStruct
 {
     unsigned int terrainTexture: 7;

@@ -2593,7 +2593,7 @@ void drawMap()
     gb.display.drawImage(posX,posY,IMAGE_CURSOR);
   }
   
-  debug();
+  //debug();
 }
 
 void drawDropdownMenu(int posX,int posY,int selection)
@@ -2828,7 +2828,7 @@ void drawBattleScene(int attacker,int attackUnitId,int defender,int defenderUnit
   gb.display.setColor(BLACK);
   gb.display.drawLine(40,0,40,32);
   gb.display.drawLine(39,33,39,64);
-  debug();
+  //debug();
 }
 
 void drawLeftBattleScene(int player, int unitId)
@@ -3534,10 +3534,10 @@ void drawUnitField(int posX,int posY,int unitId,int price)
 void drawEndGameScreen()
 {
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
-  gb.display.drawImage(0,0,IMAGE_MENU_THEME,0,0,29,25);
-  gb.display.drawImage(29,0,IMAGE_MENU_THEME,1,0,22,25);
-  gb.display.drawImage(51,0,IMAGE_MENU_THEME,1,0,29,25);
-  gb.display.setCursor(11,4);
+  gb.display.drawImage(2,1,IMAGE_MENU_THEME,0,0,29,17);
+  gb.display.drawImage(29,1,IMAGE_MENU_THEME,1,0,22,17);
+  gb.display.drawImage(49,1,IMAGE_MENU_THEME,1,0,29,17);
+  gb.display.setCursor(14,8);
   if(CurrentPlayer->id==1)
   {
     gb.display.setColor(RED);
@@ -3550,17 +3550,47 @@ void drawEndGameScreen()
   }
   String strScore="Score: " + (String)CurrentPlayer->points;
   gb.display.setColor(ORANGE);
-  gb.display.setCursor(11,14);
+  gb.display.setCursor(19,44);
   gb.display.println(strScore);
 }
 
 void drawHighScoreScreen()
 {
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
-  gb.display.drawImage(0,0,IMAGE_MENU_THEME,0,0,29,25);
-  gb.display.drawImage(29,0,IMAGE_MENU_THEME,1,0,22,25);
-  gb.display.drawImage(51,0,IMAGE_MENU_THEME,1,0,29,25);
-  gb.display.drawImage(0,0,IMAGE_MENU_THEME,0,0,29,25);
-  gb.display.drawImage(29,0,IMAGE_MENU_THEME,1,0,22,25);
-  gb.display.drawImage(51,0,IMAGE_MENU_THEME,1,0,29,25);
+  gb.display.drawImage(2,1,IMAGE_MENU_THEME,0,0,29,17);
+  gb.display.drawImage(29,1,IMAGE_MENU_THEME,1,0,22,17);
+  gb.display.drawImage(49,1,IMAGE_MENU_THEME,1,0,29,17);
+  gb.display.setCursor(19,8);
+  gb.display.setColor(BLACK);
+  gb.display.println("HIGH SCORES");
+  gb.display.setFontSize(1);
+  gb.display.setColor(ORANGE);
+  for(int i=0;i<5;i++)
+  {
+    String scoreStr=scoreStrMod(ScoreBoard[i]);
+    String index=(String)(i+1);
+    scoreStr=index + ". " + scoreStr;
+    gb.display.setCursor(20, 22 +(i*6));
+    gb.display.println(scoreStr);
+  }
+  gb.display.setColor(WHITE);  
+  gb.display.setCursor(20, 56);
+  gb.display.println("BACK");
+  gb.display.drawImage(50,54,Pointer);
+}
+
+String scoreStrMod(int score)
+{
+  String result=String(score);
+  int count=result.length();
+  if(count<6)
+  {
+    String spaces="";
+    for(int i=count;i<=6;i++)
+    {
+          spaces+=" ";
+    }
+    result=spaces + result;
+  }
+  return result;
 }

@@ -366,6 +366,10 @@ void animationFrames()
     {
       frames=1;
       SceneState=SCENE_STATE_ATTACK;
+      if(AttackerAttackType==TANK_GUN_EFFECT || DefenderAttackType==TANK_GUN_EFFECT)
+      {
+        gb.sound.fx(cannonFireSound);
+      }
     }
     else
     {
@@ -393,6 +397,13 @@ void animationFrames()
       frames++;
       if(frames%5==0)
         gb.lights.fill(WHITE);
+      if(frames==10)
+      {
+        if(AttackerAttackType==TANK_GUN_EFFECT || DefenderAttackType==TANK_GUN_EFFECT)
+        {
+          gb.sound.fx(cannonFireSound);
+        }
+      }
     }
   }
   else if(SceneState==SCENE_STATE_DEMOLITION)

@@ -182,7 +182,7 @@ void EndGameScene()
 void HighScoreScene()
 {
   drawHighScoreScreen();
-  if(gb.buttons.pressed(BUTTON_B))
+  if(gb.buttons.pressed(BUTTON_A))
   {
     SceneMode=MENU_MODE;
   }
