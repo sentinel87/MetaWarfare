@@ -179,6 +179,18 @@ void EndGameScene()
   }
 }
 
+void TutorialTip()
+{
+  drawTutorialScreen();
+  if(gb.buttons.pressed(BUTTON_A))
+  {
+    SceneMode=MAP_MODE;
+    countPlayerStats();
+    gb.lights.fill(RED);
+    gb.gui.popup("PLAYER 1 TURN",50);
+  }
+}
+
 void HighScoreScene()
 {
   drawHighScoreScreen();

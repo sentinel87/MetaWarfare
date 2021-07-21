@@ -8,6 +8,7 @@
 #define CAMPAIGN_SCENARIO_MODE 6
 #define OUTCOME_MODE 7
 #define SCORES_MODE 8
+#define TUTORIAL_MODE 9
 
 const Gamebuino_Meta::Sound_FX cannonExplosionSound[] = {
     {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,60,30,40,10,15},
@@ -17,8 +18,21 @@ const Gamebuino_Meta::Sound_FX artilleryExplosionSound[] = {
     {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,40,20,20,70,20},
 };
 
+const Gamebuino_Meta::Sound_FX gunFireSound[] = {
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,1,80,-3,20,20,4},
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,1,80,-3,20,20,4},
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,1,80,-3,20,20,4},
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,80,-3,20,20,4}
+};
+
 const Gamebuino_Meta::Sound_FX cannonFireSound[] = {
-    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,40,55,25,100,15},
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,1,40,55,25,100,15},
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,40,55,25,100,15}
+};
+
+const Gamebuino_Meta::Sound_FX artilleryFireSound[] = {
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,1,40,2,20,35,15},
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,40,2,20,35,15}
 };
 
 struct GameTileStruct
@@ -88,6 +102,9 @@ GameTileStruct CurrentBoard[16][16];
 
 bool menuMode=false;
 bool SaveExist=false;
+
+int Tutorial=-1;
+int TurnCount=0;
 
 int SceneMode=MENU_MODE;
 int MapId=0;
@@ -170,6 +187,10 @@ void loop() {
   else if(SceneMode==SCORES_MODE)
   {
     HighScoreScene();
+  }
+  else if(SceneMode==TUTORIAL_MODE)
+  {
+    TutorialTip();
   }
   else //Base mode
   {

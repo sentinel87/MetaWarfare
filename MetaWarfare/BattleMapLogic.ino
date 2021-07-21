@@ -408,19 +408,36 @@ void endTurn()
       }
     }
   }
-  if(CurrentPlayer->id==PLAYER_1)
+  if(Tutorial>-1)
   {
-    CurrentPlayer=&Player_2;
-    countPlayerStats();
-    gb.lights.fill(BLUE);
-    gb.gui.popup("PLAYER 2 TURN",50);
+    TurnCount++;
+    if(TurnCount<=4)
+    {
+      SceneMode=TUTORIAL_MODE;
+    }
+    else
+    {
+      countPlayerStats();
+      gb.lights.fill(RED);
+      gb.gui.popup("PLAYER 1 TURN",50);
+    }
   }
   else
   {
-    CurrentPlayer=&Player_1;
-    countPlayerStats();
-    gb.lights.fill(RED);
-    gb.gui.popup("PLAYER 1 TURN",50);
+    if(CurrentPlayer->id==PLAYER_1)
+    {
+      CurrentPlayer=&Player_2;
+      countPlayerStats();
+      gb.lights.fill(BLUE);
+      gb.gui.popup("PLAYER 2 TURN",50);
+    }
+    else
+    {
+      CurrentPlayer=&Player_1;
+      countPlayerStats();
+      gb.lights.fill(RED);
+      gb.gui.popup("PLAYER 1 TURN",50);
+    }
   }
 }
 

@@ -3594,3 +3594,52 @@ String scoreStrMod(int score)
   }
   return result;
 }
+
+void drawTutorialScreen()
+{
+  //gb.display.drawImage(0,0,IMAGE_INFO_THEME);
+  //gb.display.drawImage(40,0,IMAGE_INFO_THEME);
+  gb.display.setColor(WHITE); 
+  if(Tutorial==0)
+  {
+    if(TurnCount==1)
+    {
+      gb.display.setCursor(0, 5);
+      gb.display.println("Use arrows to switchmap tiles. Tap A on unit to move it. Taptwice to select     action without move.Tap B to cancel     action.To end turn  tap HOME and select END TURN.");
+    }
+    else if(TurnCount==2)
+    {
+      gb.display.setCursor(20, 5);
+      gb.display.println("Select action");
+      gb.display.setCursor(20, 15);
+      gb.display.println("Accept action");
+      gb.display.setCursor(20, 25);
+      gb.display.println("Aim");
+      gb.display.setCursor(20, 35);
+      gb.display.println("Fire");
+    }
+    else if(TurnCount==3)
+    {
+      gb.display.setCursor(20, 5);
+      gb.display.println("Select building");
+      gb.display.setCursor(20, 15);
+      gb.display.println("Move");
+      gb.display.setCursor(20, 25);
+      gb.display.println("Select Capture action");
+      gb.display.setCursor(20, 35);
+      gb.display.println("Confirm");
+    }
+    else if(TurnCount==4)
+    {
+      gb.display.setCursor(5, 5);
+      gb.display.setColor(GREEN); 
+      gb.display.println("MISSION:");
+      gb.display.setCursor(5, 15);
+      gb.display.setColor(RED); 
+      gb.display.println("Capture enemy base");
+      gb.display.setColor(WHITE); 
+      gb.display.setCursor(0, 30);
+      gb.display.println("TIP: Only Infantry  and Mech infantry   can cross mountains and capture building");
+    }
+  }
+}
