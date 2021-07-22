@@ -2485,6 +2485,8 @@ void drawMainMenu(int posX, int posY)
 {
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.setColor(WHITE);
+  gb.display.setCursor(12,30);
+  gb.display.println("TUTORIAL");
   gb.display.setCursor(12,44);
   gb.display.println("2 PLAYERS");
   gb.display.setCursor(12,58);
@@ -2519,6 +2521,22 @@ void drawScenarioMenu(int posX, int posY)
   gb.display.setCursor(2,43);
   gb.display.println("5. Scenario");
   gb.display.setCursor(2,53);
+  gb.display.println("BACK");
+  
+  gb.display.drawImage(posX,posY,Pointer);
+}
+
+void drawTutorialMenu(int posX, int posY)
+{
+  gb.display.drawImage(0,0,IMAGE_INFO_THEME,0,0,39,64);
+  gb.display.drawImage(39,0,IMAGE_INFO_THEME,1,0,2,64);
+  gb.display.drawImage(41,0,IMAGE_INFO_THEME,1,0,39,64);
+  gb.display.setColor(BLACK);
+  gb.display.setCursor(2,3);
+  gb.display.println("1. Basics");
+  gb.display.setCursor(2,13);
+  gb.display.println("2. Scenario");
+  gb.display.setCursor(2,23);
   gb.display.println("BACK");
   
   gb.display.drawImage(posX,posY,Pointer);
@@ -3602,12 +3620,12 @@ void drawTutorialScreen()
   gb.display.setColor(WHITE); 
   if(Tutorial==0)
   {
-    if(TurnCount==1)
+    if(TurnCount==0)
     {
       gb.display.setCursor(0, 5);
       gb.display.println("Use arrows to switchmap tiles. Tap A on unit to move it. Taptwice to select     action without move.Tap B to cancel     action.To end turn  tap HOME and select END TURN.");
     }
-    else if(TurnCount==2)
+    else if(TurnCount==1)
     {
       gb.display.setCursor(20, 5);
       gb.display.println("Select action");
@@ -3618,7 +3636,7 @@ void drawTutorialScreen()
       gb.display.setCursor(20, 35);
       gb.display.println("Fire");
     }
-    else if(TurnCount==3)
+    else if(TurnCount==2)
     {
       gb.display.setCursor(20, 5);
       gb.display.println("Select building");
@@ -3629,7 +3647,7 @@ void drawTutorialScreen()
       gb.display.setCursor(20, 35);
       gb.display.println("Confirm");
     }
-    else if(TurnCount==4)
+    else if(TurnCount==3)
     {
       gb.display.setCursor(5, 5);
       gb.display.setColor(GREEN); 

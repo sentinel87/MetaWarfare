@@ -2,19 +2,26 @@
 #define MENU_MULTIPLAYER 2
 #define MENU_LOAD 3
 #define MENU_HIGH_SCORE 4
+#define MENU_TUTORIAL 5
 
 int mmPosX=57;
-int mmPosY=42;
+int mmPosY=28;
 
-int mmSelectedScene=MENU_MULTIPLAYER;
+int mmSelectedScene=MENU_TUTORIAL;
 int smSelectedScene=1;
+int tmSelectedScene=1;
 
 void MainMenuScene()
 {
   drawMainMenu(mmPosX,mmPosY);
   if(gb.buttons.pressed(BUTTON_UP))
   {
-    if(mmSelectedScene==MENU_CAMPAIGN)
+    if(mmSelectedScene==MENU_TUTORIAL)
+    {
+      mmPosY=56;
+      mmSelectedScene=MENU_HIGH_SCORE;
+    }
+    else if(mmSelectedScene==MENU_CAMPAIGN)
     {
       mmPosY=56;
       mmSelectedScene=MENU_HIGH_SCORE;
@@ -41,13 +48,18 @@ void MainMenuScene()
     {
       //mmPosY=35;
       //mmSelectedScene=MENU_CAMPAIGN;
-      mmPosY=56;
-      mmSelectedScene=MENU_HIGH_SCORE;
+      mmPosY=28;
+      mmSelectedScene=MENU_TUTORIAL;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(mmSelectedScene==MENU_CAMPAIGN)
+    if(mmSelectedScene==MENU_TUTORIAL)
+    {
+      mmPosY=42;
+      mmSelectedScene=MENU_MULTIPLAYER;
+    }
+    else if(mmSelectedScene==MENU_CAMPAIGN)
     {
       mmPosY=42;
       mmSelectedScene=MENU_MULTIPLAYER;
@@ -74,8 +86,8 @@ void MainMenuScene()
     {
       //mmPosY=35;
       //mmSelectedScene=MENU_CAMPAIGN;
-      mmPosY=42;
-      mmSelectedScene=MENU_MULTIPLAYER;
+      mmPosY=28;
+      mmSelectedScene=MENU_TUTORIAL;
     }
   }
   else if(gb.buttons.pressed(BUTTON_A))
@@ -99,6 +111,10 @@ void MainMenuScene()
     else if(mmSelectedScene==MENU_HIGH_SCORE)
     {
       SceneMode = SCORES_MODE;
+    }
+    else if(mmSelectedScene==MENU_TUTORIAL)
+    {
+      SceneMode = TUTORIAL_SCENARIO_MODE;
     }
   }
 }
@@ -133,6 +149,8 @@ void MultiplayerScenarioScene()
     if(smSelectedScene==1)
     {
       MapId=1;
+      Tutorial=-1;
+      TurnCount=0;
       BaseLocation = &None;
       Attacker = &None;
       Defender = &None;
@@ -152,6 +170,60 @@ void MultiplayerScenarioScene()
     {
       SceneMode=MENU_MODE;
       smSelectedScene=1;
+    }
+  }
+}
+
+void TutorialScenarioScene()
+{
+  drawTutorialMenu(65,1+(tmSelectedScene-1)*10);
+  if(gb.buttons.pressed(BUTTON_UP))
+  {
+    if(tmSelectedScene>1)
+    {
+      tmSelectedScene--;
+    }
+    else
+    {
+      tmSelectedScene=3;
+    }
+  }
+  else if(gb.buttons.pressed(BUTTON_DOWN))
+  {
+    if(tmSelectedScene<3)
+    {
+      tmSelectedScene++;
+    }
+    else
+    {
+      tmSelectedScene=1;
+    }
+  }
+  else if(gb.buttons.pressed(BUTTON_A))
+  {
+    if(tmSelectedScene==1)
+    {
+      Tutorial=0;
+      TurnCount=0;
+      BaseLocation = &None;
+      Attacker = &None;
+      Defender = &None;
+      memcpy(CurrentBoard, TutorialBoard1, sizeof(CurrentBoard));
+      Player_1.baseLevel = 1;
+      Player_1.funds = 0;
+      Player_1.totalUnits = 0;
+      Player_2.baseLevel = 1;
+      Player_2.funds = 0;
+      Player_2.totalUnits = 0;
+      CurrentPlayer=&Player_1;
+      countPlayerStats();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+    }
+    else if(tmSelectedScene==3)
+    {
+      SceneMode=MENU_MODE;
+      tmSelectedScene=1;
     }
   }
 }
