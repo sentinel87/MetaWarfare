@@ -2535,7 +2535,7 @@ void drawTutorialMenu(int posX, int posY)
   gb.display.setCursor(2,3);
   gb.display.println("1. Basics");
   gb.display.setCursor(2,13);
-  gb.display.println("2. Scenario");
+  gb.display.println("2. Advanced");
   gb.display.setCursor(2,23);
   gb.display.println("BACK");
   
@@ -3615,8 +3615,6 @@ String scoreStrMod(int score)
 
 void drawTutorialScreen()
 {
-  //gb.display.drawImage(0,0,IMAGE_INFO_THEME);
-  //gb.display.drawImage(40,0,IMAGE_INFO_THEME);
   gb.display.setColor(WHITE); 
   if(Tutorial==0)
   {

@@ -150,19 +150,8 @@ void MultiplayerScenarioScene()
     {
       MapId=1;
       Tutorial=-1;
-      TurnCount=0;
-      BaseLocation = &None;
-      Attacker = &None;
-      Defender = &None;
       memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
-      Player_1.baseLevel = 1;
-      Player_1.funds = 0;
-      Player_1.totalUnits = 0;
-      Player_2.baseLevel = 1;
-      Player_2.funds = 0;
-      Player_2.totalUnits = 0;
-      CurrentPlayer=&Player_1;
-      countPlayerStats();
+      PrepareMap();
       SceneMode = MAP_MODE;
       mapMode = IDLE_MODE;
     }
@@ -204,19 +193,16 @@ void TutorialScenarioScene()
     if(tmSelectedScene==1)
     {
       Tutorial=0;
-      TurnCount=0;
-      BaseLocation = &None;
-      Attacker = &None;
-      Defender = &None;
       memcpy(CurrentBoard, TutorialBoard1, sizeof(CurrentBoard));
-      Player_1.baseLevel = 1;
-      Player_1.funds = 0;
-      Player_1.totalUnits = 0;
-      Player_2.baseLevel = 1;
-      Player_2.funds = 0;
-      Player_2.totalUnits = 0;
-      CurrentPlayer=&Player_1;
-      countPlayerStats();
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+    }
+    else if(tmSelectedScene==2)
+    {
+      Tutorial=1;
+      memcpy(CurrentBoard, TutorialBoard2, sizeof(CurrentBoard));
+      PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
     }
@@ -226,6 +212,22 @@ void TutorialScenarioScene()
       tmSelectedScene=1;
     }
   }
+}
+
+void PrepareMap()
+{
+  TurnCount=0;
+  BaseLocation = &None;
+  Attacker = &None;
+  Defender = &None;
+  Player_1.baseLevel = 1;
+  Player_1.funds = 0;
+  Player_1.totalUnits = 0;
+  Player_2.baseLevel = 1;
+  Player_2.funds = 0;
+  Player_2.totalUnits = 0;
+  CurrentPlayer=&Player_1;
+  countPlayerStats();
 }
 
 void CampaignScenarioScene()
