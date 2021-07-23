@@ -398,6 +398,12 @@ Unit getUnit(unsigned int id)
 
 void endTurn()
 {
+  int player1Units=0;
+  int player2Units=0;
+  int player1Buildings=0;
+  int player2Buildings=0;
+  int player1Bases=0;
+  int player2Bases=0;
   for(int i=0;i<16;i++)
   {
     for(int j=0;j<16;j++)
@@ -406,6 +412,35 @@ void endTurn()
       {
         CurrentBoard[j][i].active=1;
       }
+      if(CurrentBoard[j][i].unitId!=0)
+      {
+        if(CurrentBoard[j][i].unitId==1)
+          player1Units++;
+        else
+          player2Units++;    
+      }
+      if(CurrentBoard[j][i].terrainTexture==11 && CurrentBoard[j][i].terrainTexture==12)
+      {
+        if(CurrentBoard[j][i].terrainTexture==11 && CurrentBoard[j][i].playerBuilding==1)
+          player1Bases++;
+        else if(CurrentBoard[j][i].terrainTexture==11 && CurrentBoard[j][i].playerBuilding==2)
+          player2Bases++;  
+
+        if(CurrentBoard[j][i].terrainTexture==12 && CurrentBoard[j][i].playerBuilding==1)
+          player1Buildings++;
+        else if(CurrentBoard[j][i].terrainTexture==12 && CurrentBoard[j][i].playerBuilding==2)
+          player2Buildings++;  
+      }
+    }
+  }
+  if(GameMode==CAPTURE_MODE)
+  {
+    if(player1Buildings>=8 || player2Buildings>=8) // Capture victory
+    {
+      CurrentPlayer->points+=200;
+      mapMode = IDLE_MODE;
+      SceneMode = OUTCOME_MODE;
+      return;
     }
   }
   if(Tutorial>-1)

@@ -33,6 +33,7 @@ void loadMapConfig()
   {
     CurrentPlayer = &Player_2;
   }
+  GameMode=MapConfig.substring(7,8).toInt();
 }
 
 bool loadMap()
@@ -157,7 +158,7 @@ bool saveMapConfig()
   strData+=returnDecimalStringFive(MapId);
   strData+="2"; //Improve when number of players will change
   strData+=(String)CurrentPlayer->id;
-  strData+="0"; //Improve if game mode will change
+  strData+=(String)GameMode;
   strData+=" ";
   if(strData.length()==9)
   {

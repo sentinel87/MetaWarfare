@@ -150,6 +150,7 @@ void MultiplayerScenarioScene()
     {
       MapId=1;
       Tutorial=-1;
+      GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = MAP_MODE;
@@ -193,6 +194,7 @@ void TutorialScenarioScene()
     if(tmSelectedScene==1)
     {
       Tutorial=0;
+      GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, TutorialBoard1, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
@@ -201,6 +203,7 @@ void TutorialScenarioScene()
     else if(tmSelectedScene==2)
     {
       Tutorial=1;
+      GameMode=CAPTURE_MODE;
       memcpy(CurrentBoard, TutorialBoard2, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
