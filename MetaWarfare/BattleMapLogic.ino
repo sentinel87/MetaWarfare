@@ -16,12 +16,6 @@
 #define PLAYER_1 1
 #define PLAYER_2 2
 
-int posX = 0;
-int posY = 0;
-
-int sRowIdx = 0;
-int sColIdx = 0;
-
 int row = 0;
 int column = 0;
 
@@ -398,6 +392,7 @@ Unit getUnit(unsigned int id)
 
 void endTurn()
 {
+  TurnCount++;
   int player1Units=0;
   int player2Units=0;
   int player1Buildings=0;
@@ -416,10 +411,10 @@ void endTurn()
       {
         if(CurrentBoard[j][i].unitId==1)
           player1Units++;
-        else
+        else if(CurrentBoard[j][i].unitId==2)
           player2Units++;    
       }
-      if(CurrentBoard[j][i].terrainTexture==11 && CurrentBoard[j][i].terrainTexture==12)
+      if(CurrentBoard[j][i].terrainTexture==11 || CurrentBoard[j][i].terrainTexture==12)
       {
         if(CurrentBoard[j][i].terrainTexture==11 && CurrentBoard[j][i].playerBuilding==1)
           player1Bases++;
@@ -435,7 +430,7 @@ void endTurn()
   }
   if(GameMode==CAPTURE_MODE)
   {
-    if(player1Buildings>=8 || player2Buildings>=8) // Capture victory
+    if(player1Buildings>=4 || player2Buildings>=8) // Capture victory
     {
       CurrentPlayer->points+=200;
       mapMode = IDLE_MODE;
@@ -443,9 +438,21 @@ void endTurn()
       return;
     }
   }
-  if(Tutorial>-1)
+  if(Tutorial==0)
   {
-    TurnCount++;
+    if(TurnCount<=4)
+    {
+      SceneMode=TUTORIAL_MODE;
+    }
+    else
+    {
+      countPlayerStats();
+      gb.lights.fill(RED);
+      gb.gui.popup("PLAYER 1 TURN",50);
+    }
+  }
+  else if(Tutorial==1)
+  {
     if(TurnCount<=4)
     {
       SceneMode=TUTORIAL_MODE;

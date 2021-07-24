@@ -105,6 +105,10 @@ void MainMenuScene()
       {
         SceneMode = MAP_MODE;
         mapMode = IDLE_MODE;
+        posX = 0;
+        posY = 0;
+        sRowIdx = 0;
+        sColIdx = 0;
         gb.gui.popup("GAME LOADED!",50);
       }
     }
@@ -153,8 +157,9 @@ void MultiplayerScenarioScene()
       GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
       PrepareMap();
-      SceneMode = MAP_MODE;
+      SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
+      smSelectedScene=1;
     }
     else if(smSelectedScene==6)
     {
@@ -199,6 +204,7 @@ void TutorialScenarioScene()
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
+      tmSelectedScene=1;
     }
     else if(tmSelectedScene==2)
     {
@@ -208,6 +214,7 @@ void TutorialScenarioScene()
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
+      tmSelectedScene=1;
     }
     else if(tmSelectedScene==3)
     {
@@ -223,12 +230,18 @@ void PrepareMap()
   BaseLocation = &None;
   Attacker = &None;
   Defender = &None;
+  posX = 0;
+  posY = 0;
+  sRowIdx = 0;
+  sColIdx = 0;
   Player_1.baseLevel = 1;
   Player_1.funds = 0;
   Player_1.totalUnits = 0;
+  Player_1.points = 0;
   Player_2.baseLevel = 1;
   Player_2.funds = 0;
   Player_2.totalUnits = 0;
+  Player_2.points = 0;
   CurrentPlayer=&Player_1;
   countPlayerStats();
 }

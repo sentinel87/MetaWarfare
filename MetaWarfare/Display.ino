@@ -2659,6 +2659,10 @@ void drawDropdownMenu(int posX,int posY,int selection)
     gb.display.setColor(RED);  
   else
     gb.display.setColor(BLACK); 
+  if(selectedUnit.unitId!=7 && selectedUnit.unitId!=8)
+  {
+    gb.display.setColor(BEIGE);
+  }
   gb.display.setCursor(fixedX+1,fixedY+13);
   gb.display.println("CAPTURE");
   //if(selectionFrame==1 && selection==4)
@@ -3615,47 +3619,100 @@ String scoreStrMod(int score)
 
 void drawTutorialScreen()
 {
-  gb.display.setColor(WHITE); 
+  gb.display.setColor(BEIGE); 
   if(Tutorial==0)
   {
     if(TurnCount==0)
     {
-      gb.display.setCursor(0, 5);
+      gb.display.setCursor(0, 2);
       gb.display.println("Use arrows to switchmap tiles. Tap A on unit to move it. Taptwice to select     action without move.Tap B to cancel     action.To end turn  tap HOME and select END TURN.");
     }
     else if(TurnCount==1)
     {
-      gb.display.setCursor(20, 5);
-      gb.display.println("Select action");
-      gb.display.setCursor(20, 15);
-      gb.display.println("Accept action");
-      gb.display.setCursor(20, 25);
-      gb.display.println("Aim");
-      gb.display.setCursor(20, 35);
-      gb.display.println("Fire");
+      gb.display.setCursor(0, 2);
+      gb.display.println("Glowing fields showsunit movement range.It can be reduced byother units or by   terrain restrictions( mountains, sea ).");
     }
     else if(TurnCount==2)
     {
-      gb.display.setCursor(20, 5);
-      gb.display.println("Select building");
-      gb.display.setCursor(20, 15);
-      gb.display.println("Move");
-      gb.display.setCursor(20, 25);
-      gb.display.println("Select Capture action");
-      gb.display.setCursor(20, 35);
-      gb.display.println("Confirm");
+      gb.display.setCursor(0, 2);
+      gb.display.println("To attack unit, movenext to it, select  attack action and   point target ( red  fields are attackingunit range ). Tap A to fire.");
     }
     else if(TurnCount==3)
+    {
+      gb.display.setCursor(0, 2);
+      gb.display.println("To capture building,move unit into it   and select capture  action. Tap A to    confirm. This can bedone by Infantry or Mech Infantry.");
+    }
+    else if(TurnCount==4)
     {
       gb.display.setCursor(5, 5);
       gb.display.setColor(GREEN); 
       gb.display.println("MISSION:");
-      gb.display.setCursor(5, 15);
+      gb.display.setCursor(0, 15);
       gb.display.setColor(RED); 
-      gb.display.println("Capture enemy base");
-      gb.display.setColor(WHITE); 
+      gb.display.println("Capture enemy HQ");
+      gb.display.setColor(BEIGE); 
       gb.display.setCursor(0, 30);
       gb.display.println("TIP: Only Infantry  and Mech infantry   can cross mountains and capture building");
     }
   }
+  else if(Tutorial==1)
+  {
+    if(TurnCount==0)
+    {
+      gb.display.setCursor(0, 2);
+      gb.display.println("Mobile Artillery andMobile SSM Units canonly perform one    action at time: MOVEor ATTACK. Those    units cannot defend,but their attacks   are not countered.");
+    }
+    else if(TurnCount==1)
+    {
+      gb.display.setCursor(0, 2);
+      gb.display.println("Captured building   grants 100 funds    every turn. You can use it to buy new   units in the        captured base.");
+    }
+    else if(TurnCount==2)
+    {
+      gb.display.setCursor(0, 2);
+      gb.display.println("Tap A on the        captured base to    enter Base Screen.  Select unit you wantto train and tap A  to buy it. Upgrade  your base to unlock stronger units.");
+    }
+    else if(TurnCount==3)
+    {
+      gb.display.setCursor(0, 2);
+      gb.display.println("Each player can onlyhave max 25 units onthe field. If you   exceed limit, you   won't be able to    recruit new ones.");
+    }
+    else if(TurnCount==4)
+    {
+      gb.display.setCursor(5, 5);
+      gb.display.setColor(GREEN); 
+      gb.display.println("MISSION:");
+      gb.display.setCursor(0, 15);
+      gb.display.setColor(RED); 
+      gb.display.println("Capture 8 buildings.");
+    }
+  }
+  else
+  {
+    if(TurnCount==0)
+    {
+      if(GameMode==CONQUEST_MODE)
+      {
+        gb.display.setCursor(5, 5);
+        gb.display.setColor(GREEN); 
+        gb.display.println("MISSION:");
+        gb.display.setCursor(0, 15);
+        gb.display.setColor(RED); 
+        gb.display.println("Capture enemy HQ.");
+      }
+      else
+      {
+        gb.display.setCursor(5, 5);
+        gb.display.setColor(GREEN); 
+        gb.display.println("MISSION:");
+        gb.display.setCursor(0, 15);
+        gb.display.setColor(RED); 
+        gb.display.println("Capture 8 buildings.");
+      }
+    }
+  }
+  gb.display.setColor(WHITE);  
+  gb.display.setCursor(20, 56);
+  gb.display.println("CONFIRM");
+  gb.display.drawImage(50,54,Pointer);
 }

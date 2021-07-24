@@ -80,7 +80,13 @@ void BaseScene()
       {
         if(selectedAction<=CurrentPlayer->baseLevel) // Unlocked or not
         {
+          if(CurrentPlayer->totalUnits>=25)
+          {
+            gb.gui.popup("Unit limit exceeded",50);
+            return;
+          }
           CurrentPlayer->funds-=price;
+          CurrentPlayer->totalUnits++;
           BaseLocation->unitId = getUnitId();
           BaseLocation->player = CurrentPlayer->id;
           BaseLocation->unitHp = 10;

@@ -283,6 +283,10 @@ void CalculateBattleResult()
       {
         Player_1.points=99999;
       }
+      if(Player_2.totalUnits>0)
+      {
+        Player_2.totalUnits--;
+      }
     }
     else if(Defender->player==2)
     {
@@ -290,6 +294,10 @@ void CalculateBattleResult()
       if(Player_2.points>99999)
       {
         Player_2.points=99999;
+      }
+      if(Player_1.totalUnits>0)
+      {
+        Player_1.totalUnits--;
       }
     }
   }
@@ -303,6 +311,10 @@ void CalculateBattleResult()
       {
         Player_1.points=99999;
       }
+      if(Player_2.totalUnits>0)
+      {
+        Player_2.totalUnits--;
+      }
     }
     else if(Attacker->player==2)
     {
@@ -310,6 +322,10 @@ void CalculateBattleResult()
       if(Player_2.points>99999)
       {
         Player_2.points=99999;
+      }
+      if(Player_1.totalUnits>0)
+      {
+        Player_1.totalUnits--;
       }
     }
   }
@@ -398,6 +414,10 @@ void animationFrames()
       else if(AttackerAttackType==ARTILLERY_EFFECT || DefenderAttackType==ARTILLERY_EFFECT)
       {
         gb.sound.fx(artilleryExplosionSound);
+      }
+      else
+      {
+        gb.sound.fx(gunExplosionSound);
       }
     }
     else
