@@ -243,7 +243,7 @@ void PrepareMap()
   Player_2.totalUnits = 0;
   Player_2.points = 0;
   CurrentPlayer=&Player_1;
-  countPlayerStats();
+  //countPlayerStats();
 }
 
 void CampaignScenarioScene()
