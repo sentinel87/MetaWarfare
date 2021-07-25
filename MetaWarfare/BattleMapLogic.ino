@@ -48,7 +48,12 @@ void BattleMap()
     if(mapMode == UNIT_MENU_MODE)
     {
       if(menuSelection==ATTACK_ACTION)
-        menuSelection=CAPTURE_ACTION;
+      {
+        if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
+          menuSelection=CAPTURE_ACTION;
+        else
+          menuSelection=STOP_ACTION;
+      }
       else if(menuSelection==CAPTURE_ACTION)
         menuSelection=STOP_ACTION;
       else
@@ -59,7 +64,12 @@ void BattleMap()
       if(infoSelection==RESUME_INFO_ACTION)
         infoSelection=QUIT_INFO_ACTION;
       else if(infoSelection==QUIT_INFO_ACTION)
-        infoSelection=SAVE_INFO_ACTION; 
+      {
+        if(Tutorial==-1)
+          infoSelection=SAVE_INFO_ACTION;
+        else
+          infoSelection=END_TURN_INFO_ACTION;
+      }
       else if(infoSelection==SAVE_INFO_ACTION)
         infoSelection=END_TURN_INFO_ACTION;
       else
@@ -83,7 +93,12 @@ void BattleMap()
       if(menuSelection==ATTACK_ACTION)
         menuSelection=STOP_ACTION;
       else if(menuSelection==STOP_ACTION)
-        menuSelection=CAPTURE_ACTION;
+      {
+        if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
+          menuSelection=CAPTURE_ACTION;
+        else
+          menuSelection=ATTACK_ACTION;
+      }
       else
         menuSelection=ATTACK_ACTION;
     }
@@ -92,7 +107,12 @@ void BattleMap()
       if(infoSelection==RESUME_INFO_ACTION)
         infoSelection=END_TURN_INFO_ACTION;
       else if(infoSelection==END_TURN_INFO_ACTION)
-        infoSelection=SAVE_INFO_ACTION;
+      {
+        if(Tutorial==-1)
+          infoSelection=SAVE_INFO_ACTION;
+        else
+          infoSelection=QUIT_INFO_ACTION;
+      }
       else if(infoSelection==SAVE_INFO_ACTION)
         infoSelection=QUIT_INFO_ACTION;
       else
@@ -114,7 +134,12 @@ void BattleMap()
     if(mapMode == UNIT_MENU_MODE)
     {
       if(menuSelection==ATTACK_ACTION)
-        menuSelection=CAPTURE_ACTION;
+      {
+        if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
+          menuSelection=CAPTURE_ACTION;
+        else
+          menuSelection=STOP_ACTION;
+      }
       else if(menuSelection==CAPTURE_ACTION)
         menuSelection=STOP_ACTION;
       else
@@ -125,7 +150,12 @@ void BattleMap()
       if(infoSelection==RESUME_INFO_ACTION)
         infoSelection=QUIT_INFO_ACTION;
       else if(infoSelection==QUIT_INFO_ACTION)
-        infoSelection=SAVE_INFO_ACTION; 
+      {
+        if(Tutorial==-1)
+          infoSelection=SAVE_INFO_ACTION;
+        else
+          infoSelection=END_TURN_INFO_ACTION;
+      } 
       else if(infoSelection==SAVE_INFO_ACTION)
         infoSelection=END_TURN_INFO_ACTION;
       else
@@ -149,7 +179,12 @@ void BattleMap()
       if(menuSelection==ATTACK_ACTION)
         menuSelection=STOP_ACTION;
       else if(menuSelection==STOP_ACTION)
-        menuSelection=CAPTURE_ACTION;
+      {
+        if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
+          menuSelection=CAPTURE_ACTION;
+        else
+          menuSelection=ATTACK_ACTION;
+      }
       else
         menuSelection=ATTACK_ACTION;
     }
@@ -158,7 +193,12 @@ void BattleMap()
       if(infoSelection==RESUME_INFO_ACTION)
         infoSelection=END_TURN_INFO_ACTION;
       else if(infoSelection==END_TURN_INFO_ACTION)
-        infoSelection=SAVE_INFO_ACTION;
+      {
+        if(Tutorial==-1)
+          infoSelection=SAVE_INFO_ACTION;
+        else
+          infoSelection=QUIT_INFO_ACTION;
+      }
       else if(infoSelection==SAVE_INFO_ACTION)
         infoSelection=QUIT_INFO_ACTION;
       else

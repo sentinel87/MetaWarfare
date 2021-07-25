@@ -128,7 +128,7 @@ void MultiplayerScenarioScene()
   drawScenarioMenu(65,1+(smSelectedScene-1)*10);
   if(gb.buttons.pressed(BUTTON_UP))
   {
-    if(smSelectedScene>0)
+    if(smSelectedScene>1)
     {
       smSelectedScene--;
     }
