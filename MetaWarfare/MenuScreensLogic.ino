@@ -125,7 +125,7 @@ void MainMenuScene()
 
 void MultiplayerScenarioScene()
 {
-  drawScenarioMenu(65,1+(smSelectedScene-1)*10);
+  drawScenarioMenu(65,1+(smSelectedScene-1)*6);
   if(gb.buttons.pressed(BUTTON_UP))
   {
     if(smSelectedScene>1)
@@ -161,6 +161,28 @@ void MultiplayerScenarioScene()
       mapMode = IDLE_MODE;
       smSelectedScene=1;
     }
+    else if(smSelectedScene==2)
+    {
+      MapId=2;
+      Tutorial=-1;
+      GameMode=CAPTURE_MODE;
+      memcpy(CurrentBoard, Board2, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      smSelectedScene=1;
+    }
+    else if(smSelectedScene==3)
+    {
+      MapId=3;
+      Tutorial=-1;
+      GameMode=CONQUEST_MODE;
+      memcpy(CurrentBoard, Board3, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      smSelectedScene=1;
+    }
     else if(smSelectedScene==6)
     {
       SceneMode=MENU_MODE;
@@ -171,7 +193,7 @@ void MultiplayerScenarioScene()
 
 void TutorialScenarioScene()
 {
-  drawTutorialMenu(65,1+(tmSelectedScene-1)*10);
+  drawTutorialMenu(65,1+(tmSelectedScene-1)*6);
   if(gb.buttons.pressed(BUTTON_UP))
   {
     if(tmSelectedScene>1)

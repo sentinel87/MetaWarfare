@@ -74,6 +74,7 @@ void BaseScene()
           CurrentPlayer->baseLevel++;
           gb.lights.fill(GREEN);
           gb.gui.popup("Base upgraded!",50);
+          gb.sound.fx(selectSound);
         }
       }
       else
@@ -92,6 +93,7 @@ void BaseScene()
           BaseLocation->unitHp = 10;
           BaseLocation=&None;
           SceneMode=MAP_MODE;
+          gb.sound.fx(selectSound);
           gb.lights.fill(GREEN);
         }
       }

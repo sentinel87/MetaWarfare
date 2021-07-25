@@ -311,6 +311,7 @@ void BattleMap()
             {
               gb.lights.fill(BLUE);
             }
+            gb.sound.fx(captureSound);
             gb.gui.popup("BUILDING ACQUIRED!",50);
           }
       }
@@ -351,6 +352,7 @@ void BattleMap()
         mapMode = MOVEMENT_MODE;
         cancelMode=true;
         drawUnitMovementGrid();
+        gb.sound.fx(selectSound);
       }
       else if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].playerBuilding==CurrentPlayer->id && CurrentBoard[row][column].terrainTexture==11) // Select base
       {
@@ -433,8 +435,6 @@ Unit getUnit(unsigned int id)
 void endTurn()
 {
   TurnCount++;
-  int player1Units=0;
-  int player2Units=0;
   int player1Buildings=0;
   int player2Buildings=0;
   int player1Bases=0;
@@ -446,13 +446,6 @@ void endTurn()
       if(CurrentBoard[j][i].unitId!=0 && CurrentBoard[j][i].player==CurrentPlayer->id)
       {
         CurrentBoard[j][i].active=1;
-      }
-      if(CurrentBoard[j][i].unitId!=0)
-      {
-        if(CurrentBoard[j][i].unitId==1)
-          player1Units++;
-        else if(CurrentBoard[j][i].unitId==2)
-          player2Units++;    
       }
       if(CurrentBoard[j][i].terrainTexture==11 || CurrentBoard[j][i].terrainTexture==12)
       {
@@ -470,7 +463,7 @@ void endTurn()
   }
   if(GameMode==CAPTURE_MODE)
   {
-    if(player1Buildings>=4 || player2Buildings>=8) // Capture victory
+    if(player1Buildings>=8 || player2Buildings>=8) // Capture victory
     {
       CurrentPlayer->points+=200;
       mapMode = IDLE_MODE;

@@ -47,6 +47,18 @@ bool loadMap()
       result=true;
     }
     break;
+    case 2:
+    {
+      memcpy(CurrentBoard, Board2, sizeof(CurrentBoard));
+      result=true;
+    }
+    break;
+    case 3:
+    {
+      memcpy(CurrentBoard, Board3, sizeof(CurrentBoard));
+      result=true;
+    }
+    break;
     default:
     {
       result=false;

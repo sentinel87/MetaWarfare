@@ -2540,15 +2540,15 @@ void drawScenarioMenu(int posX, int posY)
   gb.display.setColor(WHITE);
   gb.display.setCursor(2,3);
   gb.display.println("1. Lake valley");
-  gb.display.setCursor(2,13);
-  gb.display.println("2. Scenario");
-  gb.display.setCursor(2,23);
-  gb.display.println("3. Scenario");
-  gb.display.setCursor(2,33);
+  gb.display.setCursor(2,9);
+  gb.display.println("2. Island");
+  gb.display.setCursor(2,15);
+  gb.display.println("3. Duel plains");
+  gb.display.setCursor(2,21);
   gb.display.println("4. Scenario");
-  gb.display.setCursor(2,43);
+  gb.display.setCursor(2,27);
   gb.display.println("5. Scenario");
-  gb.display.setCursor(2,53);
+  gb.display.setCursor(2,33);
   gb.display.println("BACK");
   
   gb.display.drawImage(posX,posY,Pointer);
@@ -2559,10 +2559,10 @@ void drawTutorialMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.setColor(WHITE);
   gb.display.setCursor(2,3);
-  gb.display.println("1. Basics");
-  gb.display.setCursor(2,13);
+  gb.display.println("1. Basic");
+  gb.display.setCursor(2,9);
   gb.display.println("2. Advanced");
-  gb.display.setCursor(2,23);
+  gb.display.setCursor(2,15);
   gb.display.println("BACK");
   
   gb.display.drawImage(posX,posY,Pointer);
@@ -3671,7 +3671,7 @@ void drawTutorialScreen()
     else if(TurnCount==3)
     {
       gb.display.setCursor(0, 2);
-      gb.display.println("To capture building,move unit into it   and select capture  action. Tap A to    confirm. This can bedone by Infantry or Mech Infantry.");
+      gb.display.println("To capture building,move unit into it   and select capture  action. Tap A to    confirm. This can bedone by Infantry or AT Infantry.");
     }
     else if(TurnCount==4)
     {
@@ -3683,7 +3683,7 @@ void drawTutorialScreen()
       gb.display.println("Capture enemy HQ");
       gb.display.setColor(BEIGE); 
       gb.display.setCursor(0, 30);
-      gb.display.println("TIP: Only Infantry  and Mech infantry   can cross mountains and capture building");
+      gb.display.println("TIP: Only Infantry  and AT Infantry     can cross mountains and capture building");
     }
   }
   else if(Tutorial==1)
