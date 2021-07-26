@@ -21,7 +21,7 @@ const Gamebuino_Meta::Sound_FX cannonExplosionSound[] = {
 };
 
 const Gamebuino_Meta::Sound_FX artilleryExplosionSound[] = {
-    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,40,20,20,70,20},
+    {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,60,20,20,70,20},
 };
 
 const Gamebuino_Meta::Sound_FX gunFireSound[] = {

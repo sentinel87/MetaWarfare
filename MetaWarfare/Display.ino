@@ -62,6 +62,8 @@ void drawScenarioMenu(int posX, int posY)
   gb.display.setCursor(2,33);
   gb.display.println("6. Rocky pass");
   gb.display.setCursor(2,39);
+  gb.display.println("7. Sea coast");
+  gb.display.setCursor(2,45);
   gb.display.println("BACK");
   
   gb.display.drawImage(posX,posY,Pointer);

@@ -76,6 +76,12 @@ bool loadMap()
       result=true;
     }
     break;
+    case 7:
+    {
+      memcpy(CurrentBoard, Board7, sizeof(CurrentBoard));
+      result=true;
+    }
+    break;
     default:
     {
       result=false;
