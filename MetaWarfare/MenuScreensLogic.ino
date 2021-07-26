@@ -134,12 +134,12 @@ void MultiplayerScenarioScene()
     }
     else
     {
-      smSelectedScene=6;
+      smSelectedScene=7;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(smSelectedScene<6)
+    if(smSelectedScene<7)
     {
       smSelectedScene++;
     }
@@ -183,7 +183,40 @@ void MultiplayerScenarioScene()
       mapMode = IDLE_MODE;
       smSelectedScene=1;
     }
+    else if(smSelectedScene==4)
+    {
+      MapId=4;
+      Tutorial=-1;
+      GameMode=CAPTURE_MODE;
+      memcpy(CurrentBoard, Board4, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      smSelectedScene=1;
+    }
+    else if(smSelectedScene==5)
+    {
+      MapId=5;
+      Tutorial=-1;
+      GameMode=CONQUEST_MODE;
+      memcpy(CurrentBoard, Board5, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      smSelectedScene=1;
+    }
     else if(smSelectedScene==6)
+    {
+      MapId=6;
+      Tutorial=-1;
+      GameMode=CAPTURE_MODE;
+      memcpy(CurrentBoard, Board6, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      smSelectedScene=1;
+    }
+    else if(smSelectedScene==7)
     {
       SceneMode=MENU_MODE;
       smSelectedScene=1;

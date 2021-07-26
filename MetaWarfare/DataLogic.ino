@@ -6,7 +6,6 @@ bool LoadGame()
   if(loadMap()==true)
   {
     clearMap();
-    //TODO: Load player and map params
     BaseLocation = &None;
     Attacker = &None;
     Defender = &None;
@@ -56,6 +55,24 @@ bool loadMap()
     case 3:
     {
       memcpy(CurrentBoard, Board3, sizeof(CurrentBoard));
+      result=true;
+    }
+    break;
+    case 4:
+    {
+      memcpy(CurrentBoard, Board4, sizeof(CurrentBoard));
+      result=true;
+    }
+    break;
+    case 5:
+    {
+      memcpy(CurrentBoard, Board5, sizeof(CurrentBoard));
+      result=true;
+    }
+    break;
+    case 6:
+    {
+      memcpy(CurrentBoard, Board6, sizeof(CurrentBoard));
       result=true;
     }
     break;

@@ -22,9 +22,7 @@
 int LeftSceneTheme=FOREST;
 int RightSceneTheme=FOREST;
 
-//GameTileStruct Attacker={12,1,6,10,0,0};
 int AttackerAttackType=TANK_GUN_EFFECT;
-//GameTileStruct Defender={12,2,6,10,0,0};
 int DefenderAttackType=TANK_GUN_EFFECT;
 
 int SceneState=SCENE_STATE_IDLE;
@@ -39,7 +37,7 @@ int ReducedDefenderHealth=10;
 
 bool debugRefresh=false;
 
-double attackArray[9][9]
+const double attackArray[9][9]
 {
   {0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00},
   {0.00,0.50,0.21,0.11,0.11,0.30,0.30,0.75,0.65},
