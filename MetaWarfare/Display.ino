@@ -1067,6 +1067,9 @@ void drawBaseScreen(int posX, int posY)
     drawUnitField(42,32,4,900);
   else
     gb.display.drawImage(42,32,IMAGE_QUESTION_MARK);
+  gb.display.setColor(GREEN); 
+  gb.display.setCursor(3,44);
+  gb.display.println("UP");
   int baseCost = 50 + (CurrentPlayer->baseLevel * 100);
   gb.display.setColor(ORANGE); 
   gb.display.setCursor(14,44);

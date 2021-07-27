@@ -43,7 +43,7 @@ void BattleMap()
   else if(mapMode == INFO_MODE)
     drawInfoMenu(infoSelection);
   
-  if(gb.buttons.pressed(BUTTON_UP))
+  if(gb.buttons.repeat(BUTTON_UP,3))
   {
     if(mapMode == UNIT_MENU_MODE)
     {
@@ -86,7 +86,7 @@ void BattleMap()
       }
     }
   }
-  else if(gb.buttons.pressed(BUTTON_DOWN))
+  else if(gb.buttons.repeat(BUTTON_DOWN,3))
   {
     if(mapMode == UNIT_MENU_MODE)
     {
@@ -129,7 +129,7 @@ void BattleMap()
       }
     }
   }
-  else if(gb.buttons.pressed(BUTTON_LEFT))
+  else if(gb.buttons.repeat(BUTTON_LEFT,3))
   {
     if(mapMode == UNIT_MENU_MODE)
     {
@@ -172,7 +172,7 @@ void BattleMap()
       }
     }
   }
-  else if(gb.buttons.pressed(BUTTON_RIGHT))
+  else if(gb.buttons.repeat(BUTTON_RIGHT,3))
   {
     if(mapMode == UNIT_MENU_MODE)
     {
@@ -525,9 +525,13 @@ void countPlayerStats()
     {
       if((CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12 || CurrentBoard[i][j].terrainTexture==25) && CurrentBoard[i][j].playerBuilding==CurrentPlayer->id)
       {
-        if(CurrentPlayer->funds<10000)
+        if(CurrentPlayer->funds<9900)
         {
           CurrentPlayer->funds += 100;
+          if(CurrentPlayer->funds>=10000)
+          {
+            CurrentPlayer->funds=9900;
+          }
         }
       }
       if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player==CurrentPlayer->id)
@@ -577,7 +581,9 @@ void drawUnitMovementGrid()
                 CurrentBoard[tRow+m][tColumn].moveGrid=0;
             }
             else
+            {
                 CurrentBoard[tRow+m][tColumn].moveGrid=1;
+            }
         }
         if(tRow-m>=minX)
         {
@@ -766,7 +772,7 @@ bool restrictedMove(GameTileStruct tile,unsigned int canCrossMountains)
         return true;
     if(canCrossMountains==0 && tile.terrainTexture==2)
         return true;
-    if(tile.unitId!=0)
+    if(tile.unitId!=0 && tile.player!=CurrentPlayer->id)
         return true;
     return false;
 }

@@ -93,6 +93,8 @@ void BaseScene()
           BaseLocation->unitHp = 10;
           BaseLocation=&None;
           SceneMode=MAP_MODE;
+          rowIdx=0;
+          colIdx=0;
           gb.sound.fx(selectSound);
           gb.lights.fill(GREEN);
         }
@@ -103,6 +105,8 @@ void BaseScene()
   {
     SceneMode=MAP_MODE;
     BaseLocation=&None;
+    rowIdx=0;
+    colIdx=0;
   }
 }
 

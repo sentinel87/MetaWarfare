@@ -109,6 +109,7 @@ void MainMenuScene()
         posY = 0;
         sRowIdx = 0;
         sColIdx = 0;
+        Tutorial=-1;
         gb.gui.popup("GAME LOADED!",50);
       }
     }
