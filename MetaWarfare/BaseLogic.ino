@@ -95,6 +95,7 @@ void BaseScene()
           SceneMode=MAP_MODE;
           rowIdx=0;
           colIdx=0;
+          selectedAction = INFANTRY_SELECTION;
           gb.sound.fx(selectSound);
           gb.lights.fill(GREEN);
         }
@@ -107,6 +108,7 @@ void BaseScene()
     BaseLocation=&None;
     rowIdx=0;
     colIdx=0;
+    selectedAction = INFANTRY_SELECTION;
   }
 }
 

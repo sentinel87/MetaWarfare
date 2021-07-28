@@ -240,13 +240,13 @@ void drawInfoMenu(int selection)
   gb.display.println("Gd:");
   gb.display.setCursor(15,9);
   gb.display.println(CurrentPlayer->funds);
-  drawTerrain(3,2,16);
-  gb.display.drawImage(15,16,IMAGE_SHIELD);
-  gb.display.setColor(GRAY);
-  gb.display.setCursor(25,18);
-  gb.display.println("+2");
-  gb.display.setCursor(2,27);
-  gb.display.println("Road");
+  //drawTerrain(3,2,16);
+  //gb.display.drawImage(15,16,IMAGE_SHIELD);
+  //gb.display.setColor(GRAY);
+  //gb.display.setCursor(25,18);
+  //gb.display.println("+2");
+  //gb.display.setCursor(2,27);
+  //gb.display.println("Road");
   
   if(selectionFrame==1 && infoSelection==RESUME_INFO_ACTION)
     gb.display.setColor(RED);  
@@ -393,7 +393,6 @@ void drawBattleScene(int attacker,int attackUnitId,int defender,int defenderUnit
   gb.display.setColor(BLACK);
   gb.display.drawLine(40,0,40,32);
   gb.display.drawLine(39,33,39,64);
-  //debug();
 }
 
 void drawLeftBattleScene(int player, int unitId)
