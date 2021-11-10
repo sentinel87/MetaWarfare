@@ -35,373 +35,382 @@ bool noMove=false;
 int menuSelection=1;
 int infoSelection=1;
 
+bool AITurn=false;
+
 void BattleMap()
 {
   drawMap();
-  if(mapMode == UNIT_MENU_MODE)
-    drawDropdownMenu(posX,posY,menuSelection);
-  else if(mapMode == INFO_MODE)
-    drawInfoMenu(infoSelection);
-  
-  if(gb.buttons.repeat(BUTTON_UP,3))
+  if(AITurn==false)
   {
     if(mapMode == UNIT_MENU_MODE)
-    {
-      if(menuSelection==ATTACK_ACTION)
-      {
-        if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
-          menuSelection=CAPTURE_ACTION;
-        else
-          menuSelection=STOP_ACTION;
-      }
-      else if(menuSelection==CAPTURE_ACTION)
-        menuSelection=STOP_ACTION;
-      else
-        menuSelection=ATTACK_ACTION;
-    }
+      drawDropdownMenu(posX,posY,menuSelection);
     else if(mapMode == INFO_MODE)
+      drawInfoMenu(infoSelection);
+    
+    if(gb.buttons.repeat(BUTTON_UP,3))
     {
-      if(infoSelection==RESUME_INFO_ACTION)
-        infoSelection=QUIT_INFO_ACTION;
-      else if(infoSelection==QUIT_INFO_ACTION)
+      if(mapMode == UNIT_MENU_MODE)
       {
-        if(Tutorial==-1)
-          infoSelection=SAVE_INFO_ACTION;
-        else
-          infoSelection=END_TURN_INFO_ACTION;
-      }
-      else if(infoSelection==SAVE_INFO_ACTION)
-        infoSelection=END_TURN_INFO_ACTION;
-      else
-        infoSelection=RESUME_INFO_ACTION;
-    }
-    else
-    {
-      if(posY!=0)
-        posY-=10;
-      else
-      {
-        if(sRowIdx>0)
-          sRowIdx--;
-      }
-    }
-  }
-  else if(gb.buttons.repeat(BUTTON_DOWN,3))
-  {
-    if(mapMode == UNIT_MENU_MODE)
-    {
-      if(menuSelection==ATTACK_ACTION)
-        menuSelection=STOP_ACTION;
-      else if(menuSelection==STOP_ACTION)
-      {
-        if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
-          menuSelection=CAPTURE_ACTION;
-        else
-          menuSelection=ATTACK_ACTION;
-      }
-      else
-        menuSelection=ATTACK_ACTION;
-    }
-    else if(mapMode == INFO_MODE)
-    {
-      if(infoSelection==RESUME_INFO_ACTION)
-        infoSelection=END_TURN_INFO_ACTION;
-      else if(infoSelection==END_TURN_INFO_ACTION)
-      {
-        if(Tutorial==-1)
-          infoSelection=SAVE_INFO_ACTION;
-        else
-          infoSelection=QUIT_INFO_ACTION;
-      }
-      else if(infoSelection==SAVE_INFO_ACTION)
-        infoSelection=QUIT_INFO_ACTION;
-      else
-        infoSelection=RESUME_INFO_ACTION;
-    }
-    else
-    {
-      if(posY!=50)
-        posY+=10;
-      else
-      {
-        if(sRowIdx<expandedHeight)
-          sRowIdx++;
-      }
-    }
-  }
-  else if(gb.buttons.repeat(BUTTON_LEFT,3))
-  {
-    if(mapMode == UNIT_MENU_MODE)
-    {
-      if(menuSelection==ATTACK_ACTION)
-      {
-        if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
-          menuSelection=CAPTURE_ACTION;
-        else
-          menuSelection=STOP_ACTION;
-      }
-      else if(menuSelection==CAPTURE_ACTION)
-        menuSelection=STOP_ACTION;
-      else
-        menuSelection=ATTACK_ACTION;
-    }
-    else if(mapMode == INFO_MODE)
-    {
-      if(infoSelection==RESUME_INFO_ACTION)
-        infoSelection=QUIT_INFO_ACTION;
-      else if(infoSelection==QUIT_INFO_ACTION)
-      {
-        if(Tutorial==-1)
-          infoSelection=SAVE_INFO_ACTION;
-        else
-          infoSelection=END_TURN_INFO_ACTION;
-      } 
-      else if(infoSelection==SAVE_INFO_ACTION)
-        infoSelection=END_TURN_INFO_ACTION;
-      else
-        infoSelection=RESUME_INFO_ACTION;
-    }
-    else
-    {
-      if(posX!=0)
-        posX-=10;
-      else
-      {
-        if(sColIdx>0)
-          sColIdx--;
-      }
-    }
-  }
-  else if(gb.buttons.repeat(BUTTON_RIGHT,3))
-  {
-    if(mapMode == UNIT_MENU_MODE)
-    {
-      if(menuSelection==ATTACK_ACTION)
-        menuSelection=STOP_ACTION;
-      else if(menuSelection==STOP_ACTION)
-      {
-        if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
-          menuSelection=CAPTURE_ACTION;
-        else
-          menuSelection=ATTACK_ACTION;
-      }
-      else
-        menuSelection=ATTACK_ACTION;
-    }
-    else if(mapMode == INFO_MODE)
-    {
-      if(infoSelection==RESUME_INFO_ACTION)
-        infoSelection=END_TURN_INFO_ACTION;
-      else if(infoSelection==END_TURN_INFO_ACTION)
-      {
-        if(Tutorial==-1)
-          infoSelection=SAVE_INFO_ACTION;
-        else
-          infoSelection=QUIT_INFO_ACTION;
-      }
-      else if(infoSelection==SAVE_INFO_ACTION)
-        infoSelection=QUIT_INFO_ACTION;
-      else
-        infoSelection=RESUME_INFO_ACTION;
-    }
-    else
-    {
-      if(posX!=70)
-        posX+=10;
-      else
-      {
-        if(sColIdx<expandedWidth)
-          sColIdx++;
-      }
-    }
-  }
-  else if(gb.buttons.pressed(BUTTON_A))
-  {
-    row = sRowIdx;
-    if(posY>0)
-      row+=(posY/10);
-    column = sColIdx;
-    if(posX>0)
-      column+=(posX/10);
-      
-    if(mapMode == MOVEMENT_MODE) // Move action
-    {
-      if(row==baseTileRow && column==baseTileColumn) // If unit does not want to move
-      {
-        noMove=true;
-        clearGrid();
-        menuSelection = ATTACK_ACTION;
-        mapMode = UNIT_MENU_MODE;
-      }
-      else // unit moves
-      {
-        if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].moveGrid==1)
+        if(menuSelection==ATTACK_ACTION)
         {
-          //Fill destination tile with unit info
-          CurrentBoard[row][column].player=CurrentBoard[baseTileRow][baseTileColumn].player;
-          CurrentBoard[row][column].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
-          CurrentBoard[row][column].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
-          CurrentBoard[row][column].active=1;
-          //Remove unit info from starting tile
-          CurrentBoard[baseTileRow][baseTileColumn].player=0;
-          CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
-          CurrentBoard[baseTileRow][baseTileColumn].unitHp=0;
+          if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
+            menuSelection=CAPTURE_ACTION;
+          else
+            menuSelection=STOP_ACTION;
+        }
+        else if(menuSelection==CAPTURE_ACTION)
+          menuSelection=STOP_ACTION;
+        else
+          menuSelection=ATTACK_ACTION;
+      }
+      else if(mapMode == INFO_MODE)
+      {
+        if(infoSelection==RESUME_INFO_ACTION)
+          infoSelection=QUIT_INFO_ACTION;
+        else if(infoSelection==QUIT_INFO_ACTION)
+        {
+          if(Tutorial==-1)
+            infoSelection=SAVE_INFO_ACTION;
+          else
+            infoSelection=END_TURN_INFO_ACTION;
+        }
+        else if(infoSelection==SAVE_INFO_ACTION)
+          infoSelection=END_TURN_INFO_ACTION;
+        else
+          infoSelection=RESUME_INFO_ACTION;
+      }
+      else
+      {
+        if(posY!=0)
+          posY-=10;
+        else
+        {
+          if(sRowIdx>0)
+            sRowIdx--;
+        }
+      }
+    }
+    else if(gb.buttons.repeat(BUTTON_DOWN,3))
+    {
+      if(mapMode == UNIT_MENU_MODE)
+      {
+        if(menuSelection==ATTACK_ACTION)
+          menuSelection=STOP_ACTION;
+        else if(menuSelection==STOP_ACTION)
+        {
+          if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
+            menuSelection=CAPTURE_ACTION;
+          else
+            menuSelection=ATTACK_ACTION;
+        }
+        else
+          menuSelection=ATTACK_ACTION;
+      }
+      else if(mapMode == INFO_MODE)
+      {
+        if(infoSelection==RESUME_INFO_ACTION)
+          infoSelection=END_TURN_INFO_ACTION;
+        else if(infoSelection==END_TURN_INFO_ACTION)
+        {
+          if(Tutorial==-1)
+            infoSelection=SAVE_INFO_ACTION;
+          else
+            infoSelection=QUIT_INFO_ACTION;
+        }
+        else if(infoSelection==SAVE_INFO_ACTION)
+          infoSelection=QUIT_INFO_ACTION;
+        else
+          infoSelection=RESUME_INFO_ACTION;
+      }
+      else
+      {
+        if(posY!=50)
+          posY+=10;
+        else
+        {
+          if(sRowIdx<expandedHeight)
+            sRowIdx++;
+        }
+      }
+    }
+    else if(gb.buttons.repeat(BUTTON_LEFT,3))
+    {
+      if(mapMode == UNIT_MENU_MODE)
+      {
+        if(menuSelection==ATTACK_ACTION)
+        {
+          if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
+            menuSelection=CAPTURE_ACTION;
+          else
+            menuSelection=STOP_ACTION;
+        }
+        else if(menuSelection==CAPTURE_ACTION)
+          menuSelection=STOP_ACTION;
+        else
+          menuSelection=ATTACK_ACTION;
+      }
+      else if(mapMode == INFO_MODE)
+      {
+        if(infoSelection==RESUME_INFO_ACTION)
+          infoSelection=QUIT_INFO_ACTION;
+        else if(infoSelection==QUIT_INFO_ACTION)
+        {
+          if(Tutorial==-1)
+            infoSelection=SAVE_INFO_ACTION;
+          else
+            infoSelection=END_TURN_INFO_ACTION;
+        } 
+        else if(infoSelection==SAVE_INFO_ACTION)
+          infoSelection=END_TURN_INFO_ACTION;
+        else
+          infoSelection=RESUME_INFO_ACTION;
+      }
+      else
+      {
+        if(posX!=0)
+          posX-=10;
+        else
+        {
+          if(sColIdx>0)
+            sColIdx--;
+        }
+      }
+    }
+    else if(gb.buttons.repeat(BUTTON_RIGHT,3))
+    {
+      if(mapMode == UNIT_MENU_MODE)
+      {
+        if(menuSelection==ATTACK_ACTION)
+          menuSelection=STOP_ACTION;
+        else if(menuSelection==STOP_ACTION)
+        {
+          if(selectedUnit.unitId==7 || selectedUnit.unitId==8)
+            menuSelection=CAPTURE_ACTION;
+          else
+            menuSelection=ATTACK_ACTION;
+        }
+        else
+          menuSelection=ATTACK_ACTION;
+      }
+      else if(mapMode == INFO_MODE)
+      {
+        if(infoSelection==RESUME_INFO_ACTION)
+          infoSelection=END_TURN_INFO_ACTION;
+        else if(infoSelection==END_TURN_INFO_ACTION)
+        {
+          if(Tutorial==-1)
+            infoSelection=SAVE_INFO_ACTION;
+          else
+            infoSelection=QUIT_INFO_ACTION;
+        }
+        else if(infoSelection==SAVE_INFO_ACTION)
+          infoSelection=QUIT_INFO_ACTION;
+        else
+          infoSelection=RESUME_INFO_ACTION;
+      }
+      else
+      {
+        if(posX!=70)
+          posX+=10;
+        else
+        {
+          if(sColIdx<expandedWidth)
+            sColIdx++;
+        }
+      }
+    }
+    else if(gb.buttons.pressed(BUTTON_A))
+    {
+      row = sRowIdx;
+      if(posY>0)
+        row+=(posY/10);
+      column = sColIdx;
+      if(posX>0)
+        column+=(posX/10);
+        
+      if(mapMode == MOVEMENT_MODE) // Move action
+      {
+        if(row==baseTileRow && column==baseTileColumn) // If unit does not want to move
+        {
+          noMove=true;
+          clearGrid();
+          menuSelection = ATTACK_ACTION;
+          mapMode = UNIT_MENU_MODE;
+        }
+        else // unit moves
+        {
+          if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].moveGrid==1)
+          {
+            //Fill destination tile with unit info
+            CurrentBoard[row][column].player=CurrentBoard[baseTileRow][baseTileColumn].player;
+            CurrentBoard[row][column].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
+            CurrentBoard[row][column].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
+            CurrentBoard[row][column].active=1;
+            //Remove unit info from starting tile
+            CurrentBoard[baseTileRow][baseTileColumn].player=0;
+            CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
+            CurrentBoard[baseTileRow][baseTileColumn].unitHp=0;
+            CurrentBoard[baseTileRow][baseTileColumn].active=0;
+            baseTileRow=row;
+            baseTileColumn=column;
+            clearGrid();
+            if(CurrentBoard[row][column].unitId==5 || CurrentBoard[row][column].unitId==6) // Artillery can only move without attack
+            {
+              CurrentBoard[row][column].active=0;
+              mapMode = IDLE_MODE;
+              cancelMode=false;
+            }
+            else
+            {
+              menuSelection = ATTACK_ACTION;
+              mapMode = UNIT_MENU_MODE; 
+            } 
+          }
+        }
+      }
+      else if(mapMode == TARGET_MODE) // Attack action
+      {
+          if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=CurrentPlayer->id && CurrentBoard[row][column].moveGrid==2)
+          {
+            mapMode = IDLE_MODE;
+            CurrentBoard[baseTileRow][baseTileColumn].active=0;
+            //Prepare tiles for battle scene
+            Attacker = &CurrentBoard[baseTileRow][baseTileColumn];
+            Defender = &CurrentBoard[row][column];
+            PrepareBattleScene();
+            SceneMode=BATTLE_MODE;
+            cancelMode=false;
+            clearGrid();
+          }
+      }
+      else if(mapMode == UNIT_MENU_MODE) // Dropdown menu
+      {
+        if(menuSelection==ATTACK_ACTION)
+        {
+          drawUnitAttackGrid();
+          mapMode = TARGET_MODE;
+        }
+        else if(menuSelection==CAPTURE_ACTION)
+        {
+          if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) 
+            && (CurrentBoard[baseTileRow][baseTileColumn].unitId==7 || CurrentBoard[baseTileRow][baseTileColumn].unitId==8)
+            && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=CurrentPlayer->id)
+            {
+              CurrentBoard[baseTileRow][baseTileColumn].playerBuilding=CurrentPlayer->id;
+              CurrentBoard[baseTileRow][baseTileColumn].active=0;
+              cancelMode=false;
+              if(CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) //if player capture capital
+              {
+                CurrentPlayer->points+=200;
+                mapMode = IDLE_MODE;
+                SceneMode = OUTCOME_MODE;
+                return;
+              }
+              mapMode = IDLE_MODE;
+              if(CurrentPlayer->id==1)
+              {
+                gb.lights.fill(RED);
+              }
+              else if(CurrentPlayer->id==2)
+              {
+                gb.lights.fill(BLUE);
+              }
+              gb.sound.fx(captureSound);
+              gb.gui.popup("BUILDING ACQUIRED!",50);
+            }
+        }
+        else //CANCEL
+        {
           CurrentBoard[baseTileRow][baseTileColumn].active=0;
+          mapMode = IDLE_MODE;
+          cancelMode=false;
+        }
+      }
+      else if(mapMode == INFO_MODE) // Info menu
+      {
+        if(infoSelection==END_TURN_INFO_ACTION)
+        {
+          endTurn(); 
+        }
+        else if(infoSelection==SAVE_INFO_ACTION)
+        {
+          SaveGame();
+        }
+        else if(infoSelection==QUIT_INFO_ACTION) //quit to main menu
+        {
+          SceneMode=MENU_MODE;
+        }
+        mapMode = IDLE_MODE;
+      }
+      else // Selection state
+      {
+        noMove=false;
+        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].active==1 && CurrentBoard[row][column].player==CurrentPlayer->id) // Select unit
+        {
           baseTileRow=row;
           baseTileColumn=column;
-          clearGrid();
-          if(CurrentBoard[row][column].unitId==5 || CurrentBoard[row][column].unitId==6) // Artillery can only move without attack
-          {
-            CurrentBoard[row][column].active=0;
-            mapMode = IDLE_MODE;
-            cancelMode=false;
-          }
-          else
-          {
-            menuSelection = ATTACK_ACTION;
-            mapMode = UNIT_MENU_MODE; 
-          } 
+          //Save position for cancel mode
+          returnTileRow = row;
+          returnTileColumn = column;
+          selectedUnit=getUnit(CurrentBoard[row][column].unitId);
+          mapMode = MOVEMENT_MODE;
+          cancelMode=true;
+          drawUnitMovementGrid();
+          gb.sound.fx(selectSound);
         }
-      }
-    }
-    else if(mapMode == TARGET_MODE) // Attack action
-    {
-        if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].player!=CurrentPlayer->id && CurrentBoard[row][column].moveGrid==2)
+        else if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].playerBuilding==CurrentPlayer->id && CurrentBoard[row][column].terrainTexture==11) // Select base
         {
+          baseTileRow = row;
+          baseTileColumn = column;
+          BaseLocation = &CurrentBoard[row][column];
+          SceneMode = BASE_MODE;
+        }
+      }   
+    }
+    else if(gb.buttons.pressed(BUTTON_B))
+    {
+      if(cancelMode == true)
+      {
+        if(mapMode == MOVEMENT_MODE)
+        {
+          selectedUnit=NONE;
           mapMode = IDLE_MODE;
-          CurrentBoard[baseTileRow][baseTileColumn].active=0;
-          //Prepare tiles for battle scene
-          Attacker = &CurrentBoard[baseTileRow][baseTileColumn];
-          Defender = &CurrentBoard[row][column];
-          PrepareBattleScene();
-          SceneMode=BATTLE_MODE;
-          cancelMode=false;
           clearGrid();
         }
-    }
-    else if(mapMode == UNIT_MENU_MODE) // Dropdown menu
-    {
-      if(menuSelection==ATTACK_ACTION)
-      {
-        drawUnitAttackGrid();
-        mapMode = TARGET_MODE;
-      }
-      else if(menuSelection==CAPTURE_ACTION)
-      {
-        if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) 
-          && (CurrentBoard[baseTileRow][baseTileColumn].unitId==7 || CurrentBoard[baseTileRow][baseTileColumn].unitId==8)
-          && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=CurrentPlayer->id)
-          {
-            CurrentBoard[baseTileRow][baseTileColumn].playerBuilding=CurrentPlayer->id;
-            CurrentBoard[baseTileRow][baseTileColumn].active=0;
-            cancelMode=false;
-            if(CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) //if player capture capital
-            {
-              CurrentPlayer->points+=200;
-              mapMode = IDLE_MODE;
-              SceneMode = OUTCOME_MODE;
-              return;
-            }
-            mapMode = IDLE_MODE;
-            if(CurrentPlayer->id==1)
-            {
-              gb.lights.fill(RED);
-            }
-            else if(CurrentPlayer->id==2)
-            {
-              gb.lights.fill(BLUE);
-            }
-            gb.sound.fx(captureSound);
-            gb.gui.popup("BUILDING ACQUIRED!",50);
-          }
-      }
-      else //CANCEL
-      {
-        CurrentBoard[baseTileRow][baseTileColumn].active=0;
-        mapMode = IDLE_MODE;
-        cancelMode=false;
-      }
-    }
-    else if(mapMode == INFO_MODE) // Info menu
-    {
-      if(infoSelection==END_TURN_INFO_ACTION)
-      {
-        endTurn(); 
-      }
-      else if(infoSelection==SAVE_INFO_ACTION)
-      {
-        SaveGame();
-      }
-      else if(infoSelection==QUIT_INFO_ACTION) //quit to main menu
-      {
-        SceneMode=MENU_MODE;
-      }
-      mapMode = IDLE_MODE;
-    }
-    else // Selection state
-    {
-      noMove=false;
-      if(CurrentBoard[row][column].unitId!=0 && CurrentBoard[row][column].active==1 && CurrentBoard[row][column].player==CurrentPlayer->id) // Select unit
-      {
-        baseTileRow=row;
-        baseTileColumn=column;
-        //Save position for cancel mode
-        returnTileRow = row;
-        returnTileColumn = column;
-        selectedUnit=getUnit(CurrentBoard[row][column].unitId);
-        mapMode = MOVEMENT_MODE;
-        cancelMode=true;
-        drawUnitMovementGrid();
-        gb.sound.fx(selectSound);
-      }
-      else if(CurrentBoard[row][column].unitId==0 && CurrentBoard[row][column].playerBuilding==CurrentPlayer->id && CurrentBoard[row][column].terrainTexture==11) // Select base
-      {
-        baseTileRow = row;
-        baseTileColumn = column;
-        BaseLocation = &CurrentBoard[row][column];
-        SceneMode = BASE_MODE;
-      }
-    }   
-  }
-  else if(gb.buttons.pressed(BUTTON_B))
-  {
-    if(cancelMode == true)
-    {
-      if(mapMode == MOVEMENT_MODE)
-      {
-        selectedUnit=NONE;
-        mapMode = IDLE_MODE;
-        clearGrid();
-      }
-      else if(mapMode == UNIT_MENU_MODE || mapMode== TARGET_MODE)
-      {
-        clearGrid();
-        CurrentBoard[returnTileRow][returnTileColumn].player=CurrentBoard[baseTileRow][baseTileColumn].player;
-        CurrentBoard[returnTileRow][returnTileColumn].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
-        CurrentBoard[returnTileRow][returnTileColumn].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
-        CurrentBoard[returnTileRow][returnTileColumn].active=1;
-        if(noMove==false)
+        else if(mapMode == UNIT_MENU_MODE || mapMode== TARGET_MODE)
         {
-          CurrentBoard[baseTileRow][baseTileColumn].player=0;
-          CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
-          CurrentBoard[baseTileRow][baseTileColumn].unitHp=0;
-          CurrentBoard[baseTileRow][baseTileColumn].active=0;
+          clearGrid();
+          CurrentBoard[returnTileRow][returnTileColumn].player=CurrentBoard[baseTileRow][baseTileColumn].player;
+          CurrentBoard[returnTileRow][returnTileColumn].unitId=CurrentBoard[baseTileRow][baseTileColumn].unitId;
+          CurrentBoard[returnTileRow][returnTileColumn].unitHp=CurrentBoard[baseTileRow][baseTileColumn].unitHp;
+          CurrentBoard[returnTileRow][returnTileColumn].active=1;
+          if(noMove==false)
+          {
+            CurrentBoard[baseTileRow][baseTileColumn].player=0;
+            CurrentBoard[baseTileRow][baseTileColumn].unitId=0;
+            CurrentBoard[baseTileRow][baseTileColumn].unitHp=0;
+            CurrentBoard[baseTileRow][baseTileColumn].active=0;
+          }
+          cancelMode = false;
+          mapMode = IDLE_MODE;
         }
-        cancelMode = false;
-        mapMode = IDLE_MODE;
+        noMove=false;
       }
-      noMove=false;
+    }
+    else if(gb.buttons.pressed(BUTTON_MENU))
+    {
+      if(mapMode == IDLE_MODE)
+      {
+        infoSelection=RESUME_INFO_ACTION;
+        mapMode = INFO_MODE;
+      }
+      else if(mapMode == INFO_MODE)
+        mapMode = IDLE_MODE; 
     }
   }
-  else if(gb.buttons.pressed(BUTTON_MENU))
+  else    //AI taking control
   {
-    if(mapMode == IDLE_MODE)
-    {
-      infoSelection=RESUME_INFO_ACTION;
-      mapMode = INFO_MODE;
-    }
-    else if(mapMode == INFO_MODE)
-      mapMode = IDLE_MODE; 
+    consoleActionFrames();
   }
 }
 
@@ -503,6 +512,8 @@ void endTurn()
     {
       CurrentPlayer=&Player_2;
       countPlayerStats();
+      AITurn = true;
+      prepareConsoleLogic();
       gb.lights.fill(BLUE);
       gb.gui.popup("PLAYER 2 TURN",50);
     }
@@ -510,6 +521,7 @@ void endTurn()
     {
       CurrentPlayer=&Player_1;
       countPlayerStats();
+      AITurn = false;
       gb.lights.fill(RED);
       gb.gui.popup("PLAYER 1 TURN",50);
     }
