@@ -28,6 +28,8 @@ void drawMainMenu(int posX, int posY)
   gb.display.setColor(WHITE);
   gb.display.setCursor(12,30);
   gb.display.println("TUTORIAL");
+  gb.display.setCursor(12,37);
+  gb.display.println("1 PLAYER");
   gb.display.setCursor(12,44);
   gb.display.println("2 PLAYERS");
   gb.display.setCursor(12,58);
@@ -38,10 +40,6 @@ void drawMainMenu(int posX, int posY)
   }
   gb.display.setCursor(12,51);
   gb.display.println("CONTINUE");
-  gb.display.setColor(BEIGE);
-  gb.display.setCursor(12,37);
-  gb.display.println("CAMPAIGN");
-  
   gb.display.drawImage(posX,posY,Pointer);
 }
 

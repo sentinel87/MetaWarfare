@@ -23,8 +23,8 @@ void MainMenuScene()
     }
     else if(mmSelectedScene==MENU_CAMPAIGN)
     {
-      mmPosY=56;
-      mmSelectedScene=MENU_HIGH_SCORE;
+      mmPosY=28;
+      mmSelectedScene=MENU_TUTORIAL;
     }
     else if(mmSelectedScene==MENU_HIGH_SCORE)
     {
@@ -46,18 +46,16 @@ void MainMenuScene()
     }
     else
     {
-      //mmPosY=35;
-      //mmSelectedScene=MENU_CAMPAIGN;
-      mmPosY=28;
-      mmSelectedScene=MENU_TUTORIAL;
+      mmPosY=35;
+      mmSelectedScene=MENU_CAMPAIGN;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
     if(mmSelectedScene==MENU_TUTORIAL)
     {
-      mmPosY=42;
-      mmSelectedScene=MENU_MULTIPLAYER;
+      mmPosY=35;
+      mmSelectedScene=MENU_CAMPAIGN;
     }
     else if(mmSelectedScene==MENU_CAMPAIGN)
     {
@@ -84,8 +82,6 @@ void MainMenuScene()
     }
     else
     {
-      //mmPosY=35;
-      //mmSelectedScene=MENU_CAMPAIGN;
       mmPosY=28;
       mmSelectedScene=MENU_TUTORIAL;
     }
@@ -120,6 +116,16 @@ void MainMenuScene()
     else if(mmSelectedScene==MENU_TUTORIAL)
     {
       SceneMode = TUTORIAL_SCENARIO_MODE;
+    }
+    else if(mmSelectedScene==MENU_CAMPAIGN)
+    {
+      //MapId=1;
+      Tutorial=-1;
+      GameMode=CONQUEST_MODE;
+      memcpy(CurrentBoard, CampaignBoard3, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
     }
   }
 }

@@ -132,6 +132,13 @@ int posY = 0;
 int sRowIdx = 0;
 int sColIdx = 0;
 
+struct UnitLocation
+{
+  unsigned int row;
+  unsigned int column;
+  unsigned int unitId;
+};
+
 void setup() {
   gb.begin();
   gb.save.config(savefileDefaults);
