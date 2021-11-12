@@ -137,6 +137,7 @@ struct UnitLocation
   unsigned int row;
   unsigned int column;
   unsigned int unitId;
+  bool activated;
 };
 
 void setup() {
