@@ -82,8 +82,9 @@ void unitActions()
       drawUnitAttackGrid();
       actionPhase=P_ATTACK;
     }
-    else
+    else //P_ATTACK
     {
+      attackWithArtillery();
       clearGrid();
       actionPhase=P_SELECTION;
     }
@@ -91,6 +92,71 @@ void unitActions()
   else
   {
     actionPhase=P_SELECTION;
+  }
+}
+
+void attackWithArtillery()
+{
+  int tRow = sRowIdx;
+  if(posY>0)
+    tRow+=(posY/10);
+  int tColumn = sColIdx;
+  if(posX>0)
+    tColumn+=(posX/10);
+
+  if(selectedUnit.unitId!=0)
+  {
+    unsigned int range=selectedUnit.attackRange;
+
+    int minX=tRow-range;
+    if(minX<0)
+        minX=0;
+    int minY = tColumn-range;
+    if(minY<0)
+        minY=0;
+    int maxX=tRow+range;
+    if(maxX>15)
+        maxX=15;
+    int maxY = tColumn+range;
+    if(maxY>15)
+        maxY=15;
+
+
+    UnitLocation targets[8] = {{0,0,6,false},{0,0,5,false},{0,0,4,false},{0,0,2,false},{0,0,3,false},{0,0,1,false},{0,0,8,false},{0,0,7,false}};
+    for(int i=minX;i<maxX;i++) //Register all enemy units in range
+    {
+      for(int j=minY;j<maxY;j++)
+      {
+        if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player!=CurrentPlayer->id && CurrentBoard[i][j].moveGrid==2)
+        {
+          for(int slot=0;slot<8;slot++)
+          {
+            if(CurrentBoard[i][j].unitId==targets[slot].unitId && targets[slot].activated==false)
+            {
+              targets[slot].row=i;
+              targets[slot].column=j;
+              targets[slot].activated=true;
+            }
+          }
+        }
+      }
+    }
+
+    //select and attack target
+    for(int slot=0;slot<8;slot++)
+    {
+      if(targets[slot].activated==true)
+      {
+        mapMode = IDLE_MODE;
+        CurrentBoard[tRow][tColumn].active=0;
+        //Prepare tiles for battle scene
+        Attacker = &CurrentBoard[tRow][tColumn];
+        Defender = &CurrentBoard[targets[slot].row][targets[slot].column];
+        PrepareBattleScene();
+        SceneMode=BATTLE_MODE;
+        break;
+      }
+    }
   }
 }
 
@@ -174,7 +240,7 @@ void setScreenOnUnit(UnitLocation unitLocation)
 
 void consoleActionFrames()
 {
-  if(aiFrames==35)
+  if(aiFrames==10)
   {
     if(actionPhase==P_SELECTION)
     {
