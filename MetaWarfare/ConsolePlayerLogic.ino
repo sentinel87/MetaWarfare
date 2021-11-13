@@ -122,16 +122,16 @@ void attackWithDirectUnit()
   {
     unsigned int movement=selectedUnit.movement;
     
-    int minX=tRow-movement;
+    int minX=tRow-movement-1;
     if(minX<0)
         minX=0;
-    int minY = tColumn-movement;
+    int minY = tColumn-movement-1;
     if(minY<0)
         minY=0;
-    int maxX=tRow+movement;
+    int maxX=tRow+movement+1;
     if(maxX>15)
         maxX=15;
-    int maxY = tColumn+movement;
+    int maxY = tColumn+movement+1;
     if(maxY>15)
         maxY=15;
 
@@ -159,7 +159,7 @@ void attackWithDirectUnit()
               break;
             }
           }
-          else if(i<15)
+          if(i<15)
           {
             if(CurrentBoard[i+1][j].unitId==0 && CurrentBoard[i+1][j].moveGrid==1)
             {
@@ -171,7 +171,7 @@ void attackWithDirectUnit()
               break;
             }
           }
-          else if(j>0)
+          if(j>0)
           {
             if(CurrentBoard[i][j-1].unitId==0 && CurrentBoard[i][j-1].moveGrid==1)
             {
@@ -183,7 +183,7 @@ void attackWithDirectUnit()
               break;
             }
           }
-          else if(j<15)
+          if(j<15)
           {
             if(CurrentBoard[i][j+1].unitId==0 && CurrentBoard[i][j+1].moveGrid==1)
             {

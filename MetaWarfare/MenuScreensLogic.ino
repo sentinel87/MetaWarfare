@@ -120,9 +120,17 @@ void MainMenuScene()
     else if(mmSelectedScene==MENU_CAMPAIGN)
     {
       //MapId=1;
+      //Tutorial=-1;
+      //GameMode=CAPTURE_MODE;
+      //memcpy(CurrentBoard, CampaignBoard3, sizeof(CurrentBoard));
+      //PrepareMap();
+      //SceneMode = TUTORIAL_MODE;
+      //mapMode = IDLE_MODE;
+
+      //MapId=1;
       Tutorial=-1;
-      GameMode=CONQUEST_MODE;
-      memcpy(CurrentBoard, CampaignBoard3, sizeof(CurrentBoard));
+      GameMode=DEATHMATCH_MODE;
+      memcpy(CurrentBoard, CampaignBoard2, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;

@@ -15,6 +15,8 @@
 
 #define CONQUEST_MODE 1
 #define CAPTURE_MODE 2
+#define DEATHMATCH_MODE 3
+#define CAPTURE_FLAG_MODE 4
 
 const Gamebuino_Meta::Sound_FX cannonExplosionSound[] = {
     {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,60,30,40,10,15},

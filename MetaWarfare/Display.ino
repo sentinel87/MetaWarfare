@@ -1243,6 +1243,15 @@ void drawTutorialScreen()
         gb.display.setColor(RED); 
         gb.display.println("Capture enemy HQ.");
       }
+      else if(GameMode==DEATHMATCH_MODE)
+      {
+        gb.display.setCursor(5, 5);
+        gb.display.setColor(GREEN); 
+        gb.display.println("MISSION:");
+        gb.display.setCursor(0, 15);
+        gb.display.setColor(RED); 
+        gb.display.println("Eliminate all enemy units.");
+      }
       else
       {
         gb.display.setCursor(5, 5);
