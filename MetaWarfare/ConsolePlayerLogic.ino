@@ -89,9 +89,140 @@ void unitActions()
       actionPhase=P_SELECTION;
     }
   }
-  else
+  else // actions for direct units
   {
-    actionPhase=P_SELECTION;
+    if(actionPhase==P_SELECTION)
+    {
+      actionPhase = P_SHOW_MOVEMENT_GRID;
+    }
+    else if(actionPhase==P_SHOW_MOVEMENT_GRID)
+    {
+      drawUnitMovementGrid();
+      actionPhase=P_ATTACK;
+    }
+    else //P_ATTACK
+    {
+      attackWithDirectUnit();
+      clearGrid();
+      actionPhase=P_SELECTION;
+    }
+  }
+}
+
+void attackWithDirectUnit()
+{
+  int tRow = sRowIdx;
+  if(posY>0)
+    tRow+=(posY/10);
+  int tColumn = sColIdx;
+  if(posX>0)
+    tColumn+=(posX/10);
+  
+  if(selectedUnit.unitId!=0)
+  {
+    unsigned int movement=selectedUnit.movement;
+    
+    int minX=tRow-movement;
+    if(minX<0)
+        minX=0;
+    int minY = tColumn-movement;
+    if(minY<0)
+        minY=0;
+    int maxX=tRow+movement;
+    if(maxX>15)
+        maxX=15;
+    int maxY = tColumn+movement;
+    if(maxY>15)
+        maxY=15;
+
+    int targetRow=-1;
+    int targetColumn=-1;
+    int unitDestionationRow=-1;
+    int unitDestionationColumn=-1;
+    bool located=false;
+
+    for(int i=minX;i<maxX;i++) //Register all enemy units in range
+    {
+      for(int j=minY;j<maxY;j++)
+      {
+        if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player!=CurrentPlayer->id)
+        {
+          if(i>0)
+          {
+            if(CurrentBoard[i-1][j].unitId==0 && CurrentBoard[i-1][j].moveGrid==1)
+            {
+              targetRow=i;
+              targetColumn=j;
+              unitDestionationRow=i-1;
+              unitDestionationColumn=j;
+              located=true;
+              break;
+            }
+          }
+          else if(i<15)
+          {
+            if(CurrentBoard[i+1][j].unitId==0 && CurrentBoard[i+1][j].moveGrid==1)
+            {
+              targetRow=i;
+              targetColumn=j;
+              unitDestionationRow=i+1;
+              unitDestionationColumn=j;
+              located=true;
+              break;
+            }
+          }
+          else if(j>0)
+          {
+            if(CurrentBoard[i][j-1].unitId==0 && CurrentBoard[i][j-1].moveGrid==1)
+            {
+              targetRow=i;
+              targetColumn=j;
+              unitDestionationRow=i;
+              unitDestionationColumn=j-1;
+              located=true;
+              break;
+            }
+          }
+          else if(j<15)
+          {
+            if(CurrentBoard[i][j+1].unitId==0 && CurrentBoard[i][j+1].moveGrid==1)
+            {
+              targetRow=i;
+              targetColumn=j;
+              unitDestionationRow=i;
+              unitDestionationColumn=j+1;
+              located=true;
+              break;
+            }
+          }
+        }
+      }
+      if(located==true)
+      {
+        break;
+      }
+    }
+
+    if(targetRow!=-1 && targetColumn!=-1 && unitDestionationRow!=-1 && unitDestionationColumn!=-1)
+    {
+      //Fill destination tile with unit info
+      CurrentBoard[unitDestionationRow][unitDestionationColumn].player=CurrentBoard[tRow][tColumn].player;
+      CurrentBoard[unitDestionationRow][unitDestionationColumn].unitId=CurrentBoard[tRow][tColumn].unitId;
+      CurrentBoard[unitDestionationRow][unitDestionationColumn].unitHp=CurrentBoard[tRow][tColumn].unitHp;
+      CurrentBoard[unitDestionationRow][unitDestionationColumn].active=0;
+      //Remove unit info from starting tile
+      CurrentBoard[tRow][tColumn].player=0;
+      CurrentBoard[tRow][tColumn].unitId=0;
+      CurrentBoard[tRow][tColumn].unitHp=0;
+      CurrentBoard[tRow][tColumn].active=0;
+
+      mapMode = IDLE_MODE;
+      //Prepare tiles for battle scene
+      Attacker = &CurrentBoard[unitDestionationRow][unitDestionationColumn];
+      Defender = &CurrentBoard[targetRow][targetColumn];
+      PrepareBattleScene();
+      SceneMode=BATTLE_MODE;
+    }
   }
 }
 
@@ -121,8 +252,8 @@ void attackWithArtillery()
     if(maxY>15)
         maxY=15;
 
+    UnitLocation targets[8]= {{0,0,6,false},{0,0,5,false},{0,0,4,false},{0,0,3,false},{0,0,2,false},{0,0,1,false},{0,0,8,false},{0,0,7,false}};
 
-    UnitLocation targets[8] = {{0,0,6,false},{0,0,5,false},{0,0,4,false},{0,0,2,false},{0,0,3,false},{0,0,1,false},{0,0,8,false},{0,0,7,false}};
     for(int i=minX;i<maxX;i++) //Register all enemy units in range
     {
       for(int j=minY;j<maxY;j++)
