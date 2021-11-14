@@ -141,6 +141,8 @@ void SetTerrainType(bool attacker,int terrain)
     case 11:
       result=BASE; break;
     case 12:
+    case 25:
+    case 30:
       result=BUILDING; break;
     case 13:
     case 14:
@@ -213,6 +215,7 @@ int GetTerrainDefBonus(int id)
     case 11:
     case 12:
     case 25:
+    case 30:
       bonus = 2; break;
     default:
       bonus = 0;

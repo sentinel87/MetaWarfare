@@ -116,7 +116,7 @@ void drawMap()
       }
       else
       {
-        if(tile.terrainTexture==11 || tile.terrainTexture==12 || tile.terrainTexture==25) //Base/Building belonging
+        if(tile.terrainTexture==11 || tile.terrainTexture==12 || tile.terrainTexture==25 || tile.terrainTexture==30) //Base/Building belonging
         {
           if(tile.playerBuilding==PLAYER_1)
             gb.display.drawImage(i*10,j*10,IMAGE_PLAYER1_BOARD);
@@ -138,6 +138,10 @@ void drawMap()
       if(tile.moveGrid==1)
       {
         gb.display.drawImage(i*10,j*10,MovementGrid);
+      }
+      if(tile.keyTile==1)
+      {
+        gb.display.drawImage(i*10,j*10,TargetPointer);
       }
     }
   }
@@ -350,6 +354,8 @@ void drawTerrain(int id,int posX,int posY)
       gb.display.drawImage(posX,posY,IMAGE_TERRAIN_BRIDGE_HOR,10,10); break;
     case 29:
       gb.display.drawImage(posX,posY,IMAGE_TERRAIN_BRIDGE_VER,10,10); break;
+    case 30:
+      gb.display.drawImage(posX,posY,IMAGE_TERRAIN_HOSPITAL,10,10); break;
   }
 }
 

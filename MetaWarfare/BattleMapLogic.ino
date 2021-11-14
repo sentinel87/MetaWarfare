@@ -292,7 +292,7 @@ void BattleMap()
         }
         else if(menuSelection==CAPTURE_ACTION)
         {
-          if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) 
+          if((CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==11 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==12 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25 || CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==30) 
             && (CurrentBoard[baseTileRow][baseTileColumn].unitId==7 || CurrentBoard[baseTileRow][baseTileColumn].unitId==8)
             && CurrentBoard[baseTileRow][baseTileColumn].playerBuilding!=CurrentPlayer->id)
             {
@@ -450,6 +450,7 @@ void endTurn()
   int player2Bases=0;
   int player1Units=0;
   int player2Units=0;
+  bool flagCaptured=false;
   for(int i=0;i<16;i++)
   {
     for(int j=0;j<16;j++)
@@ -481,6 +482,10 @@ void endTurn()
         else if(CurrentBoard[j][i].terrainTexture==12 && CurrentBoard[j][i].playerBuilding==2)
           player2Buildings++;  
       }
+      if(CurrentBoard[j][i].keyTile==1 && CurrentBoard[j][i].unitId!=0 && CurrentBoard[j][i].player==1) //only player 1
+      {
+        flagCaptured=true;
+      }
     }
   }
   if(GameMode==CAPTURE_MODE)
@@ -497,6 +502,16 @@ void endTurn()
   {
     if(player1Units==0 || player2Units==0)
     {
+      mapMode = IDLE_MODE;
+      SceneMode = OUTCOME_MODE;
+      return;
+    }
+  }
+  else if(GameMode==CAPTURE_FLAG_MODE)
+  {
+    if(flagCaptured==true)
+    {
+      CurrentPlayer->points+=50;
       mapMode = IDLE_MODE;
       SceneMode = OUTCOME_MODE;
       return;
@@ -571,6 +586,17 @@ void countPlayerStats()
       if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player==CurrentPlayer->id)
       {
         CurrentPlayer->totalUnits += 1;
+      }
+      if(CurrentBoard[i][j].terrainTexture==30 && CurrentBoard[i][j].playerBuilding==CurrentPlayer->id && CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player==CurrentPlayer->id) //hospital regeneration
+      {
+        if(CurrentBoard[i][j].unitHp<10)
+        {
+          CurrentBoard[i][j].unitHp+=2;
+          if(CurrentBoard[i][j].unitHp>10)
+          {
+            CurrentBoard[i][j].unitHp=10;
+          }
+        }
       }
     }
   }
