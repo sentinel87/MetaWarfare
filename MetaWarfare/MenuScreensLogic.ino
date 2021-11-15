@@ -171,7 +171,13 @@ void CampaignScenarioScene()
     if(cmSelectedScene==1)
     {
       MapId=8;
-      
+      Tutorial=-1;
+      GameMode=CAPTURE_FLAG_MODE;
+      memcpy(CurrentBoard, CampaignBoard1, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      cmSelectedScene=1;
     }
     else if(cmSelectedScene==2)
     {
