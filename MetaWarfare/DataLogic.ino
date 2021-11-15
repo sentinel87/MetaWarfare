@@ -42,44 +42,37 @@ bool loadMap()
   {
     case 1:
     {
-      memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
-      result=true;
+      memcpy(CurrentBoard, Board1, sizeof(CurrentBoard)); result=true;
     }
     break;
     case 2:
     {
-      memcpy(CurrentBoard, Board2, sizeof(CurrentBoard));
-      result=true;
+      memcpy(CurrentBoard, Board2, sizeof(CurrentBoard)); result=true;
     }
     break;
     case 3:
     {
-      memcpy(CurrentBoard, Board3, sizeof(CurrentBoard));
-      result=true;
+      memcpy(CurrentBoard, Board3, sizeof(CurrentBoard)); result=true;
     }
     break;
     case 4:
     {
-      memcpy(CurrentBoard, Board4, sizeof(CurrentBoard));
-      result=true;
+      memcpy(CurrentBoard, Board4, sizeof(CurrentBoard)); result=true;
     }
     break;
     case 5:
     {
-      memcpy(CurrentBoard, Board5, sizeof(CurrentBoard));
-      result=true;
+      memcpy(CurrentBoard, Board5, sizeof(CurrentBoard)); result=true;
     }
     break;
     case 6:
     {
-      memcpy(CurrentBoard, Board6, sizeof(CurrentBoard));
-      result=true;
+      memcpy(CurrentBoard, Board6, sizeof(CurrentBoard)); result=true;
     }
     break;
     case 7:
     {
-      memcpy(CurrentBoard, Board7, sizeof(CurrentBoard));
-      result=true;
+      memcpy(CurrentBoard, Board7, sizeof(CurrentBoard)); result=true;
     }
     break;
     default:

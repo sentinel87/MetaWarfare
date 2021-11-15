@@ -12,6 +12,7 @@
 #define SCORES_MODE 8
 #define TUTORIAL_MODE 9
 #define TUTORIAL_SCENARIO_MODE 10
+#define SKIRMISH_SCENARIO_MODE 11
 
 #define CONQUEST_MODE 1
 #define CAPTURE_MODE 2
@@ -199,6 +200,14 @@ void loop() {
   else if(SceneMode==TUTORIAL_SCENARIO_MODE)
   {
     TutorialScenarioScene();
+  }
+  else if(SceneMode==SKIRMISH_SCENARIO_MODE)
+  {
+    SkirmishScenarioScene();
+  }
+  else if(SceneMode==CAMPAIGN_SCENARIO_MODE)
+  {
+    CampaignScenarioScene();
   }
   else //Base mode
   {

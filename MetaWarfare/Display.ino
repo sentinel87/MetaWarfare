@@ -26,10 +26,12 @@ void drawMainMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.drawImage(0,0,IMAGE_TITLE_THEME);
   gb.display.setColor(WHITE);
-  gb.display.setCursor(12,30);
+  gb.display.setCursor(12,23);
   gb.display.println("TUTORIAL");
+  gb.display.setCursor(12,30);
+  gb.display.println("CAMPAIGN");
   gb.display.setCursor(12,37);
-  gb.display.println("1 PLAYER");
+  gb.display.println("SKIRMISH");
   gb.display.setCursor(12,44);
   gb.display.println("2 PLAYERS");
   gb.display.setCursor(12,58);
@@ -78,6 +80,30 @@ void drawTutorialMenu(int posX, int posY)
   gb.display.setCursor(2,15);
   gb.display.println("BACK");
   
+  gb.display.drawImage(posX,posY,Pointer);
+}
+
+void drawSkirmishScenarioMenu(int posX, int posY)
+{
+  gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
+  gb.display.setColor(WHITE);
+  gb.display.setCursor(2,3);
+  gb.display.println("BACK");
+  gb.display.drawImage(posX,posY,Pointer);
+}
+
+void drawCampaignScenarioMenu(int posX, int posY)
+{
+  gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
+  gb.display.setColor(WHITE);
+  gb.display.setCursor(2,3);
+  gb.display.println("1. Siege");
+  gb.display.setCursor(2,9);
+  gb.display.println("2. Last stand");
+  gb.display.setCursor(2,15);
+  gb.display.println("3. Supply depots");
+  gb.display.setCursor(2,21);
+  gb.display.println("BACK");
   gb.display.drawImage(posX,posY,Pointer);
 }
 
@@ -1257,6 +1283,15 @@ void drawTutorialScreen()
         gb.display.setCursor(0, 15);
         gb.display.setColor(RED); 
         gb.display.println("Eliminate all enemy units.");
+      }
+      else if(GameMode==CAPTURE_FLAG_MODE)
+      {
+        gb.display.setCursor(5, 5);
+        gb.display.setColor(GREEN); 
+        gb.display.println("MISSION:");
+        gb.display.setCursor(0, 15);
+        gb.display.setColor(RED); 
+        gb.display.println("Reach marked tile.");
       }
       else
       {
