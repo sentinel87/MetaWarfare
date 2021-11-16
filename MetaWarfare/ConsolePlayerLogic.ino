@@ -149,7 +149,7 @@ void attackWithDirectUnit()
         {
           if(i>0)
           {
-            if(CurrentBoard[i-1][j].unitId==0 && CurrentBoard[i-1][j].moveGrid==1)
+            if((CurrentBoard[i-1][j].unitId==0 && CurrentBoard[i-1][j].moveGrid==1) || ((i-1==tRow) && j==tColumn))
             {
               targetRow=i;
               targetColumn=j;
@@ -161,7 +161,7 @@ void attackWithDirectUnit()
           }
           if(i<15)
           {
-            if(CurrentBoard[i+1][j].unitId==0 && CurrentBoard[i+1][j].moveGrid==1)
+            if((CurrentBoard[i+1][j].unitId==0 && CurrentBoard[i+1][j].moveGrid==1) || ((i+1==tRow) && j==tColumn))
             {
               targetRow=i;
               targetColumn=j;
@@ -173,7 +173,7 @@ void attackWithDirectUnit()
           }
           if(j>0)
           {
-            if(CurrentBoard[i][j-1].unitId==0 && CurrentBoard[i][j-1].moveGrid==1)
+            if((CurrentBoard[i][j-1].unitId==0 && CurrentBoard[i][j-1].moveGrid==1) || (i==tRow && (j-1==tColumn)))
             {
               targetRow=i;
               targetColumn=j;
@@ -185,7 +185,7 @@ void attackWithDirectUnit()
           }
           if(j<15)
           {
-            if(CurrentBoard[i][j+1].unitId==0 && CurrentBoard[i][j+1].moveGrid==1)
+            if((CurrentBoard[i][j+1].unitId==0 && CurrentBoard[i][j+1].moveGrid==1) || (i==tRow && (j+1==tColumn)))
             {
               targetRow=i;
               targetColumn=j;
@@ -205,16 +205,23 @@ void attackWithDirectUnit()
 
     if(targetRow!=-1 && targetColumn!=-1 && unitDestionationRow!=-1 && unitDestionationColumn!=-1)
     {
-      //Fill destination tile with unit info
-      CurrentBoard[unitDestionationRow][unitDestionationColumn].player=CurrentBoard[tRow][tColumn].player;
-      CurrentBoard[unitDestionationRow][unitDestionationColumn].unitId=CurrentBoard[tRow][tColumn].unitId;
-      CurrentBoard[unitDestionationRow][unitDestionationColumn].unitHp=CurrentBoard[tRow][tColumn].unitHp;
-      CurrentBoard[unitDestionationRow][unitDestionationColumn].active=0;
-      //Remove unit info from starting tile
-      CurrentBoard[tRow][tColumn].player=0;
-      CurrentBoard[tRow][tColumn].unitId=0;
-      CurrentBoard[tRow][tColumn].unitHp=0;
-      CurrentBoard[tRow][tColumn].active=0;
+      if(unitDestionationRow==tRow && unitDestionationColumn==tColumn)
+      {
+        CurrentBoard[tRow][tColumn].active=0;
+      }
+      else
+      {
+        //Fill destination tile with unit info
+        CurrentBoard[unitDestionationRow][unitDestionationColumn].player=CurrentBoard[tRow][tColumn].player;
+        CurrentBoard[unitDestionationRow][unitDestionationColumn].unitId=CurrentBoard[tRow][tColumn].unitId;
+        CurrentBoard[unitDestionationRow][unitDestionationColumn].unitHp=CurrentBoard[tRow][tColumn].unitHp;
+        CurrentBoard[unitDestionationRow][unitDestionationColumn].active=0;
+        //Remove unit info from starting tile
+        CurrentBoard[tRow][tColumn].player=0;
+        CurrentBoard[tRow][tColumn].unitId=0;
+        CurrentBoard[tRow][tColumn].unitHp=0;
+        CurrentBoard[tRow][tColumn].active=0;
+      }
 
       mapMode = IDLE_MODE;
       //Prepare tiles for battle scene
