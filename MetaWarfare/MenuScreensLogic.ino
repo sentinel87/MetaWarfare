@@ -152,12 +152,12 @@ void CampaignScenarioScene()
     }
     else
     {
-      cmSelectedScene=5;
+      cmSelectedScene=6;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(cmSelectedScene<5)
+    if(cmSelectedScene<6)
     {
       cmSelectedScene++;
     }
@@ -213,6 +213,17 @@ void CampaignScenarioScene()
       cmSelectedScene=1;
     }
     else if(cmSelectedScene==5)
+    {
+      MapId=12;
+      Tutorial=-1;
+      GameMode=DEATHMATCH_MODE;
+      memcpy(CurrentBoard, CampaignBoard5, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      cmSelectedScene=1;
+    }
+    else if(cmSelectedScene==6)
     {
       SceneMode=MENU_MODE;
       cmSelectedScene=1;
