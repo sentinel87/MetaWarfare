@@ -152,12 +152,12 @@ void CampaignScenarioScene()
     }
     else
     {
-      cmSelectedScene=6;
+      cmSelectedScene=8;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(cmSelectedScene<6)
+    if(cmSelectedScene<8)
     {
       cmSelectedScene++;
     }
@@ -224,6 +224,28 @@ void CampaignScenarioScene()
       cmSelectedScene=1;
     }
     else if(cmSelectedScene==6)
+    {
+      MapId=13;
+      Tutorial=-1;
+      GameMode=CAPTURE_MODE;
+      memcpy(CurrentBoard, CampaignBoard6, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      cmSelectedScene=1;
+    }
+    else if(cmSelectedScene==7)
+    {
+      MapId=14;
+      Tutorial=-1;
+      GameMode=CAPTURE_FLAG_MODE;
+      memcpy(CurrentBoard, CampaignBoard7, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      cmSelectedScene=1;
+    }
+    else if(cmSelectedScene==8)
     {
       SceneMode=MENU_MODE;
       cmSelectedScene=1;

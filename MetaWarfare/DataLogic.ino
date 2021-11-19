@@ -100,6 +100,16 @@ bool loadMap()
       memcpy(CurrentBoard, CampaignBoard5, sizeof(CurrentBoard)); result=true;
     }
     break;
+    case 13:
+    {
+      memcpy(CurrentBoard, CampaignBoard6, sizeof(CurrentBoard)); result=true;
+    }
+    break;
+    case 14:
+    {
+      memcpy(CurrentBoard, CampaignBoard7, sizeof(CurrentBoard)); result=true;
+    }
+    break;
     default:
     {
       result=false;

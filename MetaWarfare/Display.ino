@@ -107,6 +107,10 @@ void drawCampaignScenarioMenu(int posX, int posY)
   gb.display.setCursor(2,27);
   gb.display.println("5. Mountain pass");
   gb.display.setCursor(2,33);
+  gb.display.println("6. Liberation");
+  gb.display.setCursor(2,39);
+  gb.display.println("7. Last harbor");
+  gb.display.setCursor(2,45);
   gb.display.println("BACK");
   gb.display.drawImage(posX,posY,Pointer);
 }
