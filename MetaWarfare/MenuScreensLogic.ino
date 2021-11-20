@@ -111,6 +111,7 @@ void MainMenuScene()
       {
         SceneMode = MAP_MODE;
         mapMode = IDLE_MODE;
+        Winner = 0;
         posX = 0;
         posY = 0;
         sRowIdx = 0;
@@ -434,37 +435,19 @@ void TutorialScenarioScene()
   }
   else if(gb.buttons.pressed(BUTTON_A))
   {
-    if(smSelectedScene==1)
+    switch(smSelectedScene)
     {
-      MapId=1;
-      GameMode=CONQUEST_MODE;
-      memcpy(CurrentBoard, TutorialBoard1, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
-    }
-    else if(smSelectedScene==2)
-    {
-      MapId=2;
-      GameMode=CAPTURE_MODE;
-      memcpy(CurrentBoard, TutorialBoard2, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
-    }
-    else if(smSelectedScene==3)
-    {
-      SceneMode=MENU_MODE;
-      smSelectedScene=1;
+      case 1:
+        SetMap(1,CONQUEST_MODE,TutorialBoard1,true); break;
+      case 2:
+        SetMap(2,CAPTURE_MODE,TutorialBoard2,true); break;
+      case 3:
+        SceneMode=MENU_MODE; smSelectedScene=1; break;
     }
   }
 }
 
-void SetMap(int mapId,int gameMode,GameTileStruct board[][16], bool isConsoleOpponent)
+void SetMap(int mapId,int gameMode,const GameTileStruct board[][16], bool isConsoleOpponent)
 {
   MapId=mapId;
   GameMode=gameMode;
@@ -473,6 +456,7 @@ void SetMap(int mapId,int gameMode,GameTileStruct board[][16], bool isConsoleOpp
   SceneMode = TUTORIAL_MODE;
   mapMode = IDLE_MODE;
   smSelectedScene=1;
+  Winner=0;
   IsConsoleOpponent=isConsoleOpponent;
 }
 
@@ -502,7 +486,16 @@ void EndGameScene()
   drawEndGameScreen();
   if(gb.buttons.pressed(BUTTON_B))
   {
-    bool HighScore=compareAndUpdateScore(CurrentPlayer->points);
+    bool HighScore = false;
+    if(IsConsoleOpponent==true && Winner==1)
+    {
+      HighScore=compareAndUpdateScore(Player_1.points);
+    }
+    else if(IsConsoleOpponent==false)
+    {
+      HighScore=compareAndUpdateScore(CurrentPlayer->points);
+    }
+
     if(HighScore)
     {
       gb.save.set(9,ScoreBoard[0]);

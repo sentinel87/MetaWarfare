@@ -281,6 +281,7 @@ void BattleMap()
               cancelMode=false;
               if(CurrentBoard[baseTileRow][baseTileColumn].terrainTexture==25) //if player capture capital
               {
+                Winner=CurrentPlayer->id; 
                 CurrentPlayer->points+=200;
                 mapMode = IDLE_MODE;
                 SceneMode = OUTCOME_MODE;
@@ -476,6 +477,7 @@ void endTurn()
   {
     if(player1Buildings>=8 || player2Buildings>=8) // Capture victory
     {
+      Winner=CurrentPlayer->id;
       CurrentPlayer->points+=200;
       mapMode = IDLE_MODE;
       SceneMode = OUTCOME_MODE;
@@ -486,6 +488,10 @@ void endTurn()
   {
     if(player1Units==0 || player2Units==0)
     {
+      if(player1Units==0)
+        Winner = 2;
+      else
+        Winner = 1;
       mapMode = IDLE_MODE;
       SceneMode = OUTCOME_MODE;
       return;
@@ -496,6 +502,7 @@ void endTurn()
     if(flagCaptured==true)
     {
       CurrentPlayer->points+=50;
+      Winner=CurrentPlayer->id;
       mapMode = IDLE_MODE;
       SceneMode = OUTCOME_MODE;
       return;

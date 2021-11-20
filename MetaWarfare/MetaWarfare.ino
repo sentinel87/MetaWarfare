@@ -94,8 +94,8 @@ bool menuMode=false;
 bool SaveExist=false;
 bool IsConsoleOpponent=false;
 
-//int Tutorial=-1;
 int TurnCount=0;
+int Winner = 0;
 
 int SceneMode=MENU_MODE;
 int MapId=0;

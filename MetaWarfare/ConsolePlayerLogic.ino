@@ -141,9 +141,9 @@ void attackWithDirectUnit()
     int unitDestionationColumn=-1;
     bool located=false;
 
-    for(int i=minX;i<maxX;i++) //Register all enemy units in range
+    for(int i=minX;i<=maxX;i++) //Register all enemy units in range
     {
-      for(int j=minY;j<maxY;j++)
+      for(int j=minY;j<=maxY;j++)
       {
         if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player!=CurrentPlayer->id)
         {
@@ -261,9 +261,9 @@ void attackWithArtillery()
 
     UnitLocation targets[8]= {{0,0,6,false},{0,0,5,false},{0,0,4,false},{0,0,3,false},{0,0,2,false},{0,0,1,false},{0,0,8,false},{0,0,7,false}};
 
-    for(int i=minX;i<maxX;i++) //Register all enemy units in range
+    for(int i=minX;i<=maxX;i++) //Register all enemy units in range
     {
-      for(int j=minY;j<maxY;j++)
+      for(int j=minY;j<=maxY;j++)
       {
         if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player!=CurrentPlayer->id && CurrentBoard[i][j].moveGrid==2)
         {

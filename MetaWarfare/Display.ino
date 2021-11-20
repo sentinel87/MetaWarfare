@@ -1140,20 +1140,40 @@ void drawEndGameScreen()
   gb.display.drawImage(29,1,IMAGE_MENU_THEME,1,0,22,17);
   gb.display.drawImage(49,1,IMAGE_MENU_THEME,1,0,29,17);
   gb.display.setCursor(14,8);
-  if(CurrentPlayer->id==1)
+  if(IsConsoleOpponent==true)
   {
-    gb.display.setColor(RED);
-    gb.display.println("PLAYER 1 WINS!");
+    if(Winner==1) //Player wins
+    {
+      gb.display.setColor(RED);
+      gb.display.println("PLAYER 1 WINS!");
+      String strScore="Score: " + (String)Player_1.points;
+      gb.display.setColor(ORANGE);
+      gb.display.setCursor(19,44);
+      gb.display.println(strScore);
+    }
+    else //Console wins
+    {
+      gb.display.setColor(BLUE);
+      gb.display.println("LOST!");
+    }
   }
   else
   {
-    gb.display.setColor(BLUE);
-    gb.display.println("PLAYER 2 WINS!");
+    if(CurrentPlayer->id==1)
+    {
+      gb.display.setColor(RED);
+      gb.display.println("PLAYER 1 WINS!");
+    }
+    else
+    {
+      gb.display.setColor(BLUE);
+      gb.display.println("PLAYER 2 WINS!");
+    }
+    String strScore="Score: " + (String)CurrentPlayer->points;
+    gb.display.setColor(ORANGE);
+    gb.display.setCursor(19,44);
+    gb.display.println(strScore);
   }
-  String strScore="Score: " + (String)CurrentPlayer->points;
-  gb.display.setColor(ORANGE);
-  gb.display.setCursor(19,44);
-  gb.display.println(strScore);
 }
 
 void drawHighScoreScreen()
