@@ -68,12 +68,7 @@ void BattleMap()
         if(infoSelection==RESUME_INFO_ACTION)
           infoSelection=QUIT_INFO_ACTION;
         else if(infoSelection==QUIT_INFO_ACTION)
-        {
-          if(Tutorial==-1)
-            infoSelection=SAVE_INFO_ACTION;
-          else
-            infoSelection=END_TURN_INFO_ACTION;
-        }
+          infoSelection=SAVE_INFO_ACTION;
         else if(infoSelection==SAVE_INFO_ACTION)
           infoSelection=END_TURN_INFO_ACTION;
         else
@@ -111,12 +106,7 @@ void BattleMap()
         if(infoSelection==RESUME_INFO_ACTION)
           infoSelection=END_TURN_INFO_ACTION;
         else if(infoSelection==END_TURN_INFO_ACTION)
-        {
-          if(Tutorial==-1)
-            infoSelection=SAVE_INFO_ACTION;
-          else
-            infoSelection=QUIT_INFO_ACTION;
-        }
+          infoSelection=SAVE_INFO_ACTION;
         else if(infoSelection==SAVE_INFO_ACTION)
           infoSelection=QUIT_INFO_ACTION;
         else
@@ -154,12 +144,7 @@ void BattleMap()
         if(infoSelection==RESUME_INFO_ACTION)
           infoSelection=QUIT_INFO_ACTION;
         else if(infoSelection==QUIT_INFO_ACTION)
-        {
-          if(Tutorial==-1)
-            infoSelection=SAVE_INFO_ACTION;
-          else
-            infoSelection=END_TURN_INFO_ACTION;
-        } 
+          infoSelection=SAVE_INFO_ACTION;
         else if(infoSelection==SAVE_INFO_ACTION)
           infoSelection=END_TURN_INFO_ACTION;
         else
@@ -197,12 +182,7 @@ void BattleMap()
         if(infoSelection==RESUME_INFO_ACTION)
           infoSelection=END_TURN_INFO_ACTION;
         else if(infoSelection==END_TURN_INFO_ACTION)
-        {
-          if(Tutorial==-1)
-            infoSelection=SAVE_INFO_ACTION;
-          else
-            infoSelection=QUIT_INFO_ACTION;
-        }
+          infoSelection=SAVE_INFO_ACTION;
         else if(infoSelection==SAVE_INFO_ACTION)
           infoSelection=QUIT_INFO_ACTION;
         else
@@ -443,7 +423,11 @@ Unit getUnit(unsigned int id)
 
 void endTurn()
 {
-  TurnCount++;
+  if((MapId==1 || MapId==2) && CurrentPlayer->id==1)
+  {
+    if(TurnCount<=4)
+      TurnCount++;
+  }
   int player1Buildings=0;
   int player2Buildings=0;
   int player1Bases=0;
@@ -517,51 +501,33 @@ void endTurn()
       return;
     }
   }
-  if(Tutorial==0)
+
+  if(CurrentPlayer->id==PLAYER_1)
   {
-    if(TurnCount<=4)
+    CurrentPlayer=&Player_2;
+    countPlayerStats();
+    if(IsConsoleOpponent==true)
     {
-      SceneMode=TUTORIAL_MODE;
+      AITurn = true;
     }
-    else
-    {
-      countPlayerStats();
-      gb.lights.fill(RED);
-      gb.gui.popup("PLAYER 1 TURN",50);
-    }
-  }
-  else if(Tutorial==1)
-  {
-    if(TurnCount<=4)
-    {
-      SceneMode=TUTORIAL_MODE;
-    }
-    else
-    {
-      countPlayerStats();
-      gb.lights.fill(RED);
-      gb.gui.popup("PLAYER 1 TURN",50);
-    }
+    prepareConsoleLogic();
+    gb.lights.fill(BLUE);
+    gb.gui.popup("PLAYER 2 TURN",50);
   }
   else
   {
-    if(CurrentPlayer->id==PLAYER_1)
+    CurrentPlayer=&Player_1;
+    countPlayerStats();
+    AITurn = false;
+    if(MapId==1 || MapId==2) //tutorials
     {
-      CurrentPlayer=&Player_2;
-      countPlayerStats();
-      AITurn = true;
-      prepareConsoleLogic();
-      gb.lights.fill(BLUE);
-      gb.gui.popup("PLAYER 2 TURN",50);
+      if(TurnCount<=4)
+      {
+        SceneMode=TUTORIAL_MODE;
+      }
     }
-    else
-    {
-      CurrentPlayer=&Player_1;
-      countPlayerStats();
-      AITurn = false;
-      gb.lights.fill(RED);
-      gb.gui.popup("PLAYER 1 TURN",50);
-    }
+    gb.lights.fill(RED);
+    gb.gui.popup("PLAYER 1 TURN",50);
   }
 }
 

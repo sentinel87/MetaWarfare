@@ -50,19 +50,19 @@ void drawScenarioMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.setColor(WHITE);
   gb.display.setCursor(2,3);
-  gb.display.println("1. Lake valley");
+  gb.display.println("1.Lake valley");
   gb.display.setCursor(2,9);
-  gb.display.println("2. Island");
+  gb.display.println("2.Island");
   gb.display.setCursor(2,15);
-  gb.display.println("3. Duel plains");
+  gb.display.println("3.Duel plains");
   gb.display.setCursor(2,21);
-  gb.display.println("4. Mountain lake");
+  gb.display.println("4.Mountain lake");
   gb.display.setCursor(2,27);
-  gb.display.println("5. Canals");
+  gb.display.println("5.Canals");
   gb.display.setCursor(2,33);
-  gb.display.println("6. Rocky pass");
+  gb.display.println("6.Rocky pass");
   gb.display.setCursor(2,39);
-  gb.display.println("7. Sea coast");
+  gb.display.println("7.Sea coast");
   gb.display.setCursor(2,45);
   gb.display.println("BACK");
   
@@ -74,9 +74,9 @@ void drawTutorialMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.setColor(WHITE);
   gb.display.setCursor(2,3);
-  gb.display.println("1. Basic");
+  gb.display.println("1.Basic");
   gb.display.setCursor(2,9);
-  gb.display.println("2. Advanced");
+  gb.display.println("2.Advanced");
   gb.display.setCursor(2,15);
   gb.display.println("BACK");
   
@@ -88,6 +88,8 @@ void drawSkirmishScenarioMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.setColor(WHITE);
   gb.display.setCursor(2,3);
+  gb.display.println("1.Capture island");
+  gb.display.setCursor(2,9);
   gb.display.println("BACK");
   gb.display.drawImage(posX,posY,Pointer);
 }
@@ -97,19 +99,19 @@ void drawCampaignScenarioMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.setColor(WHITE);
   gb.display.setCursor(2,3);
-  gb.display.println("1. Siege");
+  gb.display.println("1.Siege");
   gb.display.setCursor(2,9);
-  gb.display.println("2. Last stand");
+  gb.display.println("2.Last stand");
   gb.display.setCursor(2,15);
-  gb.display.println("3. Supply depots");
+  gb.display.println("3.Supply depots");
   gb.display.setCursor(2,21);
-  gb.display.println("4. Stronghold");
+  gb.display.println("4.Stronghold");
   gb.display.setCursor(2,27);
-  gb.display.println("5. Mountain pass");
+  gb.display.println("5.Mountain pass");
   gb.display.setCursor(2,33);
-  gb.display.println("6. Liberation");
+  gb.display.println("6.Liberation");
   gb.display.setCursor(2,39);
-  gb.display.println("7. Last harbor");
+  gb.display.println("7.Last harbor");
   gb.display.setCursor(2,45);
   gb.display.println("BACK");
   gb.display.drawImage(posX,posY,Pointer);
@@ -296,15 +298,10 @@ void drawInfoMenu(int selection)
     gb.display.setColor(BLACK); 
   gb.display.setCursor(2,43);
   gb.display.println("END TURN");
-  if(Tutorial==-1)
-  {
-    if(selectionFrame==1 && infoSelection==SAVE_INFO_ACTION)
-      gb.display.setColor(RED);  
-    else
-      gb.display.setColor(BLACK);
-  }
+  if(selectionFrame==1 && infoSelection==SAVE_INFO_ACTION)
+    gb.display.setColor(RED);  
   else
-     gb.display.setColor(BEIGE);
+    gb.display.setColor(BLACK);
   gb.display.setCursor(2,50);
   gb.display.println("SAVE");
   if(selectionFrame==1 && infoSelection==QUIT_INFO_ACTION)
@@ -1203,7 +1200,7 @@ String scoreStrMod(int score)
 void drawTutorialScreen()
 {
   gb.display.setColor(BEIGE); 
-  if(Tutorial==0)
+  if(MapId==1)
   {
     if(TurnCount==0)
     {
@@ -1238,7 +1235,7 @@ void drawTutorialScreen()
       gb.display.println("TIP: Only Infantry  and AT Infantry     can cross mountains and capture building");
     }
   }
-  else if(Tutorial==1)
+  else if(MapId==2)
   {
     if(TurnCount==0)
     {
@@ -1248,7 +1245,7 @@ void drawTutorialScreen()
     else if(TurnCount==1)
     {
       gb.display.setCursor(0, 2);
-      gb.display.println("Captured building   grants 100 funds    every turn. You can use it to buy new   units in the        captured base.");
+      gb.display.println("Captured building   grants 100 funds    every turn. You can use it to buy new   units in the        captured base.      Captured hospital   heals unit +2 points per turn.");
     }
     else if(TurnCount==2)
     {

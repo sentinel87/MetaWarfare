@@ -10,9 +10,6 @@ int mmPosY=21;
 
 int mmSelectedScene=MENU_TUTORIAL;
 int smSelectedScene=1;
-int tmSelectedScene=1;
-int cmSelectedScene=1;
-int skmSelectedScene=1;
 
 void MainMenuScene()
 {
@@ -118,7 +115,6 @@ void MainMenuScene()
         posY = 0;
         sRowIdx = 0;
         sColIdx = 0;
-        Tutorial=-1;
         gb.gui.popup("GAME LOADED!",50);
       }
     }
@@ -143,123 +139,159 @@ void MainMenuScene()
 
 void CampaignScenarioScene()
 {
-  drawCampaignScenarioMenu(65,1+(cmSelectedScene-1)*6);
+  drawCampaignScenarioMenu(65,1+(smSelectedScene-1)*6);
   if(gb.buttons.pressed(BUTTON_UP))
   {
-    if(cmSelectedScene>1)
+    if(smSelectedScene>1)
     {
-      cmSelectedScene--;
+      smSelectedScene--;
     }
     else
     {
-      cmSelectedScene=8;
+      smSelectedScene=8;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(cmSelectedScene<8)
+    if(smSelectedScene<8)
     {
-      cmSelectedScene++;
+      smSelectedScene++;
     }
     else
     {
-      cmSelectedScene=1;
+      smSelectedScene=1;
     }
   }
   else if(gb.buttons.pressed(BUTTON_A))
   {
-    if(cmSelectedScene==1)
+    if(smSelectedScene==1)
     {
-      MapId=8;
-      Tutorial=-1;
+      MapId=10;
       GameMode=CAPTURE_FLAG_MODE;
       memcpy(CurrentBoard, CampaignBoard1, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      cmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(cmSelectedScene==2)
+    else if(smSelectedScene==2)
     {
-      MapId=9;
-      Tutorial=-1;
+      MapId=11;
       GameMode=DEATHMATCH_MODE;
       memcpy(CurrentBoard, CampaignBoard2, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      cmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(cmSelectedScene==3)
+    else if(smSelectedScene==3)
     {
-      MapId=10;
-      Tutorial=-1;
+      MapId=12;
       GameMode=CAPTURE_MODE;
       memcpy(CurrentBoard, CampaignBoard3, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      cmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(cmSelectedScene==4)
+    else if(smSelectedScene==4)
     {
-      MapId=11;
-      Tutorial=-1;
+      MapId=13;
       GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, CampaignBoard4, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      cmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(cmSelectedScene==5)
+    else if(smSelectedScene==5)
     {
-      MapId=12;
-      Tutorial=-1;
+      MapId=14;
       GameMode=DEATHMATCH_MODE;
       memcpy(CurrentBoard, CampaignBoard5, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      cmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(cmSelectedScene==6)
+    else if(smSelectedScene==6)
     {
-      MapId=13;
-      Tutorial=-1;
+      MapId=15;
       GameMode=CAPTURE_MODE;
       memcpy(CurrentBoard, CampaignBoard6, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      cmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(cmSelectedScene==7)
+    else if(smSelectedScene==7)
     {
-      MapId=14;
-      Tutorial=-1;
+      MapId=16;
       GameMode=CAPTURE_FLAG_MODE;
       memcpy(CurrentBoard, CampaignBoard7, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      cmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(cmSelectedScene==8)
+    else if(smSelectedScene==8)
     {
       SceneMode=MENU_MODE;
-      cmSelectedScene=1;
+      smSelectedScene=1;
     }
   }
 }
 
 void SkirmishScenarioScene()
 {
-  drawSkirmishScenarioMenu(65,1+(skmSelectedScene-1)*6);
+  drawSkirmishScenarioMenu(65,1+(smSelectedScene-1)*6);
+  if(gb.buttons.pressed(BUTTON_UP))
+  {
+    if(smSelectedScene>1)
+    {
+      smSelectedScene--;
+    }
+    else
+    {
+      smSelectedScene=2;
+    }
+  }
+  else if(gb.buttons.pressed(BUTTON_DOWN))
+  {
+    if(smSelectedScene<2)
+    {
+      smSelectedScene++;
+    }
+    else
+    {
+      smSelectedScene=1;
+    }
+  }
   if(gb.buttons.pressed(BUTTON_A))
   {
-    SceneMode=MENU_MODE;
-    skmSelectedScene=1;
+    if(smSelectedScene==1)
+    {
+      MapId=17;
+      GameMode=CAPTURE_FLAG_MODE;
+      memcpy(CurrentBoard, SkirmishBoard1, sizeof(CurrentBoard));
+      PrepareMap();
+      SceneMode = TUTORIAL_MODE;
+      mapMode = IDLE_MODE;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
+    }
+    else if(smSelectedScene==2)
+    {
+      SceneMode=MENU_MODE;
+      smSelectedScene=1;
+    }
   }
 }
 
@@ -292,80 +324,80 @@ void MultiplayerScenarioScene()
   {
     if(smSelectedScene==1)
     {
-      MapId=1;
-      Tutorial=-1;
+      MapId=3;
       GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
       smSelectedScene=1;
+      IsConsoleOpponent=false;
     }
     else if(smSelectedScene==2)
     {
-      MapId=2;
-      Tutorial=-1;
+      MapId=4;
       GameMode=CAPTURE_MODE;
       memcpy(CurrentBoard, Board2, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
       smSelectedScene=1;
+      IsConsoleOpponent=false;
     }
     else if(smSelectedScene==3)
     {
-      MapId=3;
-      Tutorial=-1;
+      MapId=5;
       GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, Board3, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
       smSelectedScene=1;
+      IsConsoleOpponent=false;
     }
     else if(smSelectedScene==4)
     {
-      MapId=4;
-      Tutorial=-1;
+      MapId=6;
       GameMode=CAPTURE_MODE;
       memcpy(CurrentBoard, Board4, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
       smSelectedScene=1;
+      IsConsoleOpponent=false;
     }
     else if(smSelectedScene==5)
     {
-      MapId=5;
-      Tutorial=-1;
+      MapId=7;
       GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, Board5, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
       smSelectedScene=1;
+      IsConsoleOpponent=false;
     }
     else if(smSelectedScene==6)
     {
-      MapId=6;
-      Tutorial=-1;
+      MapId=8;
       GameMode=CAPTURE_MODE;
       memcpy(CurrentBoard, Board6, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
       smSelectedScene=1;
+      IsConsoleOpponent=false;
     }
     else if(smSelectedScene==7)
     {
-      MapId=7;
-      Tutorial=-1;
+      MapId=9;
       GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, Board7, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
       smSelectedScene=1;
+      IsConsoleOpponent=false;
     }
     else if(smSelectedScene==8)
     {
@@ -377,57 +409,71 @@ void MultiplayerScenarioScene()
 
 void TutorialScenarioScene()
 {
-  drawTutorialMenu(65,1+(tmSelectedScene-1)*6);
+  drawTutorialMenu(65,1+(smSelectedScene-1)*6);
   if(gb.buttons.pressed(BUTTON_UP))
   {
-    if(tmSelectedScene>1)
+    if(smSelectedScene>1)
     {
-      tmSelectedScene--;
+      smSelectedScene--;
     }
     else
     {
-      tmSelectedScene=3;
+      smSelectedScene=3;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(tmSelectedScene<3)
+    if(smSelectedScene<3)
     {
-      tmSelectedScene++;
+      smSelectedScene++;
     }
     else
     {
-      tmSelectedScene=1;
+      smSelectedScene=1;
     }
   }
   else if(gb.buttons.pressed(BUTTON_A))
   {
-    if(tmSelectedScene==1)
+    if(smSelectedScene==1)
     {
-      Tutorial=0;
+      MapId=1;
       GameMode=CONQUEST_MODE;
       memcpy(CurrentBoard, TutorialBoard1, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      tmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(tmSelectedScene==2)
+    else if(smSelectedScene==2)
     {
-      Tutorial=1;
+      MapId=2;
       GameMode=CAPTURE_MODE;
       memcpy(CurrentBoard, TutorialBoard2, sizeof(CurrentBoard));
       PrepareMap();
       SceneMode = TUTORIAL_MODE;
       mapMode = IDLE_MODE;
-      tmSelectedScene=1;
+      smSelectedScene=1;
+      IsConsoleOpponent=true;
     }
-    else if(tmSelectedScene==3)
+    else if(smSelectedScene==3)
     {
       SceneMode=MENU_MODE;
-      tmSelectedScene=1;
+      smSelectedScene=1;
     }
   }
+}
+
+void SetMap(int mapId,int gameMode,GameTileStruct board[][16], bool isConsoleOpponent)
+{
+  MapId=mapId;
+  GameMode=gameMode;
+  memcpy(CurrentBoard, board, sizeof(CurrentBoard));
+  PrepareMap();
+  SceneMode = TUTORIAL_MODE;
+  mapMode = IDLE_MODE;
+  smSelectedScene=1;
+  IsConsoleOpponent=isConsoleOpponent;
 }
 
 void PrepareMap()
@@ -449,7 +495,6 @@ void PrepareMap()
   Player_2.totalUnits = 0;
   Player_2.points = 0;
   CurrentPlayer=&Player_1;
-  //countPlayerStats();
 }
 
 void EndGameScene()
@@ -476,9 +521,6 @@ void TutorialTip()
   if(gb.buttons.pressed(BUTTON_A))
   {
     SceneMode=MAP_MODE;
-    countPlayerStats();
-    gb.lights.fill(RED);
-    gb.gui.popup("PLAYER 1 TURN",50);
   }
 }
 
