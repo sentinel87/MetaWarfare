@@ -96,6 +96,7 @@ bool IsConsoleOpponent=false;
 
 int TurnCount=0;
 int Winner = 0;
+int CampaignProgress = 0;
 
 int SceneMode=MENU_MODE;
 int MapId=0;
@@ -148,16 +149,17 @@ struct UnitLocation
 void setup() {
   gb.begin();
   gb.save.config(savefileDefaults);
-  ScoreBoard[0]=gb.save.get(9);
-  ScoreBoard[1]=gb.save.get(10);
-  ScoreBoard[2]=gb.save.get(11);
-  ScoreBoard[3]=gb.save.get(12);
-  ScoreBoard[4]=gb.save.get(13);
+  ScoreBoard[0] = gb.save.get(9);
+  ScoreBoard[1] = gb.save.get(10);
+  ScoreBoard[2] = gb.save.get(11);
+  ScoreBoard[3] = gb.save.get(12);
+  ScoreBoard[4] = gb.save.get(13);
   int check=gb.save.get(7);
   if(check==1)
   {
     SaveExist=true;
   }
+  CampaignProgress = gb.save.get(14);
 }    
 
 

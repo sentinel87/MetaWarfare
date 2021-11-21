@@ -167,80 +167,31 @@ void CampaignScenarioScene()
   {
     if(smSelectedScene==1)
     {
-      MapId=10;
-      GameMode=CAPTURE_FLAG_MODE;
-      memcpy(CurrentBoard, CampaignBoard1, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
+      SetMap(10,CAPTURE_FLAG_MODE,CampaignBoard1,true);
     }
-    else if(smSelectedScene==2)
+    else if(smSelectedScene==2 && CampaignProgress>=1)
     {
-      MapId=11;
-      GameMode=DEATHMATCH_MODE;
-      memcpy(CurrentBoard, CampaignBoard2, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
+      SetMap(11,DEATHMATCH_MODE,CampaignBoard2,true);
     }
-    else if(smSelectedScene==3)
+    else if(smSelectedScene==3 && CampaignProgress>=2)
     {
-      MapId=12;
-      GameMode=CAPTURE_MODE;
-      memcpy(CurrentBoard, CampaignBoard3, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
+      SetMap(12,CAPTURE_MODE,CampaignBoard3,true);
     }
-    else if(smSelectedScene==4)
+    else if(smSelectedScene==4 && CampaignProgress>=3)
     {
-      MapId=13;
-      GameMode=CONQUEST_MODE;
-      memcpy(CurrentBoard, CampaignBoard4, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
+      SetMap(13,CONQUEST_MODE,CampaignBoard4,true);
     }
-    else if(smSelectedScene==5)
+    else if(smSelectedScene==5 && CampaignProgress>=4)
     {
-      MapId=14;
-      GameMode=DEATHMATCH_MODE;
-      memcpy(CurrentBoard, CampaignBoard5, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
+      SetMap(14,DEATHMATCH_MODE,CampaignBoard5,true);
     }
-    else if(smSelectedScene==6)
+    else if(smSelectedScene==6 && CampaignProgress>=5)
     {
-      MapId=15;
-      GameMode=CAPTURE_MODE;
-      memcpy(CurrentBoard, CampaignBoard6, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
+      SetMap(15,CAPTURE_MODE,CampaignBoard6,true);
     }
-    else if(smSelectedScene==7)
+    else if(smSelectedScene==7 && CampaignProgress>=6)
     {
-      MapId=16;
-      GameMode=CAPTURE_FLAG_MODE;
-      memcpy(CurrentBoard, CampaignBoard7, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
+      SetMap(16,CAPTURE_FLAG_MODE,CampaignBoard7,true);
     }
     else if(smSelectedScene==8)
     {
@@ -316,87 +267,24 @@ void MultiplayerScenarioScene()
   }
   else if(gb.buttons.pressed(BUTTON_A))
   {
-    if(smSelectedScene==1)
+    switch(smSelectedScene)
     {
-      MapId=3;
-      GameMode=CONQUEST_MODE;
-      memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=false;
-    }
-    else if(smSelectedScene==2)
-    {
-      MapId=4;
-      GameMode=CAPTURE_MODE;
-      memcpy(CurrentBoard, Board2, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=false;
-    }
-    else if(smSelectedScene==3)
-    {
-      MapId=5;
-      GameMode=CONQUEST_MODE;
-      memcpy(CurrentBoard, Board3, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=false;
-    }
-    else if(smSelectedScene==4)
-    {
-      MapId=6;
-      GameMode=CAPTURE_MODE;
-      memcpy(CurrentBoard, Board4, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=false;
-    }
-    else if(smSelectedScene==5)
-    {
-      MapId=7;
-      GameMode=CONQUEST_MODE;
-      memcpy(CurrentBoard, Board5, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=false;
-    }
-    else if(smSelectedScene==6)
-    {
-      MapId=8;
-      GameMode=CAPTURE_MODE;
-      memcpy(CurrentBoard, Board6, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=false;
-    }
-    else if(smSelectedScene==7)
-    {
-      MapId=9;
-      GameMode=CONQUEST_MODE;
-      memcpy(CurrentBoard, Board7, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=false;
-    }
-    else if(smSelectedScene==8)
-    {
-      SceneMode=MENU_MODE;
-      smSelectedScene=1;
+      case 1:
+        SetMap(3,CONQUEST_MODE,Board1,false); break;
+      case 2:
+        SetMap(4,CAPTURE_MODE,Board2,false); break;
+      case 3:
+        SetMap(5,CONQUEST_MODE,Board3,false); break;
+      case 4:
+        SetMap(6,CAPTURE_MODE,Board4,false); break;
+      case 5:
+        SetMap(7,CONQUEST_MODE,Board5,false); break;
+      case 6:
+        SetMap(8,CAPTURE_MODE,Board6,false); break;
+      case 7:
+        SetMap(9,CONQUEST_MODE,Board7,false); break;
+      case 8:
+        SceneMode=MENU_MODE; smSelectedScene=1; break;
     }
   }
 }
@@ -483,6 +371,7 @@ void EndGameScene()
     if(IsConsoleOpponent==true && Winner==1)
     {
       HighScore=compareAndUpdateScore(Player_1.points);
+      checkProgress();
     }
     else if(IsConsoleOpponent==false)
     {
@@ -498,6 +387,27 @@ void EndGameScene()
       gb.save.set(13,ScoreBoard[4]);
     }
     SceneMode=MENU_MODE;
+  }
+}
+
+void checkProgress()
+{
+  switch(MapId)
+  {
+    case 10:
+      saveProgress(1); break;
+    case 11:
+      saveProgress(2); break;
+    case 12:
+      saveProgress(3); break;
+    case 13:
+      saveProgress(4); break;
+    case 14:
+      saveProgress(5); break;
+    case 15:
+      saveProgress(6); break;
+    case 16:
+      saveProgress(7); break;
   }
 }
 

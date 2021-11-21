@@ -330,6 +330,15 @@ void saveDataToBlock(uint16_t block,String data,int bufferSize)
   gb.save.set(block,Buffer);
 }
 
+void saveProgress(int minimalValue)
+{
+  if(CampaignProgress<minimalValue)
+  {
+    CampaignProgress=minimalValue;
+    gb.save.set(14,minimalValue);
+  }
+}
+
 //---------------HELPERS---------------------------------
 
 String returnDecimalStringTwo(int number)

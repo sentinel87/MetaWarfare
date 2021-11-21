@@ -103,18 +103,43 @@ void drawCampaignScenarioMenu(int posX, int posY)
   gb.display.setCursor(2,3);
   gb.display.println("1.Siege");
   gb.display.setCursor(2,9);
+  if(CampaignProgress>=1)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
   gb.display.println("2.Last stand");
   gb.display.setCursor(2,15);
+  if(CampaignProgress>=2)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
   gb.display.println("3.Supply depots");
   gb.display.setCursor(2,21);
+  if(CampaignProgress>=3)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
   gb.display.println("4.Stronghold");
   gb.display.setCursor(2,27);
+  if(CampaignProgress>=4)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
   gb.display.println("5.Mountain pass");
   gb.display.setCursor(2,33);
+  if(CampaignProgress>=5)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
   gb.display.println("6.Liberation");
   gb.display.setCursor(2,39);
+  if(CampaignProgress>=6)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
   gb.display.println("7.Last harbor");
   gb.display.setCursor(2,45);
+  gb.display.setColor(WHITE);
   gb.display.println("BACK");
   gb.display.drawImage(posX,posY,Pointer);
 }
@@ -1329,10 +1354,41 @@ void drawTutorialScreen()
         gb.display.setColor(RED); 
         gb.display.println("Capture 8 buildings.");
       }
+      if(MapId>=10 && MapId<=16)
+      {
+        String text = drawCampaignStory();
+        gb.display.setColor(BEIGE); 
+        gb.display.setCursor(0, 30);
+        gb.display.println(text);
+      }
     }
   }
   gb.display.setColor(WHITE);  
   gb.display.setCursor(20, 56);
   gb.display.println("CONFIRM");
   gb.display.drawImage(50,54,Pointer);
+}
+
+String drawCampaignStory()
+{
+  String result="";
+  switch(MapId)
+  {
+    case 10:
+      result = "Enemy invaded our   island. The capital is under siege.     Secure town gates!"; break;
+    case 11:
+      result = "Enemy main army     circled our units!  This may be the     turning point..."; break;
+    case 12:
+      result = "We must capture     enemy depots in     order to buildheavy units."; break;
+    case 13:
+      result = "Now it's time to    cripple main HQ -   paralyze enemy      command chain."; break;
+    case 14:
+      result = "We must take controlover the valley.    This is main passageto the coast."; break;
+    case 15:
+      result = "Let's liberate our  main cities - push  enemy to the sea."; break;
+    case 16:
+      result = "Capturing enemy mainharbor will secure  our land."; break;
+  }
+
+  return result;
 }
