@@ -261,12 +261,12 @@ void SkirmishScenarioScene()
     }
     else
     {
-      smSelectedScene=2;
+      smSelectedScene=3;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(smSelectedScene<2)
+    if(smSelectedScene<3)
     {
       smSelectedScene++;
     }
@@ -277,21 +277,14 @@ void SkirmishScenarioScene()
   }
   if(gb.buttons.pressed(BUTTON_A))
   {
-    if(smSelectedScene==1)
+    switch(smSelectedScene)
     {
-      MapId=17;
-      GameMode=CAPTURE_FLAG_MODE;
-      memcpy(CurrentBoard, SkirmishBoard1, sizeof(CurrentBoard));
-      PrepareMap();
-      SceneMode = TUTORIAL_MODE;
-      mapMode = IDLE_MODE;
-      smSelectedScene=1;
-      IsConsoleOpponent=true;
-    }
-    else if(smSelectedScene==2)
-    {
-      SceneMode=MENU_MODE;
-      smSelectedScene=1;
+      case 1:
+        SetMap(17,CAPTURE_FLAG_MODE,SkirmishBoard1,true); break;
+      case 2:
+        SetMap(18,CONQUEST_MODE,SkirmishBoard2,true); break;
+      case 3:
+        SceneMode=MENU_MODE; smSelectedScene=1; break;
     }
   }
 }

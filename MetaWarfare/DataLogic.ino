@@ -84,6 +84,8 @@ bool loadMap()
       memcpy(CurrentBoard, CampaignBoard7, sizeof(CurrentBoard)); result=true; break;
     case 17:
       memcpy(CurrentBoard, SkirmishBoard1, sizeof(CurrentBoard)); result=true; break;
+    case 18:
+      memcpy(CurrentBoard, SkirmishBoard2, sizeof(CurrentBoard)); result=true; break;
     default:
       result=false; break;
   }
