@@ -212,12 +212,12 @@ void SkirmishScenarioScene()
     }
     else
     {
-      smSelectedScene=3;
+      smSelectedScene=4;
     }
   }
   else if(gb.buttons.pressed(BUTTON_DOWN))
   {
-    if(smSelectedScene<3)
+    if(smSelectedScene<4)
     {
       smSelectedScene++;
     }
@@ -235,6 +235,8 @@ void SkirmishScenarioScene()
       case 2:
         SetMap(18,CONQUEST_MODE,SkirmishBoard2,true); break;
       case 3:
+        SetMap(19,DEATHMATCH_MODE,SkirmishBoard3,true); break;
+      case 4:
         SceneMode=MENU_MODE; smSelectedScene=1; break;
     }
   }
