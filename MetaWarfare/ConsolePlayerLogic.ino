@@ -135,18 +135,20 @@ void attackWithDirectUnit()
     if(maxY>15)
         maxY=15;
 
-    int targetRow=-1;
-    int targetColumn=-1;
-    int unitDestionationRow=-1;
-    int unitDestionationColumn=-1;
-    bool located=false;
-
+    AttackParameters targets[8] = {{-1,-1,-1,-1,0,false},{-1,-1,-1,-1,0,false},{-1,-1,-1,-1,0,false},{-1,-1,-1,-1,0,false},{-1,-1,-1,-1,0,false},{-1,-1,-1,-1,0,false},{-1,-1,-1,-1,0,false},{-1,-1,-1,-1,0,false}};
+    setPriorities(targets,selectedUnit.unitId);
+    
     for(int i=minX;i<=maxX;i++) //Register all enemy units in range
     {
       for(int j=minY;j<=maxY;j++)
       {
-        if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player!=CurrentPlayer->id)
+        if(CurrentBoard[i][j].unitId!=0 && CurrentBoard[i][j].player!=CurrentPlayer->id) //check if attacking unit can move near enemy
         {
+          int targetRow=-1;
+          int targetColumn=-1;
+          int unitDestionationRow=-1;
+          int unitDestionationColumn=-1;
+          bool located=false;
           if(i>0)
           {
             if((CurrentBoard[i-1][j].unitId==0 && CurrentBoard[i-1][j].moveGrid==1) || ((i-1==tRow) && j==tColumn))
@@ -156,10 +158,9 @@ void attackWithDirectUnit()
               unitDestionationRow=i-1;
               unitDestionationColumn=j;
               located=true;
-              break;
             }
           }
-          if(i<15)
+          if(i<15 && located==false)
           {
             if((CurrentBoard[i+1][j].unitId==0 && CurrentBoard[i+1][j].moveGrid==1) || ((i+1==tRow) && j==tColumn))
             {
@@ -168,10 +169,9 @@ void attackWithDirectUnit()
               unitDestionationRow=i+1;
               unitDestionationColumn=j;
               located=true;
-              break;
             }
           }
-          if(j>0)
+          if(j>0 && located==false)
           {
             if((CurrentBoard[i][j-1].unitId==0 && CurrentBoard[i][j-1].moveGrid==1) || (i==tRow && (j-1==tColumn)))
             {
@@ -180,10 +180,9 @@ void attackWithDirectUnit()
               unitDestionationRow=i;
               unitDestionationColumn=j-1;
               located=true;
-              break;
             }
           }
-          if(j<15)
+          if(j<15 && located==false)
           {
             if((CurrentBoard[i][j+1].unitId==0 && CurrentBoard[i][j+1].moveGrid==1) || (i==tRow && (j+1==tColumn)))
             {
@@ -192,44 +191,138 @@ void attackWithDirectUnit()
               unitDestionationRow=i;
               unitDestionationColumn=j+1;
               located=true;
-              break;
+            }
+          }
+
+          if(located==true)
+          {
+            for(int t=0;t<8;t++) //assign target to free slot (if available)
+            {
+              if(targets[t].unitId==CurrentBoard[i][j].unitId)
+              {
+                if(targets[t].locked==false)
+                {
+                  targets[t].targetRow=targetRow;
+                  targets[t].targetColumn=targetColumn;
+                  targets[t].unitDestionationRow=unitDestionationRow;
+                  targets[t].unitDestionationColumn=unitDestionationColumn;
+                  targets[t].locked=true;
+                  break;
+                }
+                else
+                {
+                  break;
+                }
+              }
             }
           }
         }
       }
-      if(located==true)
+    }
+
+    for(int t=0;t<8;t++) //get first priority to attack
+    {
+      if(targets[t].locked==true)
       {
+        int targetRow = targets[t].targetRow;
+        int targetColumn = targets[t].targetColumn;
+        int unitDestionationRow = targets[t].unitDestionationRow;
+        int unitDestionationColumn = targets[t].unitDestionationColumn;
+        
+        if(unitDestionationRow==tRow && unitDestionationColumn==tColumn)
+        {
+          CurrentBoard[tRow][tColumn].active=0;
+        }
+        else
+        {
+          //Fill destination tile with unit info
+          CurrentBoard[unitDestionationRow][unitDestionationColumn].player=CurrentBoard[tRow][tColumn].player;
+          CurrentBoard[unitDestionationRow][unitDestionationColumn].unitId=CurrentBoard[tRow][tColumn].unitId;
+          CurrentBoard[unitDestionationRow][unitDestionationColumn].unitHp=CurrentBoard[tRow][tColumn].unitHp;
+          CurrentBoard[unitDestionationRow][unitDestionationColumn].active=0;
+          //Remove unit info from starting tile
+          CurrentBoard[tRow][tColumn].player=0;
+          CurrentBoard[tRow][tColumn].unitId=0;
+          CurrentBoard[tRow][tColumn].unitHp=0;
+          CurrentBoard[tRow][tColumn].active=0;
+        }
+  
+        mapMode = IDLE_MODE;
+        //Prepare tiles for battle scene
+        Attacker = &CurrentBoard[unitDestionationRow][unitDestionationColumn];
+        Defender = &CurrentBoard[targetRow][targetColumn];
+        PrepareBattleScene();
+        SceneMode=BATTLE_MODE;
         break;
       }
     }
+  }
+}
 
-    if(targetRow!=-1 && targetColumn!=-1 && unitDestionationRow!=-1 && unitDestionationColumn!=-1)
-    {
-      if(unitDestionationRow==tRow && unitDestionationColumn==tColumn)
-      {
-        CurrentBoard[tRow][tColumn].active=0;
-      }
-      else
-      {
-        //Fill destination tile with unit info
-        CurrentBoard[unitDestionationRow][unitDestionationColumn].player=CurrentBoard[tRow][tColumn].player;
-        CurrentBoard[unitDestionationRow][unitDestionationColumn].unitId=CurrentBoard[tRow][tColumn].unitId;
-        CurrentBoard[unitDestionationRow][unitDestionationColumn].unitHp=CurrentBoard[tRow][tColumn].unitHp;
-        CurrentBoard[unitDestionationRow][unitDestionationColumn].active=0;
-        //Remove unit info from starting tile
-        CurrentBoard[tRow][tColumn].player=0;
-        CurrentBoard[tRow][tColumn].unitId=0;
-        CurrentBoard[tRow][tColumn].unitHp=0;
-        CurrentBoard[tRow][tColumn].active=0;
-      }
-
-      mapMode = IDLE_MODE;
-      //Prepare tiles for battle scene
-      Attacker = &CurrentBoard[unitDestionationRow][unitDestionationColumn];
-      Defender = &CurrentBoard[targetRow][targetColumn];
-      PrepareBattleScene();
-      SceneMode=BATTLE_MODE;
-    }
+void setPriorities(AttackParameters targets[8],int unitId)
+{
+  switch(unitId)
+  {
+    case 1: //Half Truck
+      targets[0].unitId=7;
+      targets[1].unitId=8;
+      targets[2].unitId=1;
+      targets[3].unitId=6;
+      targets[4].unitId=5;
+      targets[5].unitId=2;
+      targets[6].unitId=3;
+      targets[7].unitId=4;
+      break;
+    case 2: //Medium Tank
+      targets[0].unitId=6;
+      targets[1].unitId=5;
+      targets[2].unitId=2;
+      targets[3].unitId=1;
+      targets[4].unitId=8;
+      targets[5].unitId=7;
+      targets[6].unitId=3;
+      targets[7].unitId=4;
+      break;
+    case 3: //Heavy Tank
+      targets[0].unitId=2;
+      targets[1].unitId=3;
+      targets[2].unitId=6;
+      targets[3].unitId=5;
+      targets[4].unitId=1;
+      targets[5].unitId=8;
+      targets[6].unitId=7;
+      targets[7].unitId=4;
+      break;
+    case 4: //Tank Destroyer
+      targets[0].unitId=4;
+      targets[1].unitId=3;
+      targets[2].unitId=2;
+      targets[3].unitId=6;
+      targets[4].unitId=5;
+      targets[5].unitId=1;
+      targets[6].unitId=8;
+      targets[7].unitId=7;
+      break;
+    case 7: //Infantry
+      targets[0].unitId=7;
+      targets[1].unitId=8;
+      targets[2].unitId=5;
+      targets[3].unitId=6;
+      targets[4].unitId=1;
+      targets[5].unitId=2;
+      targets[6].unitId=3;
+      targets[7].unitId=4;
+      break;
+    case 8: //AT Infantry
+      targets[0].unitId=1;
+      targets[1].unitId=2;
+      targets[2].unitId=6;
+      targets[3].unitId=5;
+      targets[4].unitId=8;
+      targets[5].unitId=7;
+      targets[6].unitId=3;
+      targets[7].unitId=4;
+      break;
   }
 }
 

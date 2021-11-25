@@ -94,6 +94,8 @@ void drawSkirmishScenarioMenu(int posX, int posY)
   gb.display.setCursor(2,15);
   gb.display.println("3.Final battle");
   gb.display.setCursor(2,21);
+  gb.display.println("4.Capture cove");
+  gb.display.setCursor(2,27);
   gb.display.println("BACK");
   gb.display.drawImage(posX,posY,Pointer);
 }

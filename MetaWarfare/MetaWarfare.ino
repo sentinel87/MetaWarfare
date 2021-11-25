@@ -146,6 +146,16 @@ struct UnitLocation
   bool activated;
 };
 
+struct AttackParameters
+{
+  unsigned int targetRow;
+  unsigned int targetColumn;
+  unsigned int unitDestionationRow;
+  unsigned int unitDestionationColumn;
+  unsigned int unitId;
+  bool locked;
+};
+
 void setup() {
   gb.begin();
   gb.save.config(savefileDefaults);
@@ -218,7 +228,7 @@ void loop() {
     BaseScene();
   }
 
-  //debug();
+  debug();
 }
 
 bool compareAndUpdateScore(int score)
