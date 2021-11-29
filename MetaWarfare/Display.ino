@@ -1306,7 +1306,7 @@ void drawTutorialScreen()
     else if(TurnCount==1)
     {
       gb.display.setCursor(0, 2);
-      gb.display.println("Captured building   grants 100 funds    every turn. You can use it to buy new   units in the        captured base.      Captured hospital   heals unit +2 points per turn.");
+      gb.display.println("Captured building   grants 100 funds    every turn. You can use it to buy new   units in the        captured base.      Captured hospital   heals unit +2 pointsper turn.");
     }
     else if(TurnCount==2)
     {

@@ -141,7 +141,7 @@ void loadMapSettings()
       CurrentBoard[i][j].unitHp = UnitHpData.substring(idx,idx+2).toInt();
       CurrentBoard[i][j].player = UnitOwnerData.substring(idx2,idx2+1).toInt();
       CurrentBoard[i][j].active = UnitStatusData.substring(idx2,idx2+1).toInt();
-      if(CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12)
+      if(CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12 || CurrentBoard[i][j].terrainTexture==30)
       {
         CurrentBoard[i][j].playerBuilding=BuildingOwnerData.substring(idx2,idx2+1).toInt();
       }

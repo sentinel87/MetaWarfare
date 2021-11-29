@@ -116,6 +116,7 @@ void MainMenuScene()
         posY = 0;
         sRowIdx = 0;
         sColIdx = 0;
+        AITurn=false;
         gb.gui.popup("GAME LOADED!",50);
       }
     }
@@ -344,6 +345,7 @@ void SetMap(int mapId,int gameMode,const GameTileStruct board[][16], bool isCons
   smSelectedScene=1;
   Winner=0;
   IsConsoleOpponent=isConsoleOpponent;
+  AITurn=false;
 }
 
 void PrepareMap()

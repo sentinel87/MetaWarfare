@@ -483,6 +483,13 @@ void endTurn()
       SceneMode = OUTCOME_MODE;
       return;
     }
+    if(IsConsoleOpponent==true && player1Units==0 && player1Bases==0)
+    {
+      Winner = 2;
+      mapMode = IDLE_MODE;
+      SceneMode = OUTCOME_MODE;
+      return;
+    }
   }
   else if(GameMode==DEATHMATCH_MODE)
   {

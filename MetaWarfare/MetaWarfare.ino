@@ -228,7 +228,7 @@ void loop() {
     BaseScene();
   }
 
-  debug();
+  //debug();
 }
 
 bool compareAndUpdateScore(int score)
