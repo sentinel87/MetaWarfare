@@ -499,10 +499,36 @@ void endTurn()
   }
   else if(GameMode==CAPTURE_FLAG_MODE)
   {
-    if(flagCaptured==true)
+    if(flagCaptured==true) //If player wins
     {
       CurrentPlayer->points+=50;
       Winner=CurrentPlayer->id;
+      mapMode = IDLE_MODE;
+      SceneMode = OUTCOME_MODE;
+      return;
+    }
+    if(player1Units==0 && player1Bases==0)
+    {
+      Winner = 2;
+      mapMode = IDLE_MODE;
+      SceneMode = OUTCOME_MODE;
+      return;
+    }
+  }
+  else //Conquest mode
+  {
+    if(player1Units==0 && player1Bases==0)
+    {
+      Winner = 2;
+      CurrentPlayer=&Player_2; //for score result
+      mapMode = IDLE_MODE;
+      SceneMode = OUTCOME_MODE;
+      return;
+    }
+    if(player2Units==0 && player2Bases==0)
+    {
+      Winner = 1;
+      CurrentPlayer=&Player_1; //for score result
       mapMode = IDLE_MODE;
       SceneMode = OUTCOME_MODE;
       return;
@@ -512,7 +538,7 @@ void endTurn()
   if(CurrentPlayer->id==PLAYER_1)
   {
     CurrentPlayer=&Player_2;
-    countPlayerStats();
+    CountPlayerStats();
     if(IsConsoleOpponent==true)
     {
       AITurn = true;
@@ -524,7 +550,7 @@ void endTurn()
   else
   {
     CurrentPlayer=&Player_1;
-    countPlayerStats();
+    CountPlayerStats();
     AITurn = false;
     if(MapId==1 || MapId==2) //tutorials
     {
@@ -538,7 +564,7 @@ void endTurn()
   }
 }
 
-void countPlayerStats()
+void CountPlayerStats()
 {
   CurrentPlayer->totalUnits=0;
   for(int i=0;i<16;i++)

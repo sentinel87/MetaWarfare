@@ -338,6 +338,7 @@ void SetMap(int mapId,int gameMode,const GameTileStruct board[][16], bool isCons
   GameMode=gameMode;
   memcpy(CurrentBoard, board, sizeof(CurrentBoard));
   PrepareMap();
+  CountPlayerStats();
   SceneMode = TUTORIAL_MODE;
   mapMode = IDLE_MODE;
   smSelectedScene=1;

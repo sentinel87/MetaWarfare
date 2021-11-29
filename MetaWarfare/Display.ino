@@ -630,6 +630,11 @@ void drawBackgroundScene(bool attacker)
       gb.display.drawImage(0,44,IMAGE_SCENE_ROAD,40,20);
       gb.display.drawImage(0,8,IMAGE_SCENE_BRIDGE,40,20);
     }
+    else if(LeftSceneTheme==HOSPITAL)
+    {
+      gb.display.drawImage(0,0,IMAGE_SCENE_GRASS,40,64);
+      gb.display.drawImage(0,0,IMAGE_SCENE_HOSPITAL,40,20);
+    }
   }
   else
   {
@@ -673,6 +678,11 @@ void drawBackgroundScene(bool attacker)
       gb.display.drawImage(40,27,IMAGE_SCENE_ROAD,40,18);
       gb.display.drawImage(40,44,IMAGE_SCENE_ROAD,40,20);
       gb.display.drawImage(40,8,IMAGE_SCENE_BRIDGE,40,20);
+    }
+    else if(RightSceneTheme==HOSPITAL)
+    {
+      gb.display.drawImage(40,0,IMAGE_SCENE_GRASS,40,64);
+      gb.display.drawImage(40,0,IMAGE_SCENE_HOSPITAL,40,20);
     }
   }
 }
@@ -1184,7 +1194,7 @@ void drawEndGameScreen()
     }
     else //Console wins
     {
-      gb.display.setColor(BLUE);
+      gb.display.setColor(BLACK);
       gb.display.println("LOST!");
     }
   }
