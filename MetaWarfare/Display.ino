@@ -1393,7 +1393,7 @@ String drawCampaignStory()
     case 11:
       result = "Enemy main army     circled our units!  This may be the     turning point..."; break;
     case 12:
-      result = "We must capture     enemy depots in     order to buildheavy units."; break;
+      result = "We must capture     enemy depots in     order to build heavy units."; break;
     case 13:
       result = "Now it's time to    cripple main HQ -   paralyze enemy      command chain."; break;
     case 14:
