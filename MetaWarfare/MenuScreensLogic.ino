@@ -136,6 +136,8 @@ void MainMenuScene()
     {
       SceneMode = SKIRMISH_SCENARIO_MODE;
     }
+    mmSelectedScene=MENU_TUTORIAL;
+    mmPosY=21;
   }
 }
 

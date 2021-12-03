@@ -1397,7 +1397,7 @@ String drawCampaignStory()
     case 13:
       result = "Now it's time to    cripple main HQ -   paralyze enemy      command chain."; break;
     case 14:
-      result = "We must take controlover the valley.    This is main passageto the coast."; break;
+      result = "We must take controlover the valley.    This passage leads  to the coast."; break;
     case 15:
       result = "Let's liberate our  main cities - push  enemy to the sea."; break;
     case 16:
