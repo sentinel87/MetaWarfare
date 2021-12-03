@@ -19,7 +19,7 @@ bool LoadGame()
 
 void loadMapConfig()
 {
-  char RawMapData[9];
+  char RawMapData[11];
   gb.save.get(0, RawMapData);
   String MapConfig(RawMapData);
   MapId = MapConfig.substring(0,5).toInt();
@@ -32,7 +32,17 @@ void loadMapConfig()
   {
     CurrentPlayer = &Player_2;
   }
-  GameMode=MapConfig.substring(7,8).toInt();
+  GameMode = MapConfig.substring(7,8).toInt();
+  int IsConsolePlay = MapConfig.substring(8,9).toInt();
+  if(IsConsolePlay == 0)
+  {
+     IsConsoleOpponent=false;
+  }
+  else
+  {
+    IsConsoleOpponent=true;
+  }
+  TurnCount = MapConfig.substring(9,10).toInt();
 }
 
 bool loadMap()
@@ -41,52 +51,47 @@ bool loadMap()
   switch(MapId)
   {
     case 1:
-    {
-      memcpy(CurrentBoard, Board1, sizeof(CurrentBoard));
-      result=true;
-    }
-    break;
+      memcpy(CurrentBoard, TutorialBoard1, sizeof(CurrentBoard)); result=true; break;
     case 2:
-    {
-      memcpy(CurrentBoard, Board2, sizeof(CurrentBoard));
-      result=true;
-    }
-    break;
+      memcpy(CurrentBoard, TutorialBoard2, sizeof(CurrentBoard)); result=true; break;
     case 3:
-    {
-      memcpy(CurrentBoard, Board3, sizeof(CurrentBoard));
-      result=true;
-    }
-    break;
+      memcpy(CurrentBoard, Board1, sizeof(CurrentBoard)); result=true; break;
     case 4:
-    {
-      memcpy(CurrentBoard, Board4, sizeof(CurrentBoard));
-      result=true;
-    }
-    break;
+      memcpy(CurrentBoard, Board2, sizeof(CurrentBoard)); result=true; break;
     case 5:
-    {
-      memcpy(CurrentBoard, Board5, sizeof(CurrentBoard));
-      result=true;
-    }
-    break;
+      memcpy(CurrentBoard, Board3, sizeof(CurrentBoard)); result=true; break;
     case 6:
-    {
-      memcpy(CurrentBoard, Board6, sizeof(CurrentBoard));
-      result=true;
-    }
-    break;
+      memcpy(CurrentBoard, Board4, sizeof(CurrentBoard)); result=true; break;
     case 7:
-    {
-      memcpy(CurrentBoard, Board7, sizeof(CurrentBoard));
-      result=true;
-    }
-    break;
+      memcpy(CurrentBoard, Board5, sizeof(CurrentBoard)); result=true; break;
+    case 8:
+      memcpy(CurrentBoard, Board6, sizeof(CurrentBoard)); result=true; break;
+    case 9:
+      memcpy(CurrentBoard, Board7, sizeof(CurrentBoard)); result=true; break;
+    case 10:
+      memcpy(CurrentBoard, CampaignBoard1, sizeof(CurrentBoard)); result=true; break;
+    case 11:
+      memcpy(CurrentBoard, CampaignBoard2, sizeof(CurrentBoard)); result=true; break;
+    case 12:
+      memcpy(CurrentBoard, CampaignBoard3, sizeof(CurrentBoard)); result=true; break;
+    case 13:
+      memcpy(CurrentBoard, CampaignBoard4, sizeof(CurrentBoard)); result=true; break;
+    case 14:
+      memcpy(CurrentBoard, CampaignBoard5, sizeof(CurrentBoard)); result=true; break;
+    case 15:
+      memcpy(CurrentBoard, CampaignBoard6, sizeof(CurrentBoard)); result=true; break;
+    case 16:
+      memcpy(CurrentBoard, CampaignBoard7, sizeof(CurrentBoard)); result=true; break;
+    case 17:
+      memcpy(CurrentBoard, SkirmishBoard1, sizeof(CurrentBoard)); result=true; break;
+    case 18:
+      memcpy(CurrentBoard, SkirmishBoard2, sizeof(CurrentBoard)); result=true; break;
+    case 19:
+      memcpy(CurrentBoard, SkirmishBoard3, sizeof(CurrentBoard)); result=true; break;
+    case 20:
+      memcpy(CurrentBoard, SkirmishBoard4, sizeof(CurrentBoard)); result=true; break;
     default:
-    {
-      result=false;
-    }
-    break;
+      result=false; break;
   }
 }
 
@@ -138,7 +143,7 @@ void loadMapSettings()
       CurrentBoard[i][j].unitHp = UnitHpData.substring(idx,idx+2).toInt();
       CurrentBoard[i][j].player = UnitOwnerData.substring(idx2,idx2+1).toInt();
       CurrentBoard[i][j].active = UnitStatusData.substring(idx2,idx2+1).toInt();
-      if(CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12)
+      if(CurrentBoard[i][j].terrainTexture==11 || CurrentBoard[i][j].terrainTexture==12 || CurrentBoard[i][j].terrainTexture==30)
       {
         CurrentBoard[i][j].playerBuilding=BuildingOwnerData.substring(idx2,idx2+1).toInt();
       }
@@ -194,10 +199,26 @@ bool saveMapConfig()
   strData+="2"; //Improve when number of players will change
   strData+=(String)CurrentPlayer->id;
   strData+=(String)GameMode;
-  strData+=" ";
-  if(strData.length()==9)
+  if(IsConsoleOpponent==true)
   {
-    saveDataToBlock(0,strData,9);
+    strData+="1";
+  }
+  else
+  {
+    strData+="0";
+  }
+  if(TurnCount<=4)
+  {
+    strData+=(String)TurnCount;
+  }
+  else
+  {
+    strData+="5";
+  }
+  strData+=" ";
+  if(strData.length()==11)
+  {
+    saveDataToBlock(0,strData,11);
     return true;
   }
   else
@@ -311,6 +332,15 @@ void saveDataToBlock(uint16_t block,String data,int bufferSize)
   char Buffer[bufferSize];
   data.toCharArray(Buffer,bufferSize);
   gb.save.set(block,Buffer);
+}
+
+void saveProgress(int minimalValue)
+{
+  if(CampaignProgress<minimalValue)
+  {
+    CampaignProgress=minimalValue;
+    gb.save.set(14,minimalValue);
+  }
 }
 
 //---------------HELPERS---------------------------------

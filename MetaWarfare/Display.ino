@@ -26,8 +26,12 @@ void drawMainMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.drawImage(0,0,IMAGE_TITLE_THEME);
   gb.display.setColor(WHITE);
-  gb.display.setCursor(12,30);
+  gb.display.setCursor(12,23);
   gb.display.println("TUTORIAL");
+  gb.display.setCursor(12,30);
+  gb.display.println("CAMPAIGN");
+  gb.display.setCursor(12,37);
+  gb.display.println("SKIRMISH");
   gb.display.setCursor(12,44);
   gb.display.println("2 PLAYERS");
   gb.display.setCursor(12,58);
@@ -38,10 +42,6 @@ void drawMainMenu(int posX, int posY)
   }
   gb.display.setCursor(12,51);
   gb.display.println("CONTINUE");
-  gb.display.setColor(BEIGE);
-  gb.display.setCursor(12,37);
-  gb.display.println("CAMPAIGN");
-  
   gb.display.drawImage(posX,posY,Pointer);
 }
 
@@ -50,19 +50,19 @@ void drawScenarioMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.setColor(WHITE);
   gb.display.setCursor(2,3);
-  gb.display.println("1. Lake valley");
+  gb.display.println("1.Lake valley");
   gb.display.setCursor(2,9);
-  gb.display.println("2. Island");
+  gb.display.println("2.Island");
   gb.display.setCursor(2,15);
-  gb.display.println("3. Duel plains");
+  gb.display.println("3.Duel plains");
   gb.display.setCursor(2,21);
-  gb.display.println("4. Mountain lake");
+  gb.display.println("4.Mountain lake");
   gb.display.setCursor(2,27);
-  gb.display.println("5. Canals");
+  gb.display.println("5.Canals");
   gb.display.setCursor(2,33);
-  gb.display.println("6. Rocky pass");
+  gb.display.println("6.Rocky pass");
   gb.display.setCursor(2,39);
-  gb.display.println("7. Sea coast");
+  gb.display.println("7.Sea coast");
   gb.display.setCursor(2,45);
   gb.display.println("BACK");
   
@@ -74,12 +74,77 @@ void drawTutorialMenu(int posX, int posY)
   gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
   gb.display.setColor(WHITE);
   gb.display.setCursor(2,3);
-  gb.display.println("1. Basic");
+  gb.display.println("1.Basic");
   gb.display.setCursor(2,9);
-  gb.display.println("2. Advanced");
+  gb.display.println("2.Advanced");
   gb.display.setCursor(2,15);
   gb.display.println("BACK");
   
+  gb.display.drawImage(posX,posY,Pointer);
+}
+
+void drawSkirmishScenarioMenu(int posX, int posY)
+{
+  gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
+  gb.display.setColor(WHITE);
+  gb.display.setCursor(2,3);
+  gb.display.println("1.Capture island");
+  gb.display.setCursor(2,9);
+  gb.display.println("2.Swamp fortress");
+  gb.display.setCursor(2,15);
+  gb.display.println("3.Final battle");
+  gb.display.setCursor(2,21);
+  gb.display.println("4.Capture cove");
+  gb.display.setCursor(2,27);
+  gb.display.println("BACK");
+  gb.display.drawImage(posX,posY,Pointer);
+}
+
+void drawCampaignScenarioMenu(int posX, int posY)
+{
+  gb.display.drawImage(0,0,IMAGE_MAIN_THEME);
+  gb.display.setColor(WHITE);
+  gb.display.setCursor(2,3);
+  gb.display.println("1.Siege");
+  gb.display.setCursor(2,9);
+  if(CampaignProgress>=1)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
+  gb.display.println("2.Last stand");
+  gb.display.setCursor(2,15);
+  if(CampaignProgress>=2)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
+  gb.display.println("3.Supply depots");
+  gb.display.setCursor(2,21);
+  if(CampaignProgress>=3)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
+  gb.display.println("4.Stronghold");
+  gb.display.setCursor(2,27);
+  if(CampaignProgress>=4)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
+  gb.display.println("5.Mountain pass");
+  gb.display.setCursor(2,33);
+  if(CampaignProgress>=5)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
+  gb.display.println("6.Liberation");
+  gb.display.setCursor(2,39);
+  if(CampaignProgress>=6)
+    gb.display.setColor(WHITE);
+  else
+    gb.display.setColor(BEIGE);
+  gb.display.println("7.Last harbor");
+  gb.display.setCursor(2,45);
+  gb.display.setColor(WHITE);
+  gb.display.println("BACK");
   gb.display.drawImage(posX,posY,Pointer);
 }
 
@@ -118,7 +183,7 @@ void drawMap()
       }
       else
       {
-        if(tile.terrainTexture==11 || tile.terrainTexture==12 || tile.terrainTexture==25) //Base/Building belonging
+        if(tile.terrainTexture==11 || tile.terrainTexture==12 || tile.terrainTexture==25 || tile.terrainTexture==30) //Base/Building belonging
         {
           if(tile.playerBuilding==PLAYER_1)
             gb.display.drawImage(i*10,j*10,IMAGE_PLAYER1_BOARD);
@@ -140,6 +205,10 @@ void drawMap()
       if(tile.moveGrid==1)
       {
         gb.display.drawImage(i*10,j*10,MovementGrid);
+      }
+      if(tile.keyTile==1)
+      {
+        gb.display.drawImage(i*10,j*10,TargetPointer);
       }
     }
   }
@@ -260,15 +329,10 @@ void drawInfoMenu(int selection)
     gb.display.setColor(BLACK); 
   gb.display.setCursor(2,43);
   gb.display.println("END TURN");
-  if(Tutorial==-1)
-  {
-    if(selectionFrame==1 && infoSelection==SAVE_INFO_ACTION)
-      gb.display.setColor(RED);  
-    else
-      gb.display.setColor(BLACK);
-  }
+  if(selectionFrame==1 && infoSelection==SAVE_INFO_ACTION)
+    gb.display.setColor(RED);  
   else
-     gb.display.setColor(BEIGE);
+    gb.display.setColor(BLACK);
   gb.display.setCursor(2,50);
   gb.display.println("SAVE");
   if(selectionFrame==1 && infoSelection==QUIT_INFO_ACTION)
@@ -352,6 +416,8 @@ void drawTerrain(int id,int posX,int posY)
       gb.display.drawImage(posX,posY,IMAGE_TERRAIN_BRIDGE_HOR,10,10); break;
     case 29:
       gb.display.drawImage(posX,posY,IMAGE_TERRAIN_BRIDGE_VER,10,10); break;
+    case 30:
+      gb.display.drawImage(posX,posY,IMAGE_TERRAIN_HOSPITAL,10,10); break;
   }
 }
 
@@ -564,6 +630,11 @@ void drawBackgroundScene(bool attacker)
       gb.display.drawImage(0,44,IMAGE_SCENE_ROAD,40,20);
       gb.display.drawImage(0,8,IMAGE_SCENE_BRIDGE,40,20);
     }
+    else if(LeftSceneTheme==HOSPITAL)
+    {
+      gb.display.drawImage(0,0,IMAGE_SCENE_GRASS,40,64);
+      gb.display.drawImage(0,0,IMAGE_SCENE_HOSPITAL,40,20);
+    }
   }
   else
   {
@@ -607,6 +678,11 @@ void drawBackgroundScene(bool attacker)
       gb.display.drawImage(40,27,IMAGE_SCENE_ROAD,40,18);
       gb.display.drawImage(40,44,IMAGE_SCENE_ROAD,40,20);
       gb.display.drawImage(40,8,IMAGE_SCENE_BRIDGE,40,20);
+    }
+    else if(RightSceneTheme==HOSPITAL)
+    {
+      gb.display.drawImage(40,0,IMAGE_SCENE_GRASS,40,64);
+      gb.display.drawImage(40,0,IMAGE_SCENE_HOSPITAL,40,20);
     }
   }
 }
@@ -1105,20 +1181,40 @@ void drawEndGameScreen()
   gb.display.drawImage(29,1,IMAGE_MENU_THEME,1,0,22,17);
   gb.display.drawImage(49,1,IMAGE_MENU_THEME,1,0,29,17);
   gb.display.setCursor(14,8);
-  if(CurrentPlayer->id==1)
+  if(IsConsoleOpponent==true)
   {
-    gb.display.setColor(RED);
-    gb.display.println("PLAYER 1 WINS!");
+    if(Winner==1) //Player wins
+    {
+      gb.display.setColor(RED);
+      gb.display.println("PLAYER 1 WINS!");
+      String strScore="Score: " + (String)Player_1.points;
+      gb.display.setColor(ORANGE);
+      gb.display.setCursor(19,44);
+      gb.display.println(strScore);
+    }
+    else //Console wins
+    {
+      gb.display.setColor(BLACK);
+      gb.display.println("LOST!");
+    }
   }
   else
   {
-    gb.display.setColor(BLUE);
-    gb.display.println("PLAYER 2 WINS!");
+    if(CurrentPlayer->id==1)
+    {
+      gb.display.setColor(RED);
+      gb.display.println("PLAYER 1 WINS!");
+    }
+    else
+    {
+      gb.display.setColor(BLUE);
+      gb.display.println("PLAYER 2 WINS!");
+    }
+    String strScore="Score: " + (String)CurrentPlayer->points;
+    gb.display.setColor(ORANGE);
+    gb.display.setCursor(19,44);
+    gb.display.println(strScore);
   }
-  String strScore="Score: " + (String)CurrentPlayer->points;
-  gb.display.setColor(ORANGE);
-  gb.display.setCursor(19,44);
-  gb.display.println(strScore);
 }
 
 void drawHighScoreScreen()
@@ -1165,7 +1261,7 @@ String scoreStrMod(int score)
 void drawTutorialScreen()
 {
   gb.display.setColor(BEIGE); 
-  if(Tutorial==0)
+  if(MapId==1)
   {
     if(TurnCount==0)
     {
@@ -1200,7 +1296,7 @@ void drawTutorialScreen()
       gb.display.println("TIP: Only Infantry  and AT Infantry     can cross mountains and capture building");
     }
   }
-  else if(Tutorial==1)
+  else if(MapId==2)
   {
     if(TurnCount==0)
     {
@@ -1210,7 +1306,7 @@ void drawTutorialScreen()
     else if(TurnCount==1)
     {
       gb.display.setCursor(0, 2);
-      gb.display.println("Captured building   grants 100 funds    every turn. You can use it to buy new   units in the        captured base.");
+      gb.display.println("Captured building   grants 100 funds    every turn. You can use it to buy new   units in the        captured base.      Captured hospital   heals unit +2 pointsper turn.");
     }
     else if(TurnCount==2)
     {
@@ -1245,6 +1341,24 @@ void drawTutorialScreen()
         gb.display.setColor(RED); 
         gb.display.println("Capture enemy HQ.");
       }
+      else if(GameMode==DEATHMATCH_MODE)
+      {
+        gb.display.setCursor(5, 5);
+        gb.display.setColor(GREEN); 
+        gb.display.println("MISSION:");
+        gb.display.setCursor(0, 15);
+        gb.display.setColor(RED); 
+        gb.display.println("Eliminate all enemy units.");
+      }
+      else if(GameMode==CAPTURE_FLAG_MODE)
+      {
+        gb.display.setCursor(5, 5);
+        gb.display.setColor(GREEN); 
+        gb.display.println("MISSION:");
+        gb.display.setCursor(0, 15);
+        gb.display.setColor(RED); 
+        gb.display.println("Reach marked tile.");
+      }
       else
       {
         gb.display.setCursor(5, 5);
@@ -1254,10 +1368,41 @@ void drawTutorialScreen()
         gb.display.setColor(RED); 
         gb.display.println("Capture 8 buildings.");
       }
+      if(MapId>=10 && MapId<=16)
+      {
+        String text = drawCampaignStory();
+        gb.display.setColor(BEIGE); 
+        gb.display.setCursor(0, 30);
+        gb.display.println(text);
+      }
     }
   }
   gb.display.setColor(WHITE);  
   gb.display.setCursor(20, 56);
   gb.display.println("CONFIRM");
   gb.display.drawImage(50,54,Pointer);
+}
+
+String drawCampaignStory()
+{
+  String result="";
+  switch(MapId)
+  {
+    case 10:
+      result = "Enemy invaded our   island. The capital is under siege.     Secure town gates!"; break;
+    case 11:
+      result = "Enemy main army     circled our units!  This may be the     turning point..."; break;
+    case 12:
+      result = "We must capture     enemy depots in     order to build heavy units."; break;
+    case 13:
+      result = "Now it's time to    cripple main HQ -   paralyze enemy      command chain."; break;
+    case 14:
+      result = "We must take controlover the valley.    This passage leads  to the coast."; break;
+    case 15:
+      result = "Let's liberate our  main cities - push  enemy to the sea."; break;
+    case 16:
+      result = "Capturing enemy mainharbor will secure  our land."; break;
+  }
+
+  return result;
 }

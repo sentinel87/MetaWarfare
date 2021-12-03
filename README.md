@@ -1,2 +1,2 @@
-# SpaceCommander
+# MetaWarfare
 Game for gamebuino console.

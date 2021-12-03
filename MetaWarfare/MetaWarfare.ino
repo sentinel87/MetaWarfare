@@ -12,9 +12,12 @@
 #define SCORES_MODE 8
 #define TUTORIAL_MODE 9
 #define TUTORIAL_SCENARIO_MODE 10
+#define SKIRMISH_SCENARIO_MODE 11
 
 #define CONQUEST_MODE 1
 #define CAPTURE_MODE 2
+#define DEATHMATCH_MODE 3
+#define CAPTURE_FLAG_MODE 4
 
 const Gamebuino_Meta::Sound_FX cannonExplosionSound[] = {
     {Gamebuino_Meta::Sound_FX_Wave::NOISE,0,60,30,40,10,15},
@@ -89,9 +92,11 @@ GameTileStruct CurrentBoard[16][16];
 
 bool menuMode=false;
 bool SaveExist=false;
+bool IsConsoleOpponent=false;
 
-int Tutorial=-1;
 int TurnCount=0;
+int Winner = 0;
+int CampaignProgress = 0;
 
 int SceneMode=MENU_MODE;
 int MapId=0;
@@ -111,7 +116,7 @@ GameTileStruct* BaseLocation = &None;
 Player* CurrentPlayer = &Player_1;
 
 const SaveDefault savefileDefaults[] = {
-  {0, SAVETYPE_BLOB,{.ptr="00000000 "},9}, //Map config
+  {0, SAVETYPE_BLOB,{.ptr="0000000000 "},11}, //Map config
   {1, SAVETYPE_BLOB,{.ptr="00000000000000000000000000 "},27}, //Players stats
   {2, SAVETYPE_BLOB,{.ptr="00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 "}, 513}, //Map parms (Unit Id)
   {3, SAVETYPE_BLOB,{.ptr="00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 "}, 513}, //Map parms (Unit Hp)
@@ -123,7 +128,8 @@ const SaveDefault savefileDefaults[] = {
   {10, SAVETYPE_INT,0,0 },
   {11, SAVETYPE_INT,0,0 },
   {12, SAVETYPE_INT,0,0 },
-  {13, SAVETYPE_INT,0,0 }
+  {13, SAVETYPE_INT,0,0 },
+  {14, SAVETYPE_INT,0,0 } //Campaign progress
 };
 
 int posX = 0;
@@ -132,19 +138,38 @@ int posY = 0;
 int sRowIdx = 0;
 int sColIdx = 0;
 
+struct UnitLocation
+{
+  unsigned int row;
+  unsigned int column;
+  unsigned int unitId;
+  bool activated;
+};
+
+struct AttackParameters
+{
+  unsigned int targetRow;
+  unsigned int targetColumn;
+  unsigned int unitDestionationRow;
+  unsigned int unitDestionationColumn;
+  unsigned int unitId;
+  bool locked;
+};
+
 void setup() {
   gb.begin();
   gb.save.config(savefileDefaults);
-  ScoreBoard[0]=gb.save.get(9);
-  ScoreBoard[1]=gb.save.get(10);
-  ScoreBoard[2]=gb.save.get(11);
-  ScoreBoard[3]=gb.save.get(12);
-  ScoreBoard[4]=gb.save.get(13);
+  ScoreBoard[0] = gb.save.get(9);
+  ScoreBoard[1] = gb.save.get(10);
+  ScoreBoard[2] = gb.save.get(11);
+  ScoreBoard[3] = gb.save.get(12);
+  ScoreBoard[4] = gb.save.get(13);
   int check=gb.save.get(7);
   if(check==1)
   {
     SaveExist=true;
   }
+  CampaignProgress = gb.save.get(14);
 }    
 
 
@@ -189,6 +214,14 @@ void loop() {
   else if(SceneMode==TUTORIAL_SCENARIO_MODE)
   {
     TutorialScenarioScene();
+  }
+  else if(SceneMode==SKIRMISH_SCENARIO_MODE)
+  {
+    SkirmishScenarioScene();
+  }
+  else if(SceneMode==CAMPAIGN_SCENARIO_MODE)
+  {
+    CampaignScenarioScene();
   }
   else //Base mode
   {
